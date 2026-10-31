@@ -1,0 +1,107 @@
+/* Oswald, from the app (SIL Open Font License, src/assets/fonts/OFL.txt). Headings
+   and small labels are uppercase Oswald, body text the system font, as in the
+   app's Theme.swift. */
+@font-face {
+	font-family: 'Oswald';
+	src: url('../assets/fonts/Oswald-Medium.ttf') format('truetype');
+	font-weight: 500;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Oswald';
+	src: url('../assets/fonts/Oswald-SemiBold.ttf') format('truetype');
+	font-weight: 600;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Oswald';
+	src: url('../assets/fonts/Oswald-Bold.ttf') format('truetype');
+	font-weight: 700;
+	font-display: swap;
+}
+
+/* The app's ink is near-black on white, and white on black in dark mode. The
+   cream is the icon's L. */
+:root {
+	--bg: #ffffff;
+	--surface: #f2f2f4;
+	--text: #111111;
+	--muted: #5f5f66;
+	--line: #e2e2e6;
+	--accent: #111111;
+	--accent-text: #ffffff;
+	--cream: #f7ecdc;
+	--night: #2c2a35;
+
+	--font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--font-display: 'Oswald', 'Arial Narrow', sans-serif-condensed, sans-serif;
+	--max-width: 64rem;
+	--gutter: clamp(1rem, 4vw, 2rem);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #000000;
+		--surface: #141416;
+		--text: #ffffff;
+		--muted: #a2a2aa;
+		--line: #2a2a2e;
+		--accent: #ffffff;
+		--accent-text: #000000;
+	}
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: var(--font-sans);
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--font-display);
+	font-weight: 700;
+	line-height: 1.15;
+	text-transform: uppercase;
+	text-wrap: balance;
+	margin: 0;
+}
+
+p {
+	margin: 0;
+}
+
+a {
+	color: inherit;
+}
+
+.container {
+	width: 100%;
+	max-width: var(--max-width);
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+
+/* Small uppercase labels, like a piece's category in the app. */
+.label {
+	font-family: var(--font-display);
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}

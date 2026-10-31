@@ -1,0 +1,69 @@
+---
+// Placeholder copy, to be rewritten with the landing page.
+const features = [
+	{
+		title: 'Describe it',
+		body: 'Tell the stylist what you’re after, from an occasion to a mood, a budget or a reference photo.',
+	},
+	{
+		title: 'Real pieces',
+		body: 'Every look is built from products you can actually buy, with a link to each one.',
+	},
+	{
+		title: 'Try it on',
+		body: 'See an outfit on a photo of you before you spend a thing.',
+	},
+];
+---
+
+<section class="features container" aria-labelledby="features-title">
+	<h2 id="features-title">How it works</h2>
+	<ol>
+		{
+			features.map(({ title, body }) => (
+				<li class="card">
+					<h3>{title}</h3>
+					<p>{body}</p>
+				</li>
+			))
+		}
+	</ol>
+</section>
+
+<style>
+	.features {
+		padding-block: clamp(3rem, 8vw, 5rem);
+		border-top: 1px solid var(--line);
+	}
+
+	h2 {
+		font-size: clamp(1.75rem, 5vw, 2.5rem);
+		margin-bottom: 2rem;
+	}
+
+	ol {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+	}
+
+	/* Square, outlined cards, as in the app. */
+	.card {
+		display: grid;
+		align-content: start;
+		gap: 0.5rem;
+		padding: 1.5rem;
+		border: 1px solid var(--line);
+	}
+
+	h3 {
+		font-size: 1.375rem;
+	}
+
+	p {
+		color: var(--muted);
+	}
+</style>

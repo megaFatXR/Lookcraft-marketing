@@ -1,0 +1,67 @@
+---
+import { Image } from 'astro:assets';
+import appStoreBadge from '../assets/app-store-badge.svg';
+import { APP_STORE_URL } from '../consts';
+---
+
+<!-- Placeholder hero until the art and screenshots exist. -->
+<section class="hero">
+	<div class="copy container">
+		<p class="eyebrow label">Lookcraft</p>
+		<h1>Your AI stylist and fitting room</h1>
+		<p class="lede">
+			Describe a look in your own words. Lookcraft styles it from real products you
+			can buy, then shows you wearing it.
+		</p>
+		<a class="badge" href={APP_STORE_URL}>
+			<Image src={appStoreBadge} alt="Download on the App Store" loading="eager" />
+		</a>
+	</div>
+</section>
+
+<style>
+	.hero {
+		padding-block: clamp(4rem, 14vw, 9rem) clamp(3rem, 8vw, 5rem);
+	}
+
+	.copy {
+		display: grid;
+		gap: 1.25rem;
+		justify-items: start;
+	}
+
+	.eyebrow {
+		font-size: 1rem;
+		color: var(--muted);
+	}
+
+	h1 {
+		font-size: clamp(2.75rem, 10vw, 5.5rem);
+		max-width: 14ch;
+	}
+
+	.lede {
+		font-size: 1.125rem;
+		color: var(--muted);
+		max-width: 40ch;
+	}
+
+	/* Apple's official badge, unmodified. Min 40px tall on screen, with clear
+	   space of a quarter of its height around it. */
+	.badge {
+		display: block;
+		margin-top: 0.75rem;
+		border-radius: 0.6rem;
+	}
+
+	.badge :global(img) {
+		display: block;
+		height: 3.5rem;
+		width: auto;
+	}
+
+	.badge:focus-visible {
+		outline: 2px solid var(--text);
+		outline-offset: 3px;
+	}
+</style>

@@ -1,0 +1,102 @@
+---
+import Footer from '../components/Footer.astro';
+import { CONTACT_EMAIL } from '../consts';
+import Base from '../layouts/Base.astro';
+import { withBase } from '../lib/url';
+
+// TODO: set when the policy is written.
+const effective = '[effective date]';
+---
+
+<Base
+	title="Privacy Policy — Lookcraft"
+	description="What Lookcraft collects, why, and who it shares it with."
+>
+	<header class="container top">
+		<a class="home label" href={withBase('')}>Lookcraft</a>
+	</header>
+
+	<main class="container policy">
+		<h1>Privacy Policy</h1>
+		<p class="effective">Effective {effective}</p>
+
+		<p class="intro">The full policy is on its way.</p>
+
+		<h2>Contact</h2>
+		<p>
+			Questions about privacy? Email us at {
+				CONTACT_EMAIL ? (
+					<a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+				) : (
+					<mark>[contact email]</mark>
+				)
+			}.
+		</p>
+	</main>
+
+	<Footer />
+</Base>
+
+<style>
+	.top,
+	.policy {
+		max-width: 44rem;
+	}
+
+	.top {
+		padding-block: 1.5rem;
+	}
+
+	.home {
+		font-size: 1.125rem;
+		text-decoration: none;
+	}
+
+	.policy {
+		padding-block: clamp(1.5rem, 6vw, 3rem) clamp(3rem, 8vw, 5rem);
+	}
+
+	h1 {
+		font-size: clamp(2.25rem, 7vw, 3rem);
+	}
+
+	.effective {
+		margin-top: 0.5rem;
+		font-size: 0.875rem;
+		color: var(--muted);
+	}
+
+	.intro {
+		margin-top: 2rem;
+		font-size: 1.125rem;
+	}
+
+	h2 {
+		margin-top: 2.5rem;
+		font-size: 1.375rem;
+	}
+
+	p,
+	ul {
+		margin-top: 1rem;
+	}
+
+	p:not(.intro),
+	li {
+		color: var(--muted);
+	}
+
+	strong {
+		color: var(--text);
+	}
+
+	ul {
+		display: grid;
+		gap: 0.75rem;
+		padding-left: 1.25rem;
+	}
+
+	.policy a {
+		text-underline-offset: 0.2em;
+	}
+</style>
