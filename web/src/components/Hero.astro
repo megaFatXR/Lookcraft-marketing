@@ -2,12 +2,13 @@
 import { Image } from 'astro:assets';
 import appStoreBadge from '../assets/app-store-badge.svg';
 import { APP_STORE_URL } from '../consts';
+import Logo from './Logo.astro';
 ---
 
 <!-- Placeholder hero until the art and screenshots exist. -->
 <section class="hero">
 	<div class="copy container">
-		<p class="eyebrow label">Lookcraft</p>
+		<Logo />
 		<h1>Your AI stylist and fitting room</h1>
 		<p class="lede">
 			Describe a look in your own words. Lookcraft styles it from real products you
@@ -30,13 +31,8 @@ import { APP_STORE_URL } from '../consts';
 		justify-items: start;
 	}
 
-	.eyebrow {
-		font-size: 1rem;
-		color: var(--muted);
-	}
-
 	h1 {
-		font-size: clamp(2.75rem, 10vw, 5.5rem);
+		font-size: clamp(2.5rem, 8vw, 4.5rem);
 		max-width: 14ch;
 	}
 

@@ -18,18 +18,18 @@ Run from `web/`:
 
 ```text
 src/
-├── assets/       app icon, App Store badge, Oswald (from the app)
-├── components/   Hero, Features, Footer
+├── assets/       app icon, logo mark, App Store badge, fonts (from the app)
+├── components/   Logo, Hero, Features, Footer
 ├── layouts/      Base.astro (head, meta, global styles)
 ├── lib/url.ts    withBase() for links under the Pages base path
 ├── pages/        index.astro, privacy.astro
 ├── styles/       global.css (color tokens, light/dark, fonts)
-└── consts.ts     site title, description, App Store URL, contact email
+└── consts.ts     site title, description, App Store URL, contact and legal details
 ```
 
-The look follows the app's `Theme.swift` in `../styleFit`: near-black ink on
-white (white on black in dark mode), uppercase Oswald headings, system font
-for body text, square corners.
+The look follows the app's `Theme.swift` in `../styleFit`: charcoal on warm
+off-white (the reverse in dark mode), Fraunces Medium titles, Hanken Grotesk
+for everything else, rounded cards.
 
 ## Deploying
 

@@ -1,26 +1,349 @@
 ---
 import Footer from '../components/Footer.astro';
-import { CONTACT_EMAIL } from '../consts';
+import Logo from '../components/Logo.astro';
+import { COMPANY_ADDRESS, COMPANY_NAME, CONTACT_EMAIL } from '../consts';
 import Base from '../layouts/Base.astro';
-import { withBase } from '../lib/url';
 
-// TODO: set when the policy is written.
-const effective = '[effective date]';
+const effective = 'November 3, 2026';
+
+const providers = [
+	{
+		name: 'Supabase',
+		gets: 'Your account and usage records, what passes through our server, and finished try-ons until your iPhone downloads them',
+		why: 'Runs our server and database',
+		where: 'Database in Frankfurt, Germany',
+	},
+	{
+		name: 'Google (Gemini)',
+		gets: 'Your briefs, reference photos, photos of you, photos of pieces, and try-on notes',
+		why: 'Plans looks and makes try-ons',
+		where: 'Wherever Google has facilities, including the US',
+	},
+	{
+		name: 'Anthropic, OpenAI',
+		gets: 'Your briefs and reference photos, when one of them is the stylist we use',
+		why: 'Plans looks',
+		where: 'United States',
+	},
+	{
+		name: 'SerpApi',
+		gets: 'The search terms the stylist writes, with your country and language, and no account details',
+		why: 'Finds products on Google Shopping',
+		where: 'United States',
+	},
+	{
+		name: 'PostHog',
+		gets: 'Analytics events, as described above',
+		why: 'Shows us how Lookcraft is used',
+		where: 'Frankfurt, Germany',
+	},
+	{
+		name: 'Apple',
+		gets: 'Your sign-in, purchases and iCloud data, under your agreement with Apple',
+		why: 'Sign in, payments and sync',
+		where: 'Under Apple’s terms',
+	},
+];
+
+const retention = [
+	['Photos, briefs, looks and try-ons on your iPhone and iCloud', 'Until you delete them'],
+	['Your photo and briefs on our server', 'Only in memory, while the request runs'],
+	['A finished try-on on our server', 'Until your iPhone downloads it, and 7 days at most'],
+	['What Google receives', 'Up to 55 days'],
+	['Your account, email address and try-on balance', 'Until you delete your account'],
+	['Analytics', 'Until you delete your account. PostHog’s deletion finishes within days'],
+	[
+		'Purchase, try-on, usage and shop-click records',
+		'Kept after you delete your account, no longer linked to it, for accounting and to reconcile costs',
+	],
+	['Technical logs', 'About a week'],
+];
 ---
 
 <Base
 	title="Privacy Policy — Lookcraft"
-	description="What Lookcraft collects, why, and who it shares it with."
+	description="What Lookcraft collects, where your photos go, who else receives your data, and how to delete it."
 >
 	<header class="container top">
-		<a class="home label" href={withBase('')}>Lookcraft</a>
+		<Logo />
 	</header>
 
 	<main class="container policy">
 		<h1>Privacy Policy</h1>
 		<p class="effective">Effective {effective}</p>
 
-		<p class="intro">The full policy is on its way.</p>
+		<section class="summary" aria-labelledby="summary-title">
+			<h2 id="summary-title">The short version</h2>
+			<ul>
+				<li>
+					<strong>Your photos, briefs, try-ons and looks live on your iPhone</strong> and
+					in your own iCloud. We don’t store them on our servers.
+				</li>
+				<li>
+					<strong>AI providers do receive them.</strong> To style a look or make a try-on,
+					what you give us passes through our server to an AI provider. Google can keep
+					it for up to 55 days to detect abuse, and doesn’t use it to improve its products.
+				</li>
+				<li>
+					<strong>We keep what runs your account:</strong> your email address, try-on
+					balance, purchases and usage records, plus analytics that never include your
+					words or pictures.
+				</li>
+				<li><strong>We don’t sell your data,</strong> show ads, or track you across other apps.</li>
+				<li><strong>You can delete your account</strong> in the app at any time.</li>
+			</ul>
+		</section>
+
+		<h2>Who we are</h2>
+		<p>
+			Lookcraft is an AI stylist and fitting room for iPhone. It’s run by {
+				COMPANY_NAME ? COMPANY_NAME : <mark>[company or full legal name]</mark>
+			}, {COMPANY_ADDRESS ? COMPANY_ADDRESS : <mark>[postal address]</mark>}, which is
+			responsible for your data under this policy (the “data controller” in EU and UK
+			law). This policy covers the app and this website.
+		</p>
+
+		<h2>What stays on your iPhone</h2>
+		<p>These are kept on your iPhone, and in iCloud if you have it on:</p>
+		<ul>
+			<li>The photos of you that you add.</li>
+			<li>Your briefs and their reference photos.</li>
+			<li>Your concepts, looks, try-ons and the photos of pieces you add.</li>
+			<li>Your settings, such as who you’re shopping for, your country and your budget.</li>
+		</ul>
+		<p>
+			iCloud sync uses your private iCloud database, under Apple’s terms. We can’t see
+			what’s in it. With iCloud off, everything stays on the iPhone, and deleting the
+			app deletes it.
+		</p>
+		<p>
+			When you add a photo, Lookcraft checks on your iPhone that your whole body is in
+			frame, that there’s one person and that the light is good. That check doesn’t
+			leave your iPhone, and we don’t use your photos to identify you.
+		</p>
+		<p>
+			Lookcraft asks for your camera only if you choose to take a photo, and it never
+			asks for your location or contacts. Your country is suggested from your iPhone’s
+			region setting, and you can change it.
+		</p>
+
+		<h2>What we keep on our server</h2>
+		<ul>
+			<li>
+				<strong>Your account:</strong> a random account ID, your Apple sign-in identifier,
+				and your email address, or the private relay address if you chose Hide My Email.
+				We don’t ask for your name. We also keep a token from Apple so we can revoke your
+				sign-in when you delete your account.
+			</li>
+			<li>
+				<strong>Your try-on balance:</strong> each time try-ons are added, used or refunded.
+			</li>
+			<li>
+				<strong>Your purchases:</strong> the App Store transaction ID, the pack, its price
+				and currency, your storefront, the date, and any refund. Apple handles payment,
+				and we never see your card.
+			</li>
+			<li>
+				<strong>Usage records:</strong> when you ran a brief or a try-on, the AI model it
+				used, whether it worked, how long it took and what it cost us. These never include
+				your words or pictures.
+			</li>
+			<li>
+				<strong>Clicks to shops:</strong> when you open a shop link from Lookcraft, we log
+				the link, the shop, the product, your country and the time.
+			</li>
+			<li>
+				<strong>Technical logs:</strong> our hosting provider keeps short-lived logs of
+				sign-ins and requests, which can include your IP address and device type.
+			</li>
+		</ul>
+
+		<h2>When you style a look</h2>
+		<p>
+			Your brief, up to three reference photos, who you’re shopping for, your country
+			and your budget pass through our server to the AI that plans the look. Our server
+			doesn’t store them. The AI writes search terms for each piece, and we send those to
+			Google Shopping through SerpApi, without anything that identifies you.
+		</p>
+
+		<h2>When you try a look on</h2>
+		<p>
+			Your photo, the photos and names of the pieces, and any notes you add pass through
+			our server to Google’s Gemini, which makes the picture. Your photo stays in memory
+			only while the try-on runs, and we never store it or log it. A small Gemini model
+			also checks the photos of the pieces, because we don’t make try-ons of underwear
+			or swimwear.
+		</p>
+		<p>
+			The finished try-on waits on our server until your iPhone downloads it, and then
+			we delete it. If it’s never downloaded, we delete it after 7 days.
+		</p>
+		<p>
+			Only add photos of yourself. Try-ons are labelled as AI-generated, and Gemini also
+			adds an invisible SynthID watermark. A try-on is shared only if you share it.
+		</p>
+
+		<h2>What AI providers do with your data</h2>
+		<p>
+			We use Google’s paid Gemini service, which is covered by its data processing terms.
+			Google doesn’t use what we send to improve its products. It does keep prompts, images
+			and results for up to 55 days to detect abuse and meet legal requirements, and
+			authorized Google staff can review content flagged in that process.
+		</p>
+		<p>
+			Google is our stylist today. We may also use Anthropic or OpenAI to plan looks, under
+			their commercial API terms, which don’t let them train their models on this data.
+			They can also keep requests for a limited time for safety and abuse monitoring.
+		</p>
+		<p>We don’t train any AI models on your data ourselves.</p>
+
+		<h2>Analytics</h2>
+		<p>
+			We use PostHog’s EU cloud to learn which parts of Lookcraft work. Events are sent
+			under your random account ID, or a random ID stored on your iPhone before you sign
+			in, and they cover:
+		</p>
+		<ul>
+			<li>Opening the app, and its version.</li>
+			<li>
+				Styling and try-ons: that a brief was sent, whether it had words, how many reference
+				photos it had, the budget, your country and who you’re shopping for.
+			</li>
+			<li>Shops and brands: their names, and which shop links you open.</li>
+			<li>Purchases: the pack, its price and whether it went through.</li>
+			<li>What each request cost us.</li>
+		</ul>
+		<p>
+			<strong>Analytics never include</strong> your brief’s text, photos, try-ons, product
+			names, full shop links, your email address or advertising IDs. There’s no session
+			recording, no screen tracking, and no location from your IP address.
+		</p>
+
+		<h2>Shops and product pictures</h2>
+		<p>
+			Product pictures load straight from Google and the shops’ image servers, which see
+			your IP address like any website would. A Buy link opens the shop in your browser,
+			where the shop’s own privacy policy applies. We don’t tell shops who you are.
+		</p>
+		<p>
+			Today, links go straight to the shop. We plan to send some through Sovrn Commerce so
+			that Lookcraft can earn a commission when you buy. Those links would carry a random
+			click ID, and not your name or email address.
+		</p>
+
+		<h2>Who receives your data</h2>
+		<p>These providers process data for us. We don’t sell it to anyone.</p>
+		<div class="table">
+			<table>
+				<thead>
+					<tr>
+						<th scope="col">Provider</th>
+						<th scope="col">What it receives</th>
+						<th scope="col">Why</th>
+						<th scope="col">Where</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						providers.map(({ name, gets, why, where }) => (
+							<tr>
+								<th scope="row">{name}</th>
+								<td data-label="Receives">{gets}</td>
+								<td data-label="Why">{why}</td>
+								<td data-label="Where">{where}</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+		<p>
+			We may also disclose data if the law requires it. When data leaves the UK or the
+			European Economic Area, we rely on safeguards such as the European Commission’s
+			Standard Contractual Clauses or an adequacy decision.
+		</p>
+
+		<h2>How long we keep it</h2>
+		<div class="table">
+			<table class="retention">
+				<tbody>
+					{
+						retention.map(([what, howLong]) => (
+							<tr>
+								<th scope="row">{what}</th>
+								<td>{howLong}</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<h2>Deleting your data</h2>
+		<ul>
+			<li>
+				<strong>Your account:</strong> go to the Me tab and tap Delete account. That revokes
+				your Apple sign-in, removes your email address and balance, and deletes your
+				analytics. Unused try-ons are lost.
+			</li>
+			<li>
+				<strong>Your photos and looks:</strong> these aren’t on our servers, so deleting your
+				account doesn’t touch them. Delete them in the app first if you want them gone from
+				your iPhone and iCloud. To delete a photo, long-press it on the Me tab. Try-ons made
+				with it stay until you delete their look.
+			</li>
+		</ul>
+
+		<h2>Your rights</h2>
+		<p>
+			In the EU and UK, you can ask us for a copy of your data, and ask us to correct it,
+			delete it, limit how we use it or send it to you in a portable format. You can also
+			object to how we use it, including for analytics, and complain to your local data
+			protection authority.
+		</p>
+		<p>
+			We rely on these legal grounds: providing the service you asked for (your account,
+			styling, try-ons and purchases), our legitimate interests (analytics, security,
+			preventing abuse and reconciling costs), and legal obligations (financial records).
+		</p>
+		<p>
+			In the US, some states give you the right to know what we hold about you, and to
+			correct or delete it. We don’t sell your personal information or share it for
+			targeted advertising.
+		</p>
+		<p>
+			To use any of these rights, email us. Your photos and looks aren’t on our servers, so
+			you can see and delete those directly in the app.
+		</p>
+
+		<h2>Age limit</h2>
+		<p>
+			Lookcraft is for people 18 and older, and we ask you to confirm that before you add a
+			photo. If you think someone younger has given us data, email us and we’ll delete it.
+		</p>
+
+		<h2>Security</h2>
+		<p>
+			Data is encrypted on its way to and from our server. Your account records can be read
+			only by you and our server, and the keys to our AI providers never leave the server.
+			No system is perfectly secure, so we keep as little on it as we can.
+		</p>
+
+		<h2>This website</h2>
+		<p>
+			This site uses no cookies, analytics or JavaScript, and its fonts load from this site
+			rather than from a font service. It’s hosted on GitHub Pages, which may log visitors’
+			IP addresses for security, as described in <a
+				href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
+				>GitHub’s privacy statement</a
+			>.
+		</p>
+
+		<h2>Changes to this policy</h2>
+		<p>
+			If this policy changes, we’ll update this page and the date at the top. If a change
+			significantly affects how your data is used, we’ll say so here before it takes effect.
+		</p>
 
 		<h2>Contact</h2>
 		<p>
@@ -40,16 +363,11 @@ const effective = '[effective date]';
 <style>
 	.top,
 	.policy {
-		max-width: 44rem;
+		max-width: 46rem;
 	}
 
 	.top {
 		padding-block: 1.5rem;
-	}
-
-	.home {
-		font-size: 1.125rem;
-		text-decoration: none;
 	}
 
 	.policy {
@@ -57,37 +375,35 @@ const effective = '[effective date]';
 	}
 
 	h1 {
-		font-size: clamp(2.25rem, 7vw, 3rem);
+		font-size: clamp(2.5rem, 8vw, 3.5rem);
 	}
 
 	.effective {
 		margin-top: 0.5rem;
-		font-size: 0.875rem;
-		color: var(--muted);
-	}
-
-	.intro {
-		margin-top: 2rem;
-		font-size: 1.125rem;
+		font-size: 0.9375rem;
 	}
 
 	h2 {
-		margin-top: 2.5rem;
-		font-size: 1.375rem;
+		margin-top: 3rem;
+		font-size: 1.625rem;
 	}
 
 	p,
-	ul {
+	ul,
+	.table {
 		margin-top: 1rem;
 	}
 
-	p:not(.intro),
-	li {
+	p,
+	li,
+	td {
 		color: var(--muted);
 	}
 
-	strong {
+	strong,
+	th {
 		color: var(--text);
+		font-weight: 600;
 	}
 
 	ul {
@@ -98,5 +414,123 @@ const effective = '[effective date]';
 
 	.policy a {
 		text-underline-offset: 0.2em;
+	}
+
+	mark {
+		padding-inline: 0.25em;
+		border-radius: 0.25em;
+		background: #f6d776;
+		color: #212121;
+	}
+
+	.summary {
+		margin-top: 2rem;
+		padding: clamp(1.25rem, 4vw, 2rem);
+		background: var(--surface);
+		border: 1px solid var(--line);
+		border-radius: var(--radius-card);
+	}
+
+	.summary h2 {
+		margin-top: 0;
+	}
+
+	.table {
+		background: var(--surface);
+		border: 1px solid var(--line);
+		border-radius: var(--radius-card);
+		overflow: hidden;
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.9375rem;
+		line-height: 1.45;
+	}
+
+	th,
+	td {
+		padding: 0.875rem 1rem;
+		text-align: left;
+		vertical-align: top;
+	}
+
+	thead th {
+		font-size: 0.875rem;
+		color: var(--muted);
+		font-weight: 500;
+	}
+
+	tbody tr,
+	tbody th,
+	tbody td {
+		border-top: 1px solid var(--line);
+	}
+
+	tbody tr:first-child,
+	tbody tr:first-child th,
+	tbody tr:first-child td {
+		border-top: 0;
+	}
+
+	thead + tbody tr:first-child,
+	thead + tbody tr:first-child th,
+	thead + tbody tr:first-child td {
+		border-top: 1px solid var(--line);
+	}
+
+	.retention th {
+		width: 52%;
+		font-weight: 500;
+	}
+
+	/* Phones: each table row becomes a small stacked block, so nothing scrolls
+	   sideways. */
+	@media (width < 40rem) {
+		thead {
+			display: none;
+		}
+
+		table,
+		tbody,
+		tr,
+		tbody th,
+		tbody td {
+			display: block;
+			width: auto;
+		}
+
+		tbody tr {
+			padding: 0.875rem 1rem;
+		}
+
+		tbody tr:first-child {
+			border-top: 0;
+		}
+
+		tbody th,
+		tbody td,
+		tbody tr:first-child th,
+		tbody tr:first-child td,
+		thead + tbody tr:first-child th,
+		thead + tbody tr:first-child td {
+			border-top: 0;
+			padding: 0;
+		}
+
+		tbody td {
+			margin-top: 0.375rem;
+		}
+
+		td[data-label]::before {
+			content: attr(data-label) ': ';
+			color: var(--text);
+			font-weight: 500;
+		}
+
+		.retention th {
+			width: auto;
+		}
 	}
 </style>

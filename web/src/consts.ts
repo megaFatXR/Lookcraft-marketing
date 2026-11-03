@@ -5,5 +5,7 @@ export const SITE_DESCRIPTION =
 // TODO: replace with the real App Store listing once it exists.
 export const APP_STORE_URL = '#download';
 
-// The privacy policy shows a placeholder while this is empty.
-export const CONTACT_EMAIL = '';
+// The privacy policy shows a placeholder while any of these are empty.
+export const CONTACT_EMAIL = 'support@lookcraft.app';
+export const COMPANY_NAME = '';
+export const COMPANY_ADDRESS = '';

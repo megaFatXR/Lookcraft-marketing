@@ -50,13 +50,15 @@ const features = [
 		grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 	}
 
-	/* Square, outlined cards, as in the app. */
+	/* Rounded, outlined cards, as in the app. */
 	.card {
 		display: grid;
 		align-content: start;
 		gap: 0.5rem;
 		padding: 1.5rem;
+		background: var(--surface);
 		border: 1px solid var(--line);
+		border-radius: var(--radius-card);
 	}
 
 	h3 {
