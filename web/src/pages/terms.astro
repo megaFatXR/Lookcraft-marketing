@@ -1,0 +1,293 @@
+---
+import Footer from '../components/Footer.astro';
+import Logo from '../components/Logo.astro';
+import { COMPANY_ADDRESS, COMPANY_NAME, CONTACT_EMAIL, GOVERNING_COUNTRY } from '../consts';
+import Base from '../layouts/Base.astro';
+import { withBase } from '../lib/url';
+
+const effective = 'November 7, 2026';
+---
+
+<Base
+	title="Terms of Use — Lookcraft"
+	description="The rules for using Lookcraft: your photos, AI try-ons, shops and prices, try-on packs, and our responsibilities."
+>
+	<header class="container top">
+		<Logo />
+	</header>
+
+	<main class="container policy">
+		<h1>Terms of Use</h1>
+		<p class="effective">Effective {effective}</p>
+
+		<section class="summary" aria-labelledby="summary-title">
+			<h2 id="summary-title">The short version</h2>
+			<ul>
+				<li><strong>Lookcraft is for people 18 and older.</strong></li>
+				<li>
+					<strong>Only add photos of yourself,</strong> and nothing sexual, violent or
+					illegal.
+				</li>
+				<li>
+					<strong>Try-ons are AI pictures,</strong> not a promise of how a piece will fit.
+					Check sizes with the shop.
+				</li>
+				<li>
+					<strong>We don’t sell anything except try-ons.</strong> You buy pieces from the
+					shops, under their terms and prices.
+				</li>
+				<li>
+					<strong>Try-ons don’t expire and have no cash value.</strong> A failed try-on is
+					refunded automatically, and refunds for purchases go through Apple.
+				</li>
+			</ul>
+		</section>
+
+		<h2>Who we are and this agreement</h2>
+		<p>
+			Lookcraft is an AI stylist and fitting room for iPhone, run by {
+				COMPANY_NAME ? COMPANY_NAME : <mark>[company or full legal name]</mark>
+			}, {COMPANY_ADDRESS ? COMPANY_ADDRESS : <mark>[postal address]</mark>} (“we” or “us”).
+			These terms are an agreement between you and us for using the app. By using Lookcraft,
+			you agree to them. How we handle your data is explained in our <a
+				href={withBase('privacy/')}>Privacy Policy</a
+			>.
+		</p>
+
+		<h2>Who can use Lookcraft</h2>
+		<p>
+			You must be 18 or older, and you confirm that when you add a photo. You need an Apple
+			account to sign in, and you’re responsible for what happens under your account. Use
+			Lookcraft only for yourself, not on behalf of a business.
+		</p>
+
+		<h2>Your photos and briefs</h2>
+		<ul>
+			<li>
+				<strong>Only add photos of yourself.</strong> Don’t add photos of other people, even
+				with their permission, and never photos of anyone under 18.
+			</li>
+			<li>
+				<strong>Don’t add or ask for</strong> nudity, sexual content, violence, hate, or
+				anything illegal or that you don’t have the right to use.
+			</li>
+			<li>
+				<strong>You keep the rights to your photos and briefs.</strong> You let us process
+				them, and send them to the AI providers named in our Privacy Policy, only to style
+				your looks and make your try-ons.
+			</li>
+		</ul>
+		<p>
+			We may refuse a request that seems to break these rules. We don’t make try-ons of
+			underwear or swimwear.
+		</p>
+
+		<h2>AI looks and try-ons</h2>
+		<p>
+			Looks and try-ons are made by AI. A try-on is an illustration: it can get the fit,
+			colour, size or details of a piece wrong, and it can change how you look. The
+			stylist’s suggestions are ideas, not professional advice. Check sizes, materials and
+			fit with the shop before you buy.
+		</p>
+		<p>
+			You can keep and share your try-ons for personal use. Don’t present them as real
+			photos, or use them to mislead, harass or impersonate anyone. Try-ons are labelled as
+			AI-generated, and Google adds an invisible SynthID watermark. Please don’t remove
+			either.
+		</p>
+
+		<h2>Shops, products and prices</h2>
+		<p>
+			Lookcraft finds products from other shops through Google Shopping. We don’t sell
+			these products, and we’re not part of your purchase. When you tap Buy, the shop’s own
+			terms, prices, delivery and returns apply, and any questions about an order go to
+			the shop.
+		</p>
+		<p>
+			Prices, sizes and availability come from the shops and Google, and can be out of date
+			or wrong. The price in the shop is the one that counts. In the future, some links may
+			earn us a commission when you buy, at no extra cost to you.
+		</p>
+
+		<h2>Try-ons and payments</h2>
+		<ul>
+			<li>
+				<strong>Packs:</strong> you can buy packs of try-ons in the app. Apple takes the
+				payment, under Apple’s terms. New accounts get a few try-ons free.
+			</li>
+			<li>
+				<strong>Using them:</strong> each try-on uses one. If a try-on fails, it’s refunded
+				to your balance automatically. If a finished try-on comes out wrong, you can redo it
+				once for free.
+			</li>
+			<li>
+				<strong>What they are:</strong> try-ons don’t expire, but they have no cash value and
+				can’t be transferred, exchanged or sold. Unused try-ons are lost when you delete your
+				account.
+			</li>
+			<li>
+				<strong>Refunds:</strong> ask Apple for a refund of a purchase at
+				<a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>. If Apple
+				refunds a pack, we remove the try-ons it gave you.
+			</li>
+		</ul>
+		<p>
+			Try-ons are delivered as soon as you buy them. If you’re in the EU or UK, you agree to
+			that, and you understand that you then lose the 14-day right to cancel. This doesn’t
+			affect refunds you can get from Apple or your other legal rights.
+		</p>
+
+		<h2>Fair use</h2>
+		<p>Don’t:</p>
+		<ul>
+			<li>Copy, scrape or resell Lookcraft, its looks or its results.</li>
+			<li>Get around daily limits, the safety checks or the try-on balance.</li>
+			<li>Reverse-engineer the app, or overload or attack our servers.</li>
+			<li>Use Lookcraft to break the law or anyone’s rights.</li>
+		</ul>
+		<p>
+			To keep the service working for everyone, we limit how many briefs and try-ons an
+			account can run each day.
+		</p>
+
+		<h2>Suspending or closing an account</h2>
+		<p>
+			You can delete your account at any time in the Me tab. We may suspend or close an
+			account that seriously or repeatedly breaks these terms, after telling you why where we
+			can. If we close an account without a good reason, or stop offering Lookcraft, we’ll
+			refund unused try-ons you paid for.
+		</p>
+
+		<h2>Our responsibilities</h2>
+		<p>
+			We work to keep Lookcraft running and its results useful, but the app is provided “as
+			is”. It may be unavailable at times, AI results may be wrong, and features may change.
+		</p>
+		<p>
+			We’re not responsible for products, shops, prices or orders, or for losses we couldn’t
+			reasonably foresee. Where the law allows, our total liability to you is limited to what
+			you paid us in the 12 months before the claim. None of this limits liability that can’t
+			be limited by law, such as for death or injury caused by negligence, fraud, or gross
+			negligence. If you’re a consumer in the EU or UK, you keep all the rights your local law
+			gives you.
+		</p>
+
+		<h2>Apple</h2>
+		<p>
+			These terms are between you and us, not Apple, and we’re responsible for Lookcraft, not
+			Apple. Apple has no obligation to maintain or support the app. If Lookcraft fails to
+			meet a warranty that applies, you can tell Apple, and Apple will refund the price you
+			paid for the app, if any. Apple has no other warranty obligation for it.
+		</p>
+		<p>
+			We, not Apple, handle any claims about Lookcraft, including product liability, legal
+			or regulatory requirements, consumer protection, and claims that the app infringes
+			someone’s intellectual property. You confirm that you’re not in a country subject to a
+			US embargo, and not on a US list of prohibited or restricted parties. Apple and its
+			subsidiaries are third-party beneficiaries of these terms and can enforce them against
+			you.
+		</p>
+
+		<h2>Changes to these terms</h2>
+		<p>
+			If these terms change, we’ll update this page and the date at the top. If a change is
+			significant, we’ll tell you in the app before it takes effect. Using Lookcraft after
+			that means you accept the new terms. If you don’t, you can delete your account.
+		</p>
+
+		<h2>Law and disputes</h2>
+		<p>
+			These terms are governed by the law of {
+				GOVERNING_COUNTRY ? GOVERNING_COUNTRY : <mark>[country]</mark>
+			}. If you’re a consumer, you also keep the protection of the law where you live, and you
+			can bring a claim in your local courts. Please contact us first, and we’ll try to sort it
+			out.
+		</p>
+
+		<h2>Contact</h2>
+		<p>
+			Questions about these terms? Email us at {
+				CONTACT_EMAIL ? (
+					<a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+				) : (
+					<mark>[contact email]</mark>
+				)
+			}.
+		</p>
+	</main>
+
+	<Footer />
+</Base>
+
+<style>
+	.top,
+	.policy {
+		max-width: 46rem;
+	}
+
+	.top {
+		padding-block: 1.5rem;
+	}
+
+	.policy {
+		padding-block: clamp(1.5rem, 6vw, 3rem) clamp(3rem, 8vw, 5rem);
+	}
+
+	h1 {
+		font-size: clamp(2.5rem, 8vw, 3.5rem);
+	}
+
+	.effective {
+		margin-top: 0.5rem;
+		font-size: 0.9375rem;
+	}
+
+	h2 {
+		margin-top: 3rem;
+		font-size: 1.625rem;
+	}
+
+	p,
+	ul {
+		margin-top: 1rem;
+	}
+
+	p,
+	li {
+		color: var(--muted);
+	}
+
+	strong {
+		color: var(--text);
+		font-weight: 600;
+	}
+
+	ul {
+		display: grid;
+		gap: 0.75rem;
+		padding-left: 1.25rem;
+	}
+
+	.policy a {
+		text-underline-offset: 0.2em;
+	}
+
+	mark {
+		padding-inline: 0.25em;
+		border-radius: 0.25em;
+		background: #f6d776;
+		color: #212121;
+	}
+
+	.summary {
+		margin-top: 2rem;
+		padding: clamp(1.25rem, 4vw, 2rem);
+		background: var(--surface);
+		border: 1px solid var(--line);
+		border-radius: var(--radius-card);
+	}
+
+	.summary h2 {
+		margin-top: 0;
+	}
+</style>
