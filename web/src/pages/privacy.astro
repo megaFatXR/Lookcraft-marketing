@@ -1,10 +1,16 @@
 ---
 import Footer from '../components/Footer.astro';
 import Logo from '../components/Logo.astro';
-import { COMPANY_ADDRESS, COMPANY_NAME, CONTACT_EMAIL } from '../consts';
+import {
+	COMPANY_ADDRESS,
+	COMPANY_NAME,
+	CONTACT_EMAIL,
+	PURCHASE_RECORDS_KEPT,
+	USAGE_RECORDS_KEPT,
+} from '../consts';
 import Base from '../layouts/Base.astro';
 
-const effective = 'November 3, 2026';
+const effective = 'November 4, 2026';
 
 const providers = [
 	{
@@ -16,12 +22,12 @@ const providers = [
 	{
 		name: 'Google (Gemini)',
 		gets: 'Your briefs, reference photos, photos of you, photos of pieces, and try-on notes',
-		why: 'Plans looks and makes try-ons',
+		why: 'Makes try-ons, checks pieces and notes, and plans looks',
 		where: 'Wherever Google has facilities, including the US',
 	},
 	{
-		name: 'Anthropic, OpenAI',
-		gets: 'Your briefs and reference photos, when one of them is the stylist we use',
+		name: 'OpenAI',
+		gets: 'Your briefs and reference photos',
 		why: 'Plans looks',
 		where: 'United States',
 	},
@@ -50,13 +56,16 @@ const retention = [
 	['Your photo and briefs on our server', 'Only in memory, while the request runs'],
 	['A finished try-on on our server', 'Until your iPhone downloads it, and 7 days at most'],
 	['What Google receives', 'Up to 55 days'],
+	['What OpenAI receives', 'Up to 30 days'],
 	['Your account, email address and try-on balance', 'Until you delete your account'],
 	['Analytics', 'Until you delete your account. PostHog’s deletion finishes within days'],
-	[
-		'Purchase, try-on, usage and shop-click records',
-		'Kept after you delete your account, no longer linked to it, for accounting and to reconcile costs',
-	],
 	['Technical logs', 'About a week'],
+];
+
+// Kept after an account is deleted, no longer linked to it.
+const keptRecords = [
+	{ what: 'Purchase records', period: PURCHASE_RECORDS_KEPT, why: 'for tax and accounting' },
+	{ what: 'Try-on, usage and shop-click records', period: USAGE_RECORDS_KEPT, why: 'to reconcile costs' },
 ];
 ---
 
@@ -81,8 +90,9 @@ const retention = [
 				</li>
 				<li>
 					<strong>AI providers do receive them.</strong> To style a look or make a try-on,
-					what you give us passes through our server to an AI provider. Google can keep
-					it for up to 55 days to detect abuse, and doesn’t use it to improve its products.
+					what you give us passes through our server to OpenAI or Google. Google can keep
+					it for up to 55 days and OpenAI for up to 30, and neither uses it to improve its
+					products or train its models.
 				</li>
 				<li>
 					<strong>We keep what runs your account:</strong> your email address, try-on
@@ -160,19 +170,23 @@ const retention = [
 
 		<h2>When you style a look</h2>
 		<p>
-			Your brief, up to three reference photos, who you’re shopping for, your country
-			and your budget pass through our server to the AI that plans the look. Our server
-			doesn’t store them. The AI writes search terms for each piece, and we send those to
+			Your brief, up to three reference photos, who you’re shopping for, your country,
+			your budget and the app’s language pass through our server to the AI that plans the
+			look, which is OpenAI or Google. Our server doesn’t store them. The AI writes search terms for each piece, and we send those to
 			Google Shopping through SerpApi, without anything that identifies you.
 		</p>
 
 		<h2>When you try a look on</h2>
 		<p>
 			Your photo, the photos and names of the pieces, and any notes you add pass through
-			our server to Google’s Gemini, which makes the picture. Your photo stays in memory
-			only while the try-on runs, and we never store it or log it. A small Gemini model
-			also checks the photos of the pieces, because we don’t make try-ons of underwear
-			or swimwear.
+			our server to Google’s Gemini, which makes the picture. On our server, your photo
+			stays in memory only while the try-on runs, and we never store it or log it. Google
+			keeps its own copy, as explained below.
+		</p>
+		<p>
+			Before a try-on starts, a small Gemini model checks the photos of the pieces and your
+			notes. We don’t make try-ons of underwear or swimwear, and we refuse notes that ask
+			for nudity, sexual content or violence.
 		</p>
 		<p>
 			The finished try-on waits on our server until your iPhone downloads it, and then
@@ -185,15 +199,26 @@ const retention = [
 
 		<h2>What AI providers do with your data</h2>
 		<p>
-			We use Google’s paid Gemini service, which is covered by its data processing terms.
-			Google doesn’t use what we send to improve its products. It does keep prompts, images
-			and results for up to 55 days to detect abuse and meet legal requirements, and
-			authorized Google staff can review content flagged in that process.
+			<strong>Google</strong> makes try-ons and can also plan looks. We use its paid Gemini
+			service, which is covered by its data processing terms, and Google doesn’t use what
+			we send to improve its products. Google can keep what we send in two ways:
 		</p>
+		<ul>
+			<li>
+				<strong>Stored requests:</strong> Google stores requests for 55 days by default, and
+				we don’t currently turn that off. For a try-on, that includes your photo, the photos
+				of the pieces, your notes and the finished picture.
+			</li>
+			<li>
+				<strong>Abuse logs:</strong> separately, Google logs prompts and results for up to 55
+				days to detect violations of its policies. Authorized Google staff can review content
+				flagged in that process.
+			</li>
+		</ul>
 		<p>
-			Google is our stylist today. We may also use Anthropic or OpenAI to plan looks, under
-			their commercial API terms, which don’t let them train their models on this data.
-			They can also keep requests for a limited time for safety and abuse monitoring.
+			<strong>OpenAI</strong> can plan looks, so it can receive your briefs and reference
+			photos. It doesn’t train its models on this data by default. We ask it not to store
+			these requests, and it keeps abuse-monitoring logs for up to 30 days.
 		</p>
 		<p>We don’t train any AI models on your data ourselves.</p>
 
@@ -204,12 +229,23 @@ const retention = [
 			in, and they cover:
 		</p>
 		<ul>
-			<li>Opening the app, and its version.</li>
+			<li>
+				Your device and app: opening the app, the app’s version, your device model and system
+				version, screen size, language, time zone, and whether you’re on Wi-Fi or mobile data.
+			</li>
 			<li>
 				Styling and try-ons: that a brief was sent, whether it had words, how many reference
-				photos it had, the budget, your country and who you’re shopping for.
+				photos it had, the budget, your country and who you’re shopping for. Also looks you
+				view and create, try-ons you start and see, and try-ons we refuse and why.
 			</li>
-			<li>Shops and brands: their names, and which shop links you open.</li>
+			<li>
+				Shops and brands: the names of those shown, which shop links you open, including the
+				product’s ID, and whether you come back within seconds.
+			</li>
+			<li>
+				Other actions: opening the share sheet or the try-on packs, and the app asking iOS to
+				show a review prompt.
+			</li>
 			<li>Purchases: the pack, its price and whether it went through.</li>
 			<li>What each request cost us.</li>
 		</ul>
@@ -272,6 +308,17 @@ const retention = [
 							<tr>
 								<th scope="row">{what}</th>
 								<td>{howLong}</td>
+							</tr>
+						))
+					}
+					{
+						keptRecords.map(({ what, period, why }) => (
+							<tr>
+								<th scope="row">{what}</th>
+								<td>
+									After you delete your account, {period ? period : <mark>[period]</mark>}, no longer
+									linked to it, {why}
+								</td>
 							</tr>
 						))
 					}

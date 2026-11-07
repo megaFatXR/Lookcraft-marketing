@@ -6,6 +6,11 @@ export const SITE_DESCRIPTION =
 export const APP_STORE_URL = '#download';
 
 // The privacy policy shows a placeholder while any of these are empty.
-export const CONTACT_EMAIL = 'support@lookcraft.app';
+export const CONTACT_EMAIL = '';
 export const COMPANY_NAME = '';
 export const COMPANY_ADDRESS = '';
+// How long records stay after an account is deleted, as in "6 years".
+export const PURCHASE_RECORDS_KEPT = '';
+export const USAGE_RECORDS_KEPT = '';
+// The country whose law governs the terms of use, as in "Spain".
+export const GOVERNING_COUNTRY = '';
