@@ -1,16 +1,10 @@
 ---
 import Footer from '../components/Footer.astro';
 import Logo from '../components/Logo.astro';
-import {
-	COMPANY_ADDRESS,
-	COMPANY_NAME,
-	CONTACT_EMAIL,
-	PURCHASE_RECORDS_KEPT,
-	USAGE_RECORDS_KEPT,
-} from '../consts';
+import { COMPANY_ADDRESS, COMPANY_NAME, CONTACT_EMAIL } from '../consts';
 import Base from '../layouts/Base.astro';
 
-const effective = 'November 4, 2026';
+const effective = 'November 7, 2026';
 
 const providers = [
 	{
@@ -55,17 +49,15 @@ const retention = [
 	['Photos, briefs, looks and try-ons on your iPhone and iCloud', 'Until you delete them'],
 	['Your photo and briefs on our server', 'Only in memory, while the request runs'],
 	['A finished try-on on our server', 'Until your iPhone downloads it, and 7 days at most'],
-	['What Google receives', 'Up to 55 days'],
-	['What OpenAI receives', 'Up to 30 days'],
+	['What Google receives', 'Deleted as soon as each request is done, apart from abuse logs kept up to 55 days'],
+	['What OpenAI receives', 'Not stored, apart from abuse logs kept up to 30 days'],
 	['Your account, email address and try-on balance', 'Until you delete your account'],
 	['Analytics', 'Until you delete your account. PostHog’s deletion finishes within days'],
+	['Your try-on balance history', 'Until you delete your account'],
+	['Try-on and usage records', '90 days. After that we keep only daily totals per AI model, with nothing that links them to you'],
+	['Clicks to shops', 'Linked to your account for 90 days, then kept without that link for up to 13 months in total, to match commissions from shops'],
+	['Purchase records', '10 years from the purchase, for tax and accounting. If you delete your account, they’re no longer linked to it'],
 	['Technical logs', 'About a week'],
-];
-
-// Kept after an account is deleted, no longer linked to it.
-const keptRecords = [
-	{ what: 'Purchase records', period: PURCHASE_RECORDS_KEPT, why: 'for tax and accounting' },
-	{ what: 'Try-on, usage and shop-click records', period: USAGE_RECORDS_KEPT, why: 'to reconcile costs' },
 ];
 ---
 
@@ -90,9 +82,10 @@ const keptRecords = [
 				</li>
 				<li>
 					<strong>AI providers do receive them.</strong> To style a look or make a try-on,
-					what you give us passes through our server to OpenAI or Google. Google can keep
-					it for up to 55 days and OpenAI for up to 30, and neither uses it to improve its
-					products or train its models.
+					what you give us passes through our server to OpenAI or Google. We ask both not
+					to keep it. Each keeps abuse-monitoring logs for a limited time, up to 55 days at
+					Google and 30 at OpenAI, and neither uses it to improve its products or train its
+					models.
 				</li>
 				<li>
 					<strong>We keep what runs your account:</strong> your email address, try-on
@@ -180,8 +173,8 @@ const keptRecords = [
 		<p>
 			Your photo, the photos and names of the pieces, and any notes you add pass through
 			our server to Google’s Gemini, which makes the picture. On our server, your photo
-			stays in memory only while the try-on runs, and we never store it or log it. Google
-			keeps its own copy, as explained below.
+			stays in memory only while the try-on runs, and we never store it or log it. What
+			Google keeps is explained below.
 		</p>
 		<p>
 			Before a try-on starts, a small Gemini model checks the photos of the pieces and your
@@ -201,13 +194,14 @@ const keptRecords = [
 		<p>
 			<strong>Google</strong> makes try-ons and can also plan looks. We use its paid Gemini
 			service, which is covered by its data processing terms, and Google doesn’t use what
-			we send to improve its products. Google can keep what we send in two ways:
+			we send to improve its products.
 		</p>
 		<ul>
 			<li>
-				<strong>Stored requests:</strong> Google stores requests for 55 days by default, and
-				we don’t currently turn that off. For a try-on, that includes your photo, the photos
-				of the pieces, your notes and the finished picture.
+				<strong>Requests:</strong> Google would normally store requests for 55 days. We ask
+				it not to store them, or, for try-ons and looks, to delete each one as soon as it’s
+				done. For a try-on, a request includes your photo, the photos of the pieces, your
+				notes and the finished picture.
 			</li>
 			<li>
 				<strong>Abuse logs:</strong> separately, Google logs prompts and results for up to 55
@@ -308,17 +302,6 @@ const keptRecords = [
 							<tr>
 								<th scope="row">{what}</th>
 								<td>{howLong}</td>
-							</tr>
-						))
-					}
-					{
-						keptRecords.map(({ what, period, why }) => (
-							<tr>
-								<th scope="row">{what}</th>
-								<td>
-									After you delete your account, {period ? period : <mark>[period]</mark>}, no longer
-									linked to it, {why}
-								</td>
 							</tr>
 						))
 					}
