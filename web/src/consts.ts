@@ -6,7 +6,7 @@ export const SITE_DESCRIPTION =
 export const APP_STORE_URL = '#download';
 
 // The privacy policy shows a placeholder while any of these are empty.
-export const CONTACT_EMAIL = '';
+export const CONTACT_EMAIL = 'hello@getlookcraft.com';
 export const COMPANY_NAME = '';
 export const COMPANY_ADDRESS = '';
 // The country whose law governs the terms of use, as in "Spain".
