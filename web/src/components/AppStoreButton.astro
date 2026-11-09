@@ -1,0 +1,62 @@
+---
+// Apple's badge linking to the listing once APP_RELEASED is true in consts.ts;
+// until then a plain "Coming soon to the App Store" label, since the official
+// badge mustn't be changed or used without a working link.
+import { Image } from 'astro:assets';
+import appStoreBadge from '../assets/app-store-badge.svg';
+import { APP_RELEASED, APP_STORE_URL } from '../consts';
+---
+
+{
+	APP_RELEASED ? (
+		<a class="badge" href={APP_STORE_URL}>
+			<Image src={appStoreBadge} alt="Download on the App Store" loading="eager" />
+		</a>
+	) : (
+		<p class="soon">
+			<svg viewBox="72 47 22 24" aria-hidden="true">
+				<path fill="currentColor" d="M83 47Q85 56 94 59Q85 62 83 71Q81 62 72 59Q81 56 83 47Z" />
+			</svg>
+			<span>Coming soon to the App&nbsp;Store</span>
+		</p>
+	)
+}
+
+<style>
+	/* Apple's official badge, unmodified. Min 40px tall on screen, with clear
+	   space of a quarter of its height around it. */
+	.badge {
+		display: inline-block;
+		border-radius: 0.6rem;
+	}
+
+	.badge :global(img) {
+		display: block;
+		height: 3.5rem;
+		width: auto;
+	}
+
+	.badge:focus-visible {
+		outline: 2px solid var(--text);
+		outline-offset: 3px;
+	}
+
+	.soon {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		min-height: 3.5rem;
+		padding: 0.75rem 1.25rem;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: var(--surface);
+		font-weight: 600;
+		line-height: 1.25;
+	}
+
+	.soon svg {
+		flex: none;
+		width: 1rem;
+		height: 1.125rem;
+	}
+</style>

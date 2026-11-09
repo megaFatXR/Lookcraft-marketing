@@ -1,14 +1,114 @@
 ---
-import Features from '../components/Features.astro';
+import AppStoreButton from '../components/AppStoreButton.astro';
+import Different from '../components/Different.astro';
+import Faq from '../components/Faq.astro';
 import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
+import PrivacyNote from '../components/PrivacyNote.astro';
+import Steps from '../components/Steps.astro';
+import { APP_RELEASED, APP_STORE_URL, BRAND_NAME, SITE_DESCRIPTION } from '../consts';
 import Base from '../layouts/Base.astro';
+import { withBase } from '../lib/url';
+
+// Facts from the app repo: the packs and gift (README, Credits.swift), the markets
+// (StyleFitKit Market.swift), languages, iOS 26 and iPhone only (the Xcode project),
+// and the safety rules (docs/mvp-plan.md, PhotoCapture.swift, TryOnSheet.swift).
+const faq = [
+	{
+		q: `How much does ${BRAND_NAME} cost?`,
+		a: `<p>Styling is free: briefs, concepts and crafting looks never cost anything. Try-ons come in packs you buy in the app, from 8 to 100 try-ons, and you start with 3 free.</p>
+			<p>A try-on that comes out broken gets one free redo, and one that doesn’t work costs nothing. Try-ons you buy stay with your account, on all your iPhones.</p>`,
+	},
+	{
+		q: 'Which countries can I shop in?',
+		a: `<p>Austria, Belgium, France, Germany, Ireland, Italy, the Netherlands, Portugal, Spain, the United Kingdom and the United States. ${BRAND_NAME} suggests your country from your iPhone’s region, and you can change it in the app.</p>
+			<p>The app is in English, French, Spanish and Italian, following your iPhone’s language.</p>`,
+	},
+	{
+		q: 'Which shops do the pieces come from?',
+		a: `<p>The stylist searches Google Shopping in your country, so a look can mix brands and shops, from high street to premium. Second-hand listings are left out.</p>
+			<p>Every piece has a Buy link that opens the shop’s own page. You buy from the shop, not from us.</p>`,
+	},
+	{
+		q: 'Who can it style?',
+		a: `<p>Men’s and women’s looks. Children’s clothing isn’t included.</p>`,
+	},
+	{
+		q: 'Will a try-on show me my size?',
+		a: `<p>No. A try-on shows the style, not how a size fits. Check the shop’s size guide before you buy.</p>`,
+	},
+	{
+		q: 'Is it only for iPhone?',
+		a: `<p>Yes, for now. ${BRAND_NAME} needs an iPhone with iOS 26 or later.</p>`,
+	},
+	{
+		q: 'Are my photos safe? Is there an age limit?',
+		a: `<p>${BRAND_NAME} is for people 18 and older, and you only add photos of yourself. You confirm both before adding your first photo.</p>
+			<p>Your photos stay on your iPhone and in your iCloud, and go to our AI partner only to make a try-on. We don’t make try-ons of underwear or swimwear, and every try-on is labelled as AI-generated. The <a href="${withBase('privacy/')}">privacy policy</a> has the details.</p>`,
+	},
+];
+
+const homeUrl = new URL(withBase(''), Astro.site).href;
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'SoftwareApplication',
+	name: BRAND_NAME,
+	description: SITE_DESCRIPTION,
+	url: homeUrl,
+	image: new URL(withBase('og.png'), Astro.site).href,
+	operatingSystem: 'iOS 26 or later',
+	offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+	...(APP_RELEASED ? { installUrl: APP_STORE_URL, sameAs: [APP_STORE_URL] } : {}),
+};
 ---
 
 <Base>
+	<script slot="head" type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 	<main>
 		<Hero />
-		<Features />
+		<Steps />
+		<Different />
+		<PrivacyNote />
+		<div class="container faq-wrap">
+			<Faq title="Questions" items={faq} />
+		</div>
+		<section id="download" class="download" aria-labelledby="download-title">
+			<div class="container inner">
+				<h2 id="download-title">Your next look starts with a sentence</h2>
+				<p>Tell the stylist what you’re after, craft the look, and see it on you.</p>
+				<AppStoreButton />
+			</div>
+		</section>
 	</main>
 	<Footer />
 </Base>
+
+<style>
+	.faq-wrap {
+		max-width: 46rem;
+		padding-block: clamp(3rem, 8vw, 5rem);
+	}
+
+	.download {
+		padding-block: clamp(3.5rem, 10vw, 6rem);
+		border-top: 1px solid var(--line);
+		text-align: center;
+	}
+
+	.inner {
+		display: grid;
+		justify-items: center;
+		gap: 1.25rem;
+	}
+
+	h2 {
+		font-size: clamp(2rem, 6vw, 3rem);
+		max-width: 16ch;
+	}
+
+	p {
+		color: var(--muted);
+		font-size: 1.125rem;
+		max-width: 36ch;
+	}
+</style>

@@ -1,7 +1,7 @@
 ---
 import Footer from '../components/Footer.astro';
 import Logo from '../components/Logo.astro';
-import { COMPANY_ADDRESS, COMPANY_NAME, CONTACT_EMAIL } from '../consts';
+import { BRAND_NAME, COMPANY_ADDRESS, COMPANY_NAME, CONTACT_EMAIL } from '../consts';
 import Base from '../layouts/Base.astro';
 
 const effective = 'November 7, 2026';
@@ -34,7 +34,7 @@ const providers = [
 	{
 		name: 'PostHog',
 		gets: 'Analytics events, as described above',
-		why: 'Shows us how Lookcraft is used',
+		why: `Shows us how ${BRAND_NAME} is used`,
 		where: 'Frankfurt, Germany',
 	},
 	{
@@ -62,8 +62,8 @@ const retention = [
 ---
 
 <Base
-	title="Privacy Policy — Lookcraft"
-	description="What Lookcraft collects, where your photos go, who else receives your data, and how to delete it."
+	title={`Privacy Policy — ${BRAND_NAME}`}
+	description={`What ${BRAND_NAME} collects, where your photos go, who else receives your data, and how to delete it.`}
 >
 	<header class="container top">
 		<Logo />
@@ -99,7 +99,7 @@ const retention = [
 
 		<h2>Who we are</h2>
 		<p>
-			Lookcraft is an AI stylist and fitting room for iPhone. It’s run by {
+			{BRAND_NAME} is an AI stylist and fitting room for iPhone. It’s run by {
 				COMPANY_NAME ? COMPANY_NAME : <mark>[company or full legal name]</mark>
 			}, {COMPANY_ADDRESS ? COMPANY_ADDRESS : <mark>[postal address]</mark>}, which is
 			responsible for your data under this policy (the “data controller” in EU and UK
@@ -120,12 +120,12 @@ const retention = [
 			app deletes it.
 		</p>
 		<p>
-			When you add a photo, Lookcraft checks on your iPhone that your whole body is in
+			When you add a photo, {BRAND_NAME} checks on your iPhone that your whole body is in
 			frame, that there’s one person and that the light is good. That check doesn’t
 			leave your iPhone, and we don’t use your photos to identify you.
 		</p>
 		<p>
-			Lookcraft asks for your camera only if you choose to take a photo, and it never
+			{BRAND_NAME} asks for your camera only if you choose to take a photo, and it never
 			asks for your location or contacts. Your country is suggested from your iPhone’s
 			region setting, and you can change it.
 		</p>
@@ -152,7 +152,7 @@ const retention = [
 				your words or pictures.
 			</li>
 			<li>
-				<strong>Clicks to shops:</strong> when you open a shop link from Lookcraft, we log
+				<strong>Clicks to shops:</strong> when you open a shop link from {BRAND_NAME}, we log
 				the link, the shop, the product, your country and the time.
 			</li>
 			<li>
@@ -218,7 +218,7 @@ const retention = [
 
 		<h2>Analytics</h2>
 		<p>
-			We use PostHog’s EU cloud to learn which parts of Lookcraft work. Events are sent
+			We use PostHog’s EU cloud to learn which parts of {BRAND_NAME} work. Events are sent
 			under your random account ID, or a random ID stored on your iPhone before you sign
 			in, and they cover:
 		</p>
@@ -257,7 +257,7 @@ const retention = [
 		</p>
 		<p>
 			Today, links go straight to the shop. We plan to send some through Sovrn Commerce so
-			that Lookcraft can earn a commission when you buy. Those links would carry a random
+			that {BRAND_NAME} can earn a commission when you buy. Those links would carry a random
 			click ID, and not your name or email address.
 		</p>
 
@@ -348,7 +348,7 @@ const retention = [
 
 		<h2>Age limit</h2>
 		<p>
-			Lookcraft is for people 18 and older, and we ask you to confirm that before you add a
+			{BRAND_NAME} is for people 18 and older, and we ask you to confirm that before you add a
 			photo. If you think someone younger has given us data, email us and we’ll delete it.
 		</p>
 

@@ -1,28 +1,81 @@
 ---
-import { Image } from 'astro:assets';
-import appStoreBadge from '../assets/app-store-badge.svg';
-import { APP_STORE_URL } from '../consts';
+import { BRAND_NAME, TAGLINE } from '../consts';
+import { withBase } from '../lib/url';
+import AppStoreButton from './AppStoreButton.astro';
 import Logo from './Logo.astro';
+import PhoneFrame from './PhoneFrame.astro';
 ---
 
-<!-- Placeholder hero until the art and screenshots exist. -->
-<section class="hero">
-	<div class="copy container">
-		<Logo />
-		<h1>Your AI stylist and fitting room</h1>
+<header class="top container">
+	<Logo />
+	<nav aria-label="Page">
+		<a href="#how-it-works">How it works</a>
+		<a href="#faq">FAQ</a>
+		<a href={withBase('support/')}>Support</a>
+	</nav>
+</header>
+
+<section class="hero container" aria-labelledby="hero-title">
+	<div class="copy">
+		<p class="eyebrow">{TAGLINE}</p>
+		<h1 id="hero-title"><span>Describe a look.</span> <span>See it on&nbsp;you.</span></h1>
 		<p class="lede">
-			Describe a look in your own words. Lookcraft styles it from real products you
-			can buy, then shows you wearing it.
+			Tell the stylist what you’re after. It puts together a concept from real pieces you can
+			buy, in your budget and your country. Craft your look, try it on a photo of you, then
+			shop it.
 		</p>
-		<a class="badge" href={APP_STORE_URL}>
-			<Image src={appStoreBadge} alt="Download on the App Store" loading="eager" />
-		</a>
+		<div class="cta">
+			<AppStoreButton />
+			<p class="note">Free to style. For iPhone.</p>
+		</div>
+	</div>
+
+	<div class="art">
+		{/* Screen: a finished try-on on the look page, the shopper wearing a whole look. */}
+		<PhoneFrame name="hero" alt={`A look tried on in ${BRAND_NAME}, on a photo of the shopper`} eager />
 	</div>
 </section>
 
 <style>
+	.top {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem 1.5rem;
+		padding-block: 1.25rem;
+	}
+
+	nav {
+		display: flex;
+		gap: 1.25rem;
+		font-size: 0.9375rem;
+	}
+
+	nav a {
+		color: var(--muted);
+		text-decoration: none;
+	}
+
+	nav a:hover,
+	nav a:focus-visible {
+		color: var(--text);
+		text-decoration: underline;
+		text-underline-offset: 0.25em;
+	}
+
+	/* Phones keep the logo alone at the top, so it doesn't crowd. */
+	@media (width < 30rem) {
+		nav a:not(:last-child) {
+			display: none;
+		}
+	}
+
 	.hero {
-		padding-block: clamp(4rem, 14vw, 9rem) clamp(3rem, 8vw, 5rem);
+		display: grid;
+		gap: clamp(2.5rem, 8vw, 4rem);
+		align-items: center;
+		padding-block: clamp(2rem, 8vw, 5rem) clamp(3rem, 8vw, 5rem);
 	}
 
 	.copy {
@@ -31,33 +84,56 @@ import Logo from './Logo.astro';
 		justify-items: start;
 	}
 
+	.eyebrow {
+		font-size: 0.9375rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		color: var(--muted);
+	}
+
 	h1 {
-		font-size: clamp(2.5rem, 8vw, 4.5rem);
-		max-width: 14ch;
+		font-size: clamp(2.5rem, 8vw, 4.25rem);
+	}
+
+	/* One sentence per line wherever both fit. */
+	h1 span {
+		display: inline-block;
 	}
 
 	.lede {
 		font-size: 1.125rem;
 		color: var(--muted);
-		max-width: 40ch;
+		max-width: 38ch;
 	}
 
-	/* Apple's official badge, unmodified. Min 40px tall on screen, with clear
-	   space of a quarter of its height around it. */
-	.badge {
-		display: block;
+	.cta {
+		display: grid;
+		gap: 0.75rem;
+		justify-items: start;
 		margin-top: 0.75rem;
-		border-radius: 0.6rem;
 	}
 
-	.badge :global(img) {
-		display: block;
-		height: 3.5rem;
-		width: auto;
+	.note {
+		font-size: 0.875rem;
+		color: var(--muted);
 	}
 
-	.badge:focus-visible {
-		outline: 2px solid var(--text);
-		outline-offset: 3px;
+	.art {
+		display: flex;
+		justify-content: center;
+	}
+
+	.art :global(.phone) {
+		max-width: min(17rem, 72vw);
+	}
+
+	@media (width >= 56rem) {
+		.hero {
+			grid-template-columns: 1.4fr 1fr;
+		}
+
+		.art :global(.phone) {
+			max-width: 19rem;
+		}
 	}
 </style>

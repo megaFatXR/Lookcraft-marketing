@@ -1,0 +1,126 @@
+---
+// The App Store listing's Support URL points here. Steps use the app's own labels
+// (MeView.swift, OutfitView.swift).
+import Faq from '../components/Faq.astro';
+import Footer from '../components/Footer.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { BRAND_NAME, CONTACT_EMAIL } from '../consts';
+import Base from '../layouts/Base.astro';
+import { withBase } from '../lib/url';
+
+const items = [
+	{
+		q: 'A try-on came out wrong. What can I do?',
+		a: `<p>On the look, tap <strong>Broken? Redo free</strong> on your newest try-on to make it again at no cost. A try-on that fails doesn’t use one of yours: it’s refunded on its own.</p>
+			<p>A clear, full-length photo in good light gives the best results.</p>`,
+	},
+	{
+		q: 'How do I get my try-ons and looks on a new iPhone?',
+		a: `<p>Sign in with the same Apple account. Try-ons you bought stay with your ${BRAND_NAME} account. Your photos, briefs, looks and try-on pictures come across through iCloud if it’s on.</p>`,
+	},
+	{
+		q: 'How do I change my shopping country?',
+		a: `<p>Go to <strong>Me → Shopping → Country</strong>. Concepts you already have keep the country they were styled in.</p>`,
+	},
+	{
+		q: 'How do I stop sharing with AI, or turn off analytics?',
+		a: `<p>In <strong>Me → Privacy</strong>, open <strong>Sharing with AI</strong> or switch off <strong>Usage analytics</strong>. Without sharing, you can still open your concepts, looks and try-ons and shop, but not make new ones.</p>`,
+	},
+	{
+		q: 'How do I get a refund for a purchase?',
+		a: `<p>Purchases go through Apple, so refunds do too. Ask for one at <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>.</p>`,
+	},
+	{
+		q: 'How do I delete a photo or my account?',
+		a: `<p>To delete a photo, long-press it on the <strong>Me</strong> tab. To delete your account, go to <strong>Me</strong> and tap <strong>Delete account</strong>. Unused try-ons are lost.</p>
+			<p>Your photos and looks aren’t on our servers, so deleting the account leaves them on your iPhone and in iCloud. Delete them in the app first if you want them gone. More in the <a href="${withBase('privacy/')}">privacy policy</a>.</p>`,
+	},
+];
+---
+
+<Base
+	title={`Support — ${BRAND_NAME}`}
+	description={`Help with ${BRAND_NAME}: try-ons, purchases, your country, privacy settings and deleting your account. Or email us.`}
+>
+	<PageHeader />
+
+	<main class="container page">
+		<h1>Support</h1>
+		<p class="lede">
+			Something not working, or a question about {BRAND_NAME}? Email us and we’ll get back to you.
+		</p>
+
+		<a class="contact card" href={`mailto:${CONTACT_EMAIL}`}>
+			<span class="label">Email</span>
+			<span class="email">{CONTACT_EMAIL}</span>
+		</a>
+		<p class="hint">
+			Telling us your iPhone model and what you were doing helps us find the problem. Please don’t
+			send photos of yourself.
+		</p>
+
+		<div class="faq">
+			<Faq id="help" title="Common questions" items={items} />
+		</div>
+	</main>
+
+	<Footer />
+</Base>
+
+<style>
+	.page {
+		max-width: 46rem;
+		padding-block: clamp(1.5rem, 6vw, 3rem) clamp(3rem, 8vw, 5rem);
+	}
+
+	h1 {
+		font-size: clamp(2.5rem, 8vw, 3.5rem);
+	}
+
+	.lede {
+		margin-top: 1rem;
+		font-size: 1.125rem;
+		color: var(--muted);
+	}
+
+	.card {
+		display: grid;
+		gap: 0.25rem;
+		margin-top: 1.75rem;
+		padding: 1.25rem 1.5rem;
+		background: var(--surface);
+		border: 1px solid var(--line);
+		border-radius: var(--radius-card);
+		text-decoration: none;
+	}
+
+	.card:hover {
+		border-color: var(--text);
+	}
+
+	.card:focus-visible {
+		outline: 2px solid var(--text);
+		outline-offset: 3px;
+	}
+
+	.label {
+		font-size: 0.875rem;
+		color: var(--muted);
+	}
+
+	.email {
+		font-family: var(--font-display);
+		font-size: clamp(1.25rem, 5vw, 1.625rem);
+		overflow-wrap: anywhere;
+	}
+
+	.hint {
+		margin-top: 0.75rem;
+		font-size: 0.9375rem;
+		color: var(--muted);
+	}
+
+	.faq {
+		margin-top: clamp(2.5rem, 8vw, 4rem);
+	}
+</style>

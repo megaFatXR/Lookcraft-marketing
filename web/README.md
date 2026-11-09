@@ -19,13 +19,23 @@ Run from `web/`:
 ```text
 src/
 ├── assets/       app icon, logo mark, App Store badge, fonts (from the app)
-├── components/   Logo, Hero, Features, Footer
-├── layouts/      Base.astro (head, meta, global styles)
+│   └── screens/  screenshots for the phone frames (see its README)
+├── components/   Hero, Steps, Different, PrivacyNote, Faq, PhoneFrame,
+│                 AppStoreButton, Logo, PageHeader, Footer
+├── layouts/      Base.astro (head, meta, share image, app banner)
 ├── lib/url.ts    withBase() for links under the Pages base path
-├── pages/        index.astro, privacy.astro
+├── pages/        home, support, privacy, terms, 404, og.png (share image), robots.txt
 ├── styles/       global.css (color tokens, light/dark, fonts)
-└── consts.ts     site title, description, App Store URL, contact and legal details
+└── consts.ts     brand name, tagline, App Store ID and release flag, contact and legal details
 ```
+
+## Before and after launch
+
+- **Rename:** change `BRAND_NAME` in `src/consts.ts`. Pages, the share image and
+  the structured data follow. The domain, contact email and logo mark are separate.
+- **App released:** set `APP_RELEASED = true`. The "Coming soon" label becomes
+  the App Store badge, and Safari on iPhone shows the app banner.
+- **Screenshots:** add them to `src/assets/screens/` with the names in its README.
 
 The look follows the app's `Theme.swift` in `../styleFit`: charcoal on warm
 off-white (the reverse in dark mode), Fraunces Medium titles, Hanken Grotesk

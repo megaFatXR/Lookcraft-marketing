@@ -1,0 +1,97 @@
+---
+// Questions that open in place, with no JavaScript (the site has none).
+interface Props {
+	id?: string;
+	title: string;
+	/** Answers are trusted HTML written in this repo, so they can hold links. */
+	items: { q: string; a: string }[];
+}
+
+const { id = 'faq', title, items } = Astro.props;
+---
+
+<section id={id} class="faq" aria-labelledby={`${id}-title`}>
+	<h2 id={`${id}-title`}>{title}</h2>
+	<div class="list">
+		{
+			items.map(({ q, a }) => (
+				<details>
+					<summary>{q}</summary>
+					<div class="answer" set:html={a} />
+				</details>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	h2 {
+		font-size: clamp(1.75rem, 5vw, 2.5rem);
+	}
+
+	.list {
+		margin-top: 1.5rem;
+		background: var(--surface);
+		border: 1px solid var(--line);
+		border-radius: var(--radius-card);
+		overflow: hidden;
+	}
+
+	details + details {
+		border-top: 1px solid var(--line);
+	}
+
+	summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 1.125rem 1.25rem;
+		font-weight: 600;
+		font-size: 1.0625rem;
+		line-height: 1.4;
+		cursor: pointer;
+		list-style: none;
+	}
+
+	summary::-webkit-details-marker {
+		display: none;
+	}
+
+	/* A plus that turns into a minus when open. */
+	summary::after {
+		content: '';
+		flex: none;
+		width: 0.875rem;
+		height: 0.875rem;
+		background:
+			linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat,
+			linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat;
+	}
+
+	details[open] summary::after {
+		background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
+	}
+
+	summary:focus-visible {
+		outline: 2px solid var(--text);
+		outline-offset: -4px;
+		border-radius: var(--radius-small);
+	}
+
+	.answer {
+		display: grid;
+		gap: 0.75rem;
+		padding: 0 1.25rem 1.25rem;
+		color: var(--muted);
+	}
+
+	.answer :global(p) {
+		max-width: 60ch;
+	}
+
+	.answer :global(a) {
+		color: var(--text);
+		text-underline-offset: 0.2em;
+	}
+</style>

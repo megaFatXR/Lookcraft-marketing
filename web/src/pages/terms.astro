@@ -1,7 +1,7 @@
 ---
 import Footer from '../components/Footer.astro';
 import Logo from '../components/Logo.astro';
-import { COMPANY_ADDRESS, COMPANY_NAME, CONTACT_EMAIL, GOVERNING_COUNTRY } from '../consts';
+import { BRAND_NAME, COMPANY_ADDRESS, COMPANY_NAME, CONTACT_EMAIL, GOVERNING_COUNTRY } from '../consts';
 import Base from '../layouts/Base.astro';
 import { withBase } from '../lib/url';
 
@@ -9,8 +9,8 @@ const effective = 'November 7, 2026';
 ---
 
 <Base
-	title="Terms of Use — Lookcraft"
-	description="The rules for using Lookcraft: your photos, AI try-ons, shops and prices, try-on packs, and our responsibilities."
+	title={`Terms of Use — ${BRAND_NAME}`}
+	description={`The rules for using ${BRAND_NAME}: your photos, AI try-ons, shops and prices, try-on packs, and our responsibilities.`}
 >
 	<header class="container top">
 		<Logo />
@@ -23,7 +23,7 @@ const effective = 'November 7, 2026';
 		<section class="summary" aria-labelledby="summary-title">
 			<h2 id="summary-title">The short version</h2>
 			<ul>
-				<li><strong>Lookcraft is for people 18 and older.</strong></li>
+				<li><strong>{BRAND_NAME} is for people 18 and older.</strong></li>
 				<li>
 					<strong>Only add photos of yourself,</strong> and nothing sexual, violent or
 					illegal.
@@ -45,20 +45,20 @@ const effective = 'November 7, 2026';
 
 		<h2>Who we are and this agreement</h2>
 		<p>
-			Lookcraft is an AI stylist and fitting room for iPhone, run by {
+			{BRAND_NAME} is an AI stylist and fitting room for iPhone, run by {
 				COMPANY_NAME ? COMPANY_NAME : <mark>[company or full legal name]</mark>
 			}, {COMPANY_ADDRESS ? COMPANY_ADDRESS : <mark>[postal address]</mark>} (“we” or “us”).
-			These terms are an agreement between you and us for using the app. By using Lookcraft,
+			These terms are an agreement between you and us for using the app. By using {BRAND_NAME},
 			you agree to them. How we handle your data is explained in our <a
 				href={withBase('privacy/')}>Privacy Policy</a
 			>.
 		</p>
 
-		<h2>Who can use Lookcraft</h2>
+		<h2>Who can use {BRAND_NAME}</h2>
 		<p>
 			You must be 18 or older, and you confirm that when you add a photo. You need an Apple
 			account to sign in, and you’re responsible for what happens under your account. Use
-			Lookcraft only for yourself, not on behalf of a business.
+			{BRAND_NAME} only for yourself, not on behalf of a business.
 		</p>
 
 		<h2>Your photos and briefs</h2>
@@ -98,7 +98,7 @@ const effective = 'November 7, 2026';
 
 		<h2>Shops, products and prices</h2>
 		<p>
-			Lookcraft finds products from other shops through Google Shopping. We don’t sell
+			{BRAND_NAME} finds products from other shops through Google Shopping. We don’t sell
 			these products, and we’re not part of your purchase. When you tap Buy, the shop’s own
 			terms, prices, delivery and returns apply, and any questions about an order go to
 			the shop.
@@ -140,10 +140,10 @@ const effective = 'November 7, 2026';
 		<h2>Fair use</h2>
 		<p>Don’t:</p>
 		<ul>
-			<li>Copy, scrape or resell Lookcraft, its looks or its results.</li>
+			<li>Copy, scrape or resell {BRAND_NAME}, its looks or its results.</li>
 			<li>Get around daily limits, the safety checks or the try-on balance.</li>
 			<li>Reverse-engineer the app, or overload or attack our servers.</li>
-			<li>Use Lookcraft to break the law or anyone’s rights.</li>
+			<li>Use {BRAND_NAME} to break the law or anyone’s rights.</li>
 		</ul>
 		<p>
 			To keep the service working for everyone, we limit how many briefs and try-ons an
@@ -154,13 +154,13 @@ const effective = 'November 7, 2026';
 		<p>
 			You can delete your account at any time in the Me tab. We may suspend or close an
 			account that seriously or repeatedly breaks these terms, after telling you why where we
-			can. If we close an account without a good reason, or stop offering Lookcraft, we’ll
+			can. If we close an account without a good reason, or stop offering {BRAND_NAME}, we’ll
 			refund unused try-ons you paid for.
 		</p>
 
 		<h2>Our responsibilities</h2>
 		<p>
-			We work to keep Lookcraft running and its results useful, but the app is provided “as
+			We work to keep {BRAND_NAME} running and its results useful, but the app is provided “as
 			is”. It may be unavailable at times, AI results may be wrong, and features may change.
 		</p>
 		<p>
@@ -174,13 +174,13 @@ const effective = 'November 7, 2026';
 
 		<h2>Apple</h2>
 		<p>
-			These terms are between you and us, not Apple, and we’re responsible for Lookcraft, not
-			Apple. Apple has no obligation to maintain or support the app. If Lookcraft fails to
+			These terms are between you and us, not Apple, and we’re responsible for {BRAND_NAME}, not
+			Apple. Apple has no obligation to maintain or support the app. If {BRAND_NAME} fails to
 			meet a warranty that applies, you can tell Apple, and Apple will refund the price you
 			paid for the app, if any. Apple has no other warranty obligation for it.
 		</p>
 		<p>
-			We, not Apple, handle any claims about Lookcraft, including product liability, legal
+			We, not Apple, handle any claims about {BRAND_NAME}, including product liability, legal
 			or regulatory requirements, consumer protection, and claims that the app infringes
 			someone’s intellectual property. You confirm that you’re not in a country subject to a
 			US embargo, and not on a US list of prohibited or restricted parties. Apple and its
@@ -191,7 +191,7 @@ const effective = 'November 7, 2026';
 		<h2>Changes to these terms</h2>
 		<p>
 			If these terms change, we’ll update this page and the date at the top. If a change is
-			significant, we’ll tell you in the app before it takes effect. Using Lookcraft after
+			significant, we’ll tell you in the app before it takes effect. Using {BRAND_NAME} after
 			that means you accept the new terms. If you don’t, you can delete your account.
 		</p>
 

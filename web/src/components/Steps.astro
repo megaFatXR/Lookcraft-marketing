@@ -1,0 +1,135 @@
+---
+import PhoneFrame from './PhoneFrame.astro';
+
+// The app's own steps and words: a brief, a concept from the stylist, the looks
+// the shopper crafts from it, and try-ons.
+const steps = [
+	{
+		slot: 'step-brief',
+		// Screen: the Stylist tab with a brief typed in (or the Ideas sheet), budget slider visible.
+		screen: 'The Stylist tab with a brief typed in and the budget per look',
+		title: 'Brief the stylist',
+		body: 'Describe an occasion or a vibe in your own words, add a reference photo, or pick an idea. Set a budget per look, from 100 to 700 or no limit.',
+	},
+	{
+		slot: 'step-concept',
+		// Screen: a concept, with its name and one row of real products per piece.
+		screen: 'A concept with a row of real products for each piece',
+		title: 'Get a concept',
+		body: 'The stylist puts together a concept from real pieces that shops sell in your country, in your currency. Each piece gets a row of options, with the stylist’s pick first.',
+	},
+	{
+		slot: 'step-look',
+		// Screen: a look just created from the concept ("Saved to your looks"), or the Looks tab.
+		screen: 'A look crafted from the concept, saved to Looks',
+		title: 'Craft your looks',
+		body: 'Pick a piece in each row. Every combination you create is saved as a look, so swap a piece and make another.',
+	},
+	{
+		slot: 'step-try-on',
+		// Screen: the try-on on the shopper's photo, with Buy the pieces below.
+		screen: 'A look tried on a photo of the shopper, with the pieces to buy',
+		title: 'Try it on',
+		body: 'See the whole look on a photo of you. Love it? Each piece has a link to buy it from the shop.',
+	},
+];
+---
+
+<section id="how-it-works" class="steps container" aria-labelledby="steps-title">
+	<h2 id="steps-title">How it works</h2>
+	<ol>
+		{
+			steps.map(({ slot, screen, title, body }, i) => (
+				<li>
+					<div class="text">
+						<span class="number" aria-hidden="true">
+							{i + 1}
+						</span>
+						<h3>{title}</h3>
+						<p>{body}</p>
+					</div>
+					<PhoneFrame name={slot} alt={screen} />
+				</li>
+			))
+		}
+	</ol>
+</section>
+
+<style>
+	.steps {
+		padding-block: clamp(3rem, 8vw, 5rem);
+		border-top: 1px solid var(--line);
+	}
+
+	h2 {
+		font-size: clamp(1.75rem, 5vw, 2.5rem);
+	}
+
+	ol {
+		list-style: none;
+		margin: 2rem 0 0;
+		padding: 0;
+		display: grid;
+		gap: clamp(3rem, 8vw, 5rem);
+	}
+
+	li {
+		display: grid;
+		gap: 1.75rem;
+		justify-items: center;
+	}
+
+	.text {
+		display: grid;
+		gap: 0.5rem;
+		justify-self: stretch;
+		max-width: 30rem;
+	}
+
+	.number {
+		display: grid;
+		place-items: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		margin-bottom: 0.25rem;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: var(--surface);
+		font-family: var(--font-display);
+		font-size: 1.125rem;
+	}
+
+	h3 {
+		font-size: clamp(1.5rem, 4vw, 1.875rem);
+	}
+
+	p {
+		color: var(--muted);
+		font-size: 1.0625rem;
+	}
+
+	li :global(.phone) {
+		max-width: min(13rem, 56vw);
+	}
+
+	/* Side by side on wide screens, the phone switching sides every step. */
+	@media (width >= 48rem) {
+		li {
+			grid-template-columns: 1fr 1fr;
+			align-items: center;
+			gap: clamp(2rem, 6vw, 5rem);
+		}
+
+		.text {
+			justify-self: start;
+		}
+
+		li:nth-child(even) .text {
+			order: 2;
+		}
+
+		li :global(.phone) {
+			max-width: 16rem;
+		}
+	}
+</style>

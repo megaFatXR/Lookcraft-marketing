@@ -1,0 +1,68 @@
+---
+// A plain summary of the privacy policy. Keep it in step with src/pages/privacy.astro.
+import { withBase } from '../lib/url';
+---
+
+<section class="privacy" aria-labelledby="privacy-title">
+	<div class="container inner">
+		<h2 id="privacy-title">Your photos stay yours</h2>
+		<ul>
+			<li>
+				<strong>Your photos live on your iPhone</strong> and in your own iCloud, with your briefs,
+				looks and try-ons. We don’t store them on our servers.
+			</li>
+			<li>
+				<strong>For a try-on,</strong> your photo passes through our server to our AI partner,
+				Google’s Gemini, which makes the picture. Our server holds it only while the try-on runs.
+				Google deletes it once the try-on is done, apart from abuse-monitoring logs kept for a
+				limited time, and doesn’t use it to improve its AI.
+			</li>
+			<li>
+				<strong>Nothing goes to AI until you agree,</strong> and you can stop any time in the app.
+			</li>
+			<li>
+				<strong>No ads, no selling your data,</strong> and no tracking you across other apps.
+			</li>
+		</ul>
+		<p><a href={withBase('privacy/')}>Read the privacy policy</a></p>
+	</div>
+</section>
+
+<style>
+	.privacy {
+		padding-block: clamp(3rem, 8vw, 5rem);
+		background: var(--surface);
+		border-top: 1px solid var(--line);
+	}
+
+	.inner {
+		max-width: 46rem;
+	}
+
+	h2 {
+		font-size: clamp(1.75rem, 5vw, 2.5rem);
+	}
+
+	ul {
+		display: grid;
+		gap: 1rem;
+		margin: 1.5rem 0 0;
+		padding-left: 1.25rem;
+		color: var(--muted);
+		font-size: 1.0625rem;
+	}
+
+	strong {
+		color: var(--text);
+		font-weight: 600;
+	}
+
+	p {
+		margin-top: 1.5rem;
+		font-weight: 600;
+	}
+
+	a {
+		text-underline-offset: 0.2em;
+	}
+</style>

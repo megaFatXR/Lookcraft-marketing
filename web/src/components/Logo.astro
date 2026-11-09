@@ -1,11 +1,12 @@
 ---
 import Mark from '../assets/mark.svg';
+import { BRAND_NAME } from '../consts';
 import { withBase } from '../lib/url';
 ---
 
-<a class="logo" href={withBase('')} aria-label="Lookcraft home">
+<a class="logo" href={withBase('')} aria-label={`${BRAND_NAME} home`}>
 	<Mark aria-hidden="true" />
-	<span>Lookcraft</span>
+	<span>{BRAND_NAME}</span>
 </a>
 
 <style>
@@ -24,5 +25,11 @@ import { withBase } from '../lib/url';
 		display: block;
 		width: auto;
 		height: 2.25rem;
+	}
+
+	.logo:focus-visible {
+		outline: 2px solid var(--text);
+		outline-offset: 4px;
+		border-radius: var(--radius-small);
 	}
 </style>
