@@ -4,6 +4,7 @@ import Different from '../components/Different.astro';
 import Faq from '../components/Faq.astro';
 import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
+import Occasions from '../components/Occasions.astro';
 import PrivacyNote from '../components/PrivacyNote.astro';
 import Steps from '../components/Steps.astro';
 import { APP_RELEASED, APP_STORE_URL, BRAND_NAME, SITE_DESCRIPTION } from '../consts';
@@ -57,6 +58,8 @@ const structuredData = {
 	url: homeUrl,
 	image: new URL(withBase('og.png'), Astro.site).href,
 	operatingSystem: 'iOS 26 or later',
+	// The App Store categories: Lifestyle, with Shopping as the secondary one.
+	applicationCategory: 'LifestyleApplication',
 	offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
 	...(APP_RELEASED ? { installUrl: APP_STORE_URL, sameAs: [APP_STORE_URL] } : {}),
 };
@@ -67,6 +70,7 @@ const structuredData = {
 	<main>
 		<Hero />
 		<Steps />
+		<Occasions />
 		<Different />
 		<PrivacyNote />
 		<div class="container faq-wrap">
@@ -74,8 +78,8 @@ const structuredData = {
 		</div>
 		<section id="download" class="download" aria-labelledby="download-title">
 			<div class="container inner">
-				<h2 id="download-title">Your next look starts with a sentence</h2>
-				<p>Tell the stylist what you’re after, craft the look, and see it on you.</p>
+				<h2 id="download-title">Seen a look you love? Start there.</h2>
+				<p>Show the stylist a screenshot, a movie scene or a photo, and see the look on you, made from pieces you can buy.</p>
 				<AppStoreButton />
 			</div>
 		</section>

@@ -1,0 +1,64 @@
+---
+// Occasions from the app's Ideas sheet (StyleFit/Looks/BriefIdeaCatalog.swift in the app
+// repo): work, weekend, going out, weddings, formal and travel. Keep these in step with it.
+const occasions = [
+	'A summer wedding',
+	'A job interview',
+	'A first date',
+	'A black-tie gala',
+	'A big presentation',
+	'A weekend away',
+	'A night out',
+	'A birthday dinner',
+];
+---
+
+<section class="occasions" aria-labelledby="occasions-title">
+	<div class="container">
+		<h2 id="occasions-title">Something coming up?</h2>
+		<p class="lede">
+			Not sure what to wear? Pick an occasion from the ideas, or name your own, and the
+			stylist puts the look together for it.
+		</p>
+		<ul aria-label="Some of the occasions in the ideas">
+			{occasions.map((occasion) => <li>{occasion}</li>)}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.occasions {
+		padding-block: clamp(3rem, 8vw, 5rem);
+		border-top: 1px solid var(--line);
+	}
+
+	h2 {
+		font-size: clamp(1.75rem, 5vw, 2.5rem);
+		margin-bottom: 1rem;
+	}
+
+	.lede {
+		color: var(--muted);
+		font-size: 1.125rem;
+		max-width: 40ch;
+		margin-bottom: 1.75rem;
+	}
+
+	/* Pills, like the idea chips in the app. Not buttons: there's nothing to tap here. */
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.625rem;
+	}
+
+	li {
+		padding: 0.55rem 1rem;
+		background: var(--surface);
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		font-size: 0.975rem;
+	}
+</style>
