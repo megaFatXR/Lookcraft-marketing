@@ -89,6 +89,10 @@ const screen = Object.entries(screens).find(([path]) => path.replace(/^.*\//, ''
 		opacity: 0.85;
 	}
 
+	.placeholder :global(svg path:last-child) {
+		fill: var(--coral);
+	}
+
 	/* The Dynamic Island, over the screenshot's status bar. */
 	.island {
 		position: absolute;

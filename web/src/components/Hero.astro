@@ -17,7 +17,10 @@ import PhoneFrame from './PhoneFrame.astro';
 
 <section class="hero container" aria-labelledby="hero-title">
 	<div class="copy">
-		<p class="eyebrow">{TAGLINE}</p>
+		<p class="eyebrow">
+			<svg viewBox="72 47 22 24" aria-hidden="true"><path d="M83 47Q85 56 94 59Q85 62 83 71Q81 62 72 59Q81 56 83 47Z" /></svg>
+			{TAGLINE}
+		</p>
 		<h1 id="hero-title"><span>Saw a look you love?</span> <span>See it on&nbsp;you.</span></h1>
 		<p class="lede">
 			Start from a picture: a screenshot from Pinterest or Instagram, a scene from a movie, a
@@ -89,6 +92,19 @@ import PhoneFrame from './PhoneFrame.astro';
 		font-weight: 600;
 		letter-spacing: 0.02em;
 		color: var(--muted);
+	}
+
+	/* The logo's sparkle, in the app's coral. */
+	.eyebrow {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.eyebrow svg {
+		width: 0.875rem;
+		height: 0.875rem;
+		fill: var(--coral);
 	}
 
 	h1 {

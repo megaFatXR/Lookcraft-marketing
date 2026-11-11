@@ -1,5 +1,6 @@
 ---
-// A plain summary of the privacy policy. Keep it in step with src/pages/privacy.astro.
+// A plain summary of the privacy policy. Keep it in step with src/pages/privacy.astro, which
+// names the AI providers; this summary doesn't, like the app.
 import { withBase } from '../lib/url';
 ---
 
@@ -13,9 +14,9 @@ import { withBase } from '../lib/url';
 			</li>
 			<li>
 				<strong>For a try-on,</strong> your photo passes through our server to our AI partner,
-				Google’s Gemini, which makes the picture. Our server holds it only while the try-on runs.
-				Google deletes it once the try-on is done, apart from abuse-monitoring logs kept for a
-				limited time, and doesn’t use it to improve its AI.
+				which makes the picture. Our server holds it only while the try-on runs. Our partner
+				deletes it once the try-on is done, apart from abuse-monitoring logs kept for a limited
+				time, and doesn’t use it to improve its AI.
 			</li>
 			<li>
 				<strong>Nothing goes to AI until you agree,</strong> and you can stop any time in the app.
@@ -50,6 +51,10 @@ import { withBase } from '../lib/url';
 		padding-left: 1.25rem;
 		color: var(--muted);
 		font-size: 1.0625rem;
+	}
+
+	li::marker {
+		color: var(--coral);
 	}
 
 	strong {

@@ -25,6 +25,9 @@
 	--line: #d8cebf;
 	--accent: #212121;
 	--accent-text: #ffffff;
+	/* The app's one touch of colour, for small details only: the logo's sparkle, bullets,
+	   underlines, the live wire in How it works. Too light for text. */
+	--coral: #ec5965;
 
 	--font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 	--font-display: 'Fraunces', ui-serif, Georgia, serif;
@@ -44,6 +47,7 @@
 		--line: #3b3733;
 		--accent: #f4efe9;
 		--accent-text: #212121;
+		--coral: #f26b74;
 	}
 }
 
@@ -83,6 +87,8 @@ p {
 
 a {
 	color: inherit;
+	text-decoration-color: var(--coral);
+	text-decoration-thickness: 1.5px;
 }
 
 .container {

@@ -1,22 +1,24 @@
 ---
+import BriefSources from './BriefSources.astro';
 import PhoneFrame from './PhoneFrame.astro';
 
 // The app's own steps and words: a brief, a concept from the stylist, the looks
 // the shopper crafts from it, and try-ons.
+// Bodies are HTML, for a few words in bold.
 const steps = [
 	{
-		slot: 'step-brief',
-		// Screen: the Stylist tab with a reference photo added to the brief, budget slider visible.
-		screen: 'The Stylist tab with a reference photo in the brief and the budget per look',
+		// Drawn, not a screenshot: what a brief can start from, wired into the brief box.
+		slot: null,
+		screen: '',
 		title: 'Brief the stylist',
-		body: 'Add a picture of a look you like, from Pinterest, Instagram, a movie or your camera roll. No picture? A few words or one of the ideas will do. Set a budget per look, from 100 to 700 or no limit.',
+		body: 'Add a picture of a look you like, from Pinterest, Instagram, a movie or your camera roll. No picture? Describe it in a few words, or pick an occasion. Set a budget per look, from 100 to 700 or no limit.',
 	},
 	{
 		slot: 'step-concept',
 		// Screen: a concept, with its name and one row of real products per piece.
 		screen: 'A concept with a row of real products for each piece',
 		title: 'Get a concept',
-		body: 'The stylist puts together a concept from real pieces that shops sell in your country, in your currency. Each piece gets a row of options, with the stylist’s pick first.',
+		body: 'The stylist puts together a concept from <strong>real pieces that shops sell in your country</strong>, in your currency. Each piece gets a row of options, with the stylist’s pick first.',
 	},
 	{
 		slot: 'step-look',
@@ -40,15 +42,15 @@ const steps = [
 	<ol>
 		{
 			steps.map(({ slot, screen, title, body }, i) => (
-				<li>
+				<li class:list={{ drawn: !slot }}>
 					<div class="text">
 						<span class="number" aria-hidden="true">
 							{i + 1}
 						</span>
 						<h3>{title}</h3>
-						<p>{body}</p>
+						<p set:html={body} />
 					</div>
-					<PhoneFrame name={slot} alt={screen} />
+					{slot ? <PhoneFrame name={slot} alt={screen} /> : <BriefSources />}
 				</li>
 			))
 		}
@@ -108,6 +110,12 @@ const steps = [
 		font-size: 1.0625rem;
 	}
 
+	/* The body is HTML for this. */
+	p :global(strong) {
+		color: var(--text);
+		font-weight: 600;
+	}
+
 	li :global(.phone) {
 		max-width: min(13rem, 56vw);
 	}
@@ -130,6 +138,11 @@ const steps = [
 
 		li :global(.phone) {
 			max-width: 16rem;
+		}
+
+		/* The drawing needs more room than a phone. */
+		li.drawn {
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
 		}
 	}
 </style>

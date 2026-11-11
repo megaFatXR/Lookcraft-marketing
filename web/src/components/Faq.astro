@@ -1,5 +1,5 @@
 ---
-// Questions that open in place, with no JavaScript (the site has none).
+// Questions that open in place, with no JavaScript.
 interface Props {
 	id?: string;
 	title: string;
@@ -64,6 +64,7 @@ const { id = 'faq', title, items } = Astro.props;
 		flex: none;
 		width: 0.875rem;
 		height: 0.875rem;
+		color: var(--coral);
 		background:
 			linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat,
 			linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat;

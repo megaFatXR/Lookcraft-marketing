@@ -27,6 +27,10 @@ import { withBase } from '../lib/url';
 		height: 2.25rem;
 	}
 
+	.logo :global(svg path:last-child) {
+		fill: var(--coral);
+	}
+
 	.logo:focus-visible {
 		outline: 2px solid var(--text);
 		outline-offset: 4px;
