@@ -1,4 +1,4 @@
-# Lookcraft — App Store assets
+# Lookeo — App Store assets
 
 The App Store screenshots, product page header and store listing text, built
 the same way as Skelly's in `../skelly-marketing/app-store`: HTML screens

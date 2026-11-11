@@ -1,6 +1,6 @@
-# Lookcraft — landing page
+# Lookeo — landing page
 
-Astro site for Lookcraft, deployed to GitHub Pages.
+Astro site for Lookeo (lookeo.app), deployed to GitHub Pages.
 
 ## Commands
 

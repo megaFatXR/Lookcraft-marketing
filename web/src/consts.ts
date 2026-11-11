@@ -1,6 +1,6 @@
 // The product's name. Every page, the share image and the structured data read it
 // from here, so renaming the app is a change to this one line.
-export const BRAND_NAME = 'Lookcraft';
+export const BRAND_NAME = 'Lookeo';
 
 // Same words as the App Store subtitle.
 export const TAGLINE = 'Style, try on & shop your look';
@@ -10,12 +10,12 @@ export const SITE_DESCRIPTION = `Show ${BRAND_NAME} a look you love, from a scre
 
 // The App Store listing. Until APP_RELEASED is true, the site shows "Coming soon
 // to the App Store" instead of the badge, and leaves out Safari's app banner.
-export const APP_STORE_ID = '6825965865';
+export const APP_STORE_ID = '6833256271';
 export const APP_STORE_URL = `https://apps.apple.com/app/id${APP_STORE_ID}`;
 export const APP_RELEASED = false;
 
 // The privacy policy shows a placeholder while any of these are empty.
-export const CONTACT_EMAIL = 'hello@getlookcraft.com';
+export const CONTACT_EMAIL = 'hello@lookeo.app';
 export const COMPANY_NAME = '';
 export const COMPANY_ADDRESS = '';
 // The country whose law governs the terms of use, as in "Spain".
