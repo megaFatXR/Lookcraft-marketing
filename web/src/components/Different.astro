@@ -10,11 +10,11 @@ const points = [
 	},
 	{
 		title: 'Your budget',
-		body: 'Pick what a look may cost, and the stylist plans the pieces around it, from high-street brands to premium ones when you allow more.',
+		body: 'Pick what a look may cost, and the stylist plans the pieces around it, <strong>from high-street brands to premium ones</strong> when you allow more.',
 	},
 	{
 		title: 'Free to style',
-		body: 'Briefs, concepts and crafting looks are always free. You only pay for try-ons, and you start with 3 on us.',
+		body: '<strong>Briefs, concepts and crafting looks are always free.</strong> You only pay for try-ons, and you start with 3 on us.',
 	},
 ];
 ---
@@ -27,7 +27,7 @@ const points = [
 				points.map(({ title, body }) => (
 					<li class="card">
 						<h3>{title}</h3>
-						<p>{body}</p>
+						<p set:html={body} />
 					</li>
 				))
 			}
@@ -72,5 +72,11 @@ const points = [
 
 	p {
 		color: var(--muted);
+	}
+
+	/* Bodies are HTML, for a few words in bold. */
+	p :global(strong) {
+		color: var(--text);
+		font-weight: 600;
 	}
 </style>
