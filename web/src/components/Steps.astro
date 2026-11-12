@@ -2,8 +2,8 @@
 import BriefSources from './BriefSources.astro';
 import PhoneFrame from './PhoneFrame.astro';
 
-// The app's own steps and words: a brief, a concept from the stylist, the looks
-// the shopper crafts from it, and try-ons.
+// The app's own three steps (its How it works): a brief, the looks the shopper
+// crafts from the stylist's concept, and try-ons.
 // Bodies are HTML, for a few words in bold.
 const steps = [
 	{
@@ -15,17 +15,10 @@ const steps = [
 	},
 	{
 		slot: 'step-concept',
-		// Screen: a concept, with its name and one row of real products per piece.
+		// Screen: a concept, with its name and one row of real products per piece, a piece picked in each.
 		screen: 'A concept with a row of real products for each piece',
-		title: 'Get a concept',
-		body: 'The stylist puts together a concept from <strong>real pieces that shops sell in your country</strong>, in your currency. Each piece gets a row of options, with the stylist’s pick first.',
-	},
-	{
-		slot: 'step-look',
-		// Screen: a look just created from the concept ("Saved to your looks"), or the Looks tab.
-		screen: 'A look crafted from the concept, saved to Looks',
 		title: 'Craft your looks',
-		body: 'Pick a piece in each row. Every combination you create is saved as a look, so swap a piece and make another.',
+		body: 'The stylist puts together a concept from <strong>real pieces that shops sell in your country</strong>, in your currency. Pick a piece in each row. Every combination you create is saved as a look.',
 	},
 	{
 		slot: 'step-try-on',
