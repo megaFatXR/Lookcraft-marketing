@@ -47,21 +47,23 @@ const items = [
 	<main class="container page">
 		<h1>Support</h1>
 		<p class="lede">
-			Something not working, or a question about {BRAND_NAME}? Email us and we’ll get back to you.
-		</p>
-
-		<a class="contact card" href={`mailto:${CONTACT_EMAIL}`}>
-			<span class="label">Email</span>
-			<span class="email">{CONTACT_EMAIL}</span>
-		</a>
-		<p class="hint">
-			Telling us your iPhone model and what you were doing helps us find the problem. Please don’t
-			send photos of yourself.
+			Something not working, or a question about {BRAND_NAME}? Most answers are below. If yours
+			isn’t, email us.
 		</p>
 
 		<div class="faq">
 			<Faq id="help" title="Common questions" items={items} />
 		</div>
+
+		<h2 class="contact-title">Still need help?</h2>
+		<a class="contact card" href={`mailto:${CONTACT_EMAIL}`}>
+			<span class="label">Email</span>
+			<span class="email">{CONTACT_EMAIL}</span>
+		</a>
+		<p class="hint">
+			We usually reply within 2 days. Telling us your iPhone model and what you were doing helps us
+			find the problem. Please don’t send photos of yourself.
+		</p>
 	</main>
 
 	<Footer />
@@ -121,6 +123,15 @@ const items = [
 	}
 
 	.faq {
+		margin-top: clamp(2rem, 6vw, 3rem);
+	}
+
+	.contact-title {
 		margin-top: clamp(2.5rem, 8vw, 4rem);
+		font-size: clamp(1.75rem, 5vw, 2.25rem);
+	}
+
+	.contact-title + .card {
+		margin-top: 1rem;
 	}
 </style>
