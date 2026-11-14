@@ -1,0 +1,260 @@
+---
+// Step 3 of How it works: the phone shows a finished try-on of Look 1 of "Navy City Look"
+// (src/assets/screens/step-try-on.jpg), and a card overlapping the phone's edge shows the
+// look's "Buy the pieces" list, drawn like the app's (StyleFit/Fitting/OutfitView.swift in
+// the app repo): each piece's photo, title, brand · shop · price and a Buy button.
+//
+// A soft highlight moves down the Buy buttons in turn, in CSS. A small script only pauses
+// it off screen; with reduced motion it stays still.
+//
+// The pieces, titles, shops and prices are the look's real ones (Spain, in euros), as the
+// app showed them. The photos are the shops' thumbnails, kept in src/assets/look/.
+import { Image } from 'astro:assets';
+import PhoneFrame from './PhoneFrame.astro';
+
+type Piece = { image: ImageMetadata; title: string; shop: string; price: string };
+
+const images = import.meta.glob<{ default: ImageMetadata }>('../assets/look/*.webp', { eager: true });
+const image = (n: number) => images[`../assets/look/piece-${n}.webp`].default;
+
+const pieces: Piece[] = [
+	{ image: image(1), title: 'Uniqlo Jersey Punto Suave Soufflé Cuello Redondo', shop: 'Uniqlo Spain', price: '39,90 €' },
+	{ image: image(2), title: 'Uniqlo Camisa Oxford', shop: 'Uniqlo Spain', price: '39,90 €' },
+	{ image: image(3), title: 'MANGO MAN - Jeans Moby relaxed fit lavado claro azul medio vintage', shop: 'MANGO', price: '39,99 €' },
+	{ image: image(4), title: 'Columbia Hombre Newton Ridge Plus II', shop: 'Columbia · zapatos.es', price: '86,07 €' },
+	{ image: image(5), title: 'Zara - Bolso Hombro Piel - Talla Única - Verde Caqui - Hombre', shop: 'ZARA España', price: '59,95 €' },
+	{ image: image(6), title: 'MANGO MAN Gafas de sol montura redonda', shop: 'MANGO', price: '29,99 €' },
+];
+---
+
+<figure class="look" data-look>
+	<figcaption class="visually-hidden">
+		The look tried on a photo of the shopper, and its six pieces to buy: a Uniqlo sweater and
+		Oxford shirt, Mango jeans, Columbia boots, a Zara shoulder bag and Mango sunglasses, each
+		with its shop, price and a Buy button.
+	</figcaption>
+
+	<div class="stage" aria-hidden="true">
+		<div class="phone-wrap">
+			<PhoneFrame name="step-try-on" alt="" />
+		</div>
+
+		<div class="card" style={`--count: ${pieces.length}`}>
+			<p class="heading">Buy the pieces</p>
+			<ul>
+				{
+					pieces.map((piece, i) => (
+						<li style={`--i: ${i}`}>
+							<span class="thumb">
+								<Image src={piece.image} alt="" width={120} loading="lazy" />
+							</span>
+							<span class="text">
+								<span class="title">{piece.title}</span>
+								<span class="meta">
+									{piece.shop} · {piece.price}
+								</span>
+							</span>
+							<span class="buy">
+								<svg viewBox="0 0 16 16">
+									<path d="M4.5 11.5l7-7M5.5 4.5h6v6" />
+								</svg>
+								Buy
+							</span>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</div>
+</figure>
+
+<script>
+	// Pause the highlight while the figure is off screen.
+	for (const figure of document.querySelectorAll<HTMLElement>('[data-look]')) {
+		new IntersectionObserver(([entry]) => {
+			figure.classList.toggle('is-paused', !entry.isIntersecting);
+		}).observe(figure);
+	}
+</script>
+
+<style>
+	.look {
+		container-type: inline-size;
+		width: 100%;
+		max-width: 30rem;
+		margin: 0;
+	}
+
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	.stage {
+		position: relative;
+	}
+
+	.phone-wrap {
+		width: 64%;
+		margin-inline: auto;
+	}
+
+	/* Steps.astro sizes every phone; this one is sized by the figure. */
+	.stage :global(.phone) {
+		max-width: none;
+	}
+
+	/* Narrow: across the bottom of the phone, at full width. */
+	.card {
+		position: relative;
+		margin-top: -30%;
+		padding: 1rem 1rem 0.5rem;
+		border: 1px solid var(--line);
+		border-radius: var(--radius-card);
+		background: var(--bg);
+		box-shadow: 0 1.25rem 2.5rem -1.5rem rgb(33 33 33 / 0.35);
+	}
+
+	.heading {
+		font-family: var(--font-display);
+		font-size: 1.25rem;
+		line-height: 1.1;
+		margin-bottom: 0.25rem;
+	}
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+		padding-block: 0.5rem;
+	}
+
+	li + li {
+		border-top: 1px solid var(--line);
+	}
+
+	.thumb {
+		flex: none;
+		width: 2.75rem;
+		aspect-ratio: 0.87;
+		overflow: hidden;
+		border-radius: 0.5rem;
+		background: var(--placeholder);
+	}
+
+	.thumb img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.text {
+		display: grid;
+		flex: 1;
+		min-width: 0;
+		gap: 0.125rem;
+		line-height: 1.3;
+	}
+
+	.title {
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		font-size: 0.8125rem;
+		font-weight: 500;
+	}
+
+	.meta {
+		overflow: hidden;
+		color: var(--muted);
+		font-size: 0.6875rem;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	/* Like the app's bordered Buy buttons. */
+	.buy {
+		display: inline-flex;
+		flex: none;
+		align-items: center;
+		gap: 0.25rem;
+		padding: 0.25rem 0.625rem;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: var(--surface);
+		font-size: 0.75rem;
+		font-weight: 500;
+	}
+
+	.buy svg {
+		width: 0.75rem;
+		height: 0.75rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.6;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	/* Wide enough: the card beside the phone, overlapping its left edge. */
+	@container (inline-size >= 26rem) {
+		.phone-wrap {
+			width: 56%;
+			margin-inline: auto 0;
+		}
+
+		.card {
+			position: absolute;
+			/* Out into the gap between the columns, so the look's name stays readable. */
+			left: -1.25rem;
+			right: 50%;
+			top: 16%;
+			margin-top: 0;
+		}
+	}
+
+	/* One Buy button lit at a time, down the list: each lit for its share of the cycle. */
+	@media (prefers-reduced-motion: no-preference) {
+		.buy {
+			animation: lit calc(var(--count) * 1.4s) calc(var(--i) * 1.4s) infinite;
+		}
+
+		.is-paused .buy {
+			animation-play-state: paused;
+		}
+	}
+
+	@keyframes lit {
+		0%,
+		16% {
+			background: var(--accent);
+			border-color: var(--accent);
+			color: var(--accent-text);
+		}
+
+		20%,
+		100% {
+			background: var(--surface);
+			border-color: var(--line);
+			color: var(--text);
+		}
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.card {
+			box-shadow: 0 1.25rem 2.5rem -1.5rem rgb(0 0 0 / 0.6);
+		}
+	}
+</style>

@@ -1,5 +1,7 @@
 ---
 import BriefSources from './BriefSources.astro';
+import ConceptCallout from './ConceptCallout.astro';
+import LookCallout from './LookCallout.astro';
 import PhoneFrame from './PhoneFrame.astro';
 
 // The app's own three steps (its How it works): a brief, the looks the shopper
@@ -14,16 +16,20 @@ const steps = [
 		body: 'Add a picture of a look you like, from Pinterest, Instagram, a movie or your camera roll. No picture? Describe it in a few words, or pick an occasion. Set a budget per look, from 100 to 700 or no limit.',
 	},
 	{
+		// The phone shows the top of a real concept (step-concept), and a card zooms in on two of
+		// its rows, sliding as if browsing: see ConceptCallout.astro.
 		slot: 'step-concept',
-		// Screen: a concept, with its name and one row of real products per piece, a piece picked in each.
-		screen: 'A concept with a row of real products for each piece',
+		screen: '',
+		callout: true,
 		title: 'Craft your looks',
 		body: 'The stylist puts together a concept from <strong>real pieces by brands you know</strong>, sold by shops in your country, in your currency. Pick a piece in each row. Every combination you create is saved as a look.',
 	},
 	{
+		// The phone shows a finished try-on (step-try-on), and a card shows the look's pieces
+		// to buy: see LookCallout.astro.
 		slot: 'step-try-on',
-		// Screen: the try-on on the shopper's photo, with Buy the pieces below.
-		screen: 'A look tried on a photo of the shopper, with the pieces to buy',
+		screen: '',
+		look: true,
 		title: 'Try it on',
 		body: 'See the whole look on a photo of you. Love it? Each piece has a link to buy it from the shop.',
 	},
@@ -34,8 +40,8 @@ const steps = [
 	<h2 id="steps-title">How it works</h2>
 	<ol>
 		{
-			steps.map(({ slot, screen, title, body }, i) => (
-				<li class:list={{ drawn: !slot }}>
+			steps.map(({ slot, screen, title, body, callout, look }, i) => (
+				<li class:list={{ drawn: !slot, callout: callout || look }}>
 					<div class="text">
 						<span class="number" aria-hidden="true">
 							{i + 1}
@@ -43,7 +49,7 @@ const steps = [
 						<h3>{title}</h3>
 						<p set:html={body} />
 					</div>
-					{slot ? <PhoneFrame name={slot} alt={screen} /> : <BriefSources />}
+					{callout ? <ConceptCallout /> : look ? <LookCallout /> : slot ? <PhoneFrame name={slot} alt={screen} /> : <BriefSources />}
 				</li>
 			))
 		}
@@ -136,6 +142,15 @@ const steps = [
 		/* The drawing needs more room than a phone. */
 		li.drawn {
 			grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
+		}
+
+		/* The phone and its zoomed-in rows. */
+		li.callout {
+			grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+		}
+
+		li.callout:nth-child(odd) {
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
 		}
 	}
 </style>
