@@ -21,12 +21,12 @@ import PhoneFrame from './PhoneFrame.astro';
 			<svg viewBox="72 47 22 24" aria-hidden="true"><path d="M83 47Q85 56 94 59Q85 62 83 71Q81 62 72 59Q81 56 83 47Z" /></svg>
 			{TAGLINE}
 		</p>
-		<h1 id="hero-title"><span>Love a look?</span> <span>Find&nbsp;it, try&nbsp;it, buy&nbsp;it.</span></h1>
+		<h1 id="hero-title">Level up your&nbsp;style.</h1>
 		<p class="lede">
-			Start from a picture: a screenshot from Pinterest or Instagram, a scene from a movie, a
-			photo from your camera roll. Or just a few words. The stylist finds real pieces you can
-			buy, in your budget and your country. Try the look on a photo of you, then shop it.
+			{BRAND_NAME} guides you to great looks made from real pieces you can buy, in your budget
+			and your country. Start from a few words, three quick questions or a screenshot of a look you love.
 		</p>
+		<p class="try-on"><strong>Then see it on you.</strong> Try any look on a photo of yourself, and know it works before you&nbsp;buy.</p>
 		<div class="cta">
 			<AppStoreButton />
 			<p class="note">Free to style. For iPhone.</p>
@@ -111,15 +111,20 @@ import PhoneFrame from './PhoneFrame.astro';
 		font-size: clamp(2.5rem, 8vw, 4.25rem);
 	}
 
-	/* One sentence per line wherever both fit. */
-	h1 span {
-		display: inline-block;
-	}
-
 	.lede {
 		font-size: 1.125rem;
 		color: var(--muted);
 		max-width: 38ch;
+	}
+
+	/* The try-on is the point, so it reads louder than the lede. */
+	.try-on {
+		font-size: 1.1875rem;
+		max-width: 36ch;
+	}
+
+	.try-on strong {
+		font-weight: 700;
 	}
 
 	.cta {

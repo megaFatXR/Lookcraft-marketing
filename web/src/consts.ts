@@ -6,7 +6,7 @@ export const BRAND_NAME = 'Lookeo';
 export const TAGLINE = 'Style, try on & shop your look';
 
 export const SITE_TITLE = `${BRAND_NAME} — ${TAGLINE}`;
-export const SITE_DESCRIPTION = `Show ${BRAND_NAME} a look you love, from a screenshot, a movie scene or a few words, and its stylist builds it from real pieces you can buy in your country and budget. Then try it on a photo of you. For iPhone.`;
+export const SITE_DESCRIPTION = `Level up your style with ${BRAND_NAME}. Its stylist builds whole looks from real pieces you can buy in your country and budget, from a few words, three quick questions or a look you love. Then try them on a photo of you. For iPhone.`;
 
 // The App Store listing. Until APP_RELEASED is true, the site shows "Coming soon
 // to the App Store" instead of the badge, and leaves out Safari's app banner.
