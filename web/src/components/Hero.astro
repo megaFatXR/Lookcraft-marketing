@@ -3,7 +3,7 @@ import { BRAND_NAME, TAGLINE } from '../consts';
 import { withBase } from '../lib/url';
 import AppStoreButton from './AppStoreButton.astro';
 import Logo from './Logo.astro';
-import PhoneFrame from './PhoneFrame.astro';
+import HeroTryOn from './HeroTryOn.astro';
 ---
 
 <header class="top container">
@@ -16,12 +16,15 @@ import PhoneFrame from './PhoneFrame.astro';
 </header>
 
 <section class="hero container" aria-labelledby="hero-title">
-	<div class="copy">
+	<div class="head">
 		<p class="eyebrow">
 			<svg viewBox="72 47 22 24" aria-hidden="true"><path d="M83 47Q85 56 94 59Q85 62 83 71Q81 62 72 59Q81 56 83 47Z" /></svg>
 			{TAGLINE}
 		</p>
 		<h1 id="hero-title">Level up your&nbsp;style.</h1>
+	</div>
+
+	<div class="body">
 		<p class="lede">
 			{BRAND_NAME} guides you to great looks made from real pieces you can buy, in your budget
 			and your country. Start from a few words, three quick questions or a screenshot of a look you love.
@@ -34,8 +37,8 @@ import PhoneFrame from './PhoneFrame.astro';
 	</div>
 
 	<div class="art">
-		{/* Screen: a finished try-on on the look page, the shopper wearing a whole look. */}
-		<PhoneFrame name="hero" alt={`A look tried on in ${BRAND_NAME}, on a photo of the shopper`} eager />
+		{/* A plain photo wipes to its try-on, then the look's pieces float out around it. */}
+		<HeroTryOn />
 	</div>
 </section>
 
@@ -74,14 +77,25 @@ import PhoneFrame from './PhoneFrame.astro';
 		}
 	}
 
+	/* Phones: the headline, then the try-on right under it, so both show on the first
+	   screen, then the rest of the copy and the button. */
 	.hero {
 		display: grid;
-		gap: clamp(2.5rem, 8vw, 4rem);
-		align-items: center;
+		grid-template-areas: 'head' 'art' 'body';
+		gap: 1.75rem;
 		padding-block: clamp(2rem, 8vw, 5rem) clamp(3rem, 8vw, 5rem);
 	}
 
-	.copy {
+	.head {
+		grid-area: head;
+	}
+
+	.body {
+		grid-area: body;
+	}
+
+	.head,
+	.body {
 		display: grid;
 		gap: 1.25rem;
 		justify-items: start;
@@ -140,21 +154,25 @@ import PhoneFrame from './PhoneFrame.astro';
 	}
 
 	.art {
+		grid-area: art;
 		display: flex;
 		justify-content: center;
 	}
 
-	.art :global(.phone) {
-		max-width: min(17rem, 72vw);
-	}
-
+	/* Wide: the copy in one column, centred beside the try-on. */
 	@media (width >= 56rem) {
 		.hero {
-			grid-template-columns: 1.4fr 1fr;
+			grid-template-areas: '. art' 'head art' 'body art' '. art';
+			grid-template-columns: 1fr 1fr;
+			grid-template-rows: 1fr auto auto 1fr;
+			gap: 1.25rem clamp(2.5rem, 8vw, 4rem);
 		}
 
-		.art :global(.phone) {
-			max-width: 19rem;
+		/* 20% bigger than on phones, spilling a little into the gap and margin when the
+		   column is narrower. */
+		.art {
+			align-self: center;
+			--tryon-width: min(32.5rem, 100% + 3rem);
 		}
 	}
 </style>

@@ -1,0 +1,804 @@
+---
+// The hero's drawing: a phone shows a shopper in everyday clothes, a wipe turns the photo into
+// their try-on, and the look's pieces float out beside the phone, each with its brand and
+// price and a line to where it's worn. Then the same for a second shopper, on a loop of about
+// 14 seconds (7 per person).
+//
+// Photos: drop them into src/assets/hero/ as scene-1-before, scene-1-after, scene-2-before
+// and scene-2-after (jpg, png or webp; full-body portraits, the before and after framed the
+// same) and they replace the drawn stand-ins at the next build. Then set each piece's `at`
+// below to where it's worn on the photo, in percent of the photo (x from the left, y from
+// the top), and give each look its real name, piece count and total.
+//
+// Under the photo the screen shows the look's sheet, as on the app's look page: its name,
+// "Look 1 · pieces · stores" and the total, with the AI-generated badge on the try-on.
+//
+// A small script runs the loop, only while the hero is on screen. Without the script, or
+// with reduced motion, the first try-on stays on screen with its pieces.
+import { Image } from 'astro:assets';
+
+type Glyph = 'top' | 'layer' | 'bottom' | 'shoes' | 'bag';
+
+type Piece = {
+	title: string;
+	brand: string;
+	price: string;
+	/** The shop's thumbnail; without one, a drawn stand-in in `colour`. */
+	image?: ImageMetadata;
+	glyph: Glyph;
+	colour: string;
+	/** Where it's worn, in percent of the photo above the sheet: [x, y]. */
+	at: [number, number];
+	/** Which side of the phone its card floats on, and how far down the drawing, in percent. */
+	side: 'left' | 'right';
+	top: number;
+};
+
+type Outfit = {
+	top: string;
+	bottom: string;
+	shoes: string;
+	hair: string;
+	collar?: string;
+	layer?: string;
+	bag?: string;
+	longHair?: boolean;
+};
+
+type Scene = {
+	name: string;
+	/** The look's sheet under the photo, as the app shows it. */
+	look: { title: string; meta: string; total: string };
+	before: Outfit;
+	after: Outfit;
+	pieces: Piece[];
+};
+
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/hero/*.{png,jpg,jpeg,webp}', { eager: true });
+const photo = (name: string) =>
+	Object.entries(photos).find(([path]) => path.replace(/^.*\//, '').replace(/\.\w+$/, '') === name)?.[1].default;
+
+const thumbs = import.meta.glob<{ default: ImageMetadata }>('../assets/look/*.webp', { eager: true });
+const thumb = (n: number) => thumbs[`../assets/look/piece-${n}.webp`]?.default;
+
+// Stand-ins until the real photos and looks arrive. The first look borrows the pieces of
+// "Navy City Look" from step 3; the second is drawn.
+const scenes: Scene[] = [
+	{
+		name: 'scene-1',
+		look: { title: 'Smart Navy Weekend Look', meta: '4 pieces · from 4 stores', total: '€ 226' },
+		before: { top: '#d4cdc4', bottom: '#7f8796', shoes: '#f2efe9', hair: '#3a2c22' },
+		after: { top: '#2d3b57', collar: '#a9c3dd', bottom: '#86a3c4', shoes: '#8b5a2f', bag: '#6f6a45', hair: '#3a2c22' },
+		pieces: [
+			{ title: 'Soufflé sweater', brand: 'Uniqlo', price: '39,90 €', image: thumb(1), glyph: 'top', colour: '#2d3b57', at: [50, 37], side: 'left', top: 12 },
+			{ title: 'Leather shoulder bag', brand: 'Zara', price: '59,95 €', image: thumb(5), glyph: 'bag', colour: '#6f6a45', at: [63.5, 47], side: 'right', top: 26 },
+			{ title: 'Relaxed jeans', brand: 'Mango', price: '39,99 €', image: thumb(3), glyph: 'bottom', colour: '#86a3c4', at: [54.5, 69], side: 'right', top: 44 },
+			{ title: 'Newton Ridge boots', brand: 'Columbia', price: '86,07 €', image: thumb(4), glyph: 'shoes', colour: '#8b5a2f', at: [43.5, 90], side: 'left', top: 54 },
+		],
+	},
+	{
+		name: 'scene-2',
+		look: { title: 'Camel City Chic Look', meta: '4 pieces · from 3 stores', total: '€ 312' },
+		before: { top: '#bdb6ad', bottom: '#4a4744', shoes: '#f2efe9', hair: '#4a3426', longHair: true },
+		after: { top: '#f3efe8', layer: '#c39a6b', bottom: '#262626', shoes: '#1d1d1d', bag: '#7a2e2e', hair: '#4a3426', longHair: true },
+		pieces: [
+			{ title: 'Linen blazer', brand: 'Brand', price: '00,00 €', glyph: 'layer', colour: '#c39a6b', at: [42.5, 40], side: 'left', top: 12 },
+			{ title: 'Mini bag', brand: 'Brand', price: '00,00 €', glyph: 'bag', colour: '#7a2e2e', at: [63.5, 47], side: 'right', top: 26 },
+			{ title: 'Wide trousers', brand: 'Brand', price: '00,00 €', glyph: 'bottom', colour: '#262626', at: [54.5, 69], side: 'right', top: 44 },
+			{ title: 'Loafers', brand: 'Brand', price: '00,00 €', glyph: 'shoes', colour: '#1d1d1d', at: [43.5, 90], side: 'left', top: 54 },
+		],
+	},
+];
+
+const skin = '#d9b49a';
+
+/** A stand-in shopper, drawn to the photo's shape above the sheet (about 1 : 1.65). */
+const person = (o: Outfit) => {
+	const sleeve = o.layer ?? o.top;
+	return `<svg viewBox="-16 0 132 217" preserveAspectRatio="xMidYMid slice">
+		<ellipse cx="50" cy="198" rx="22" ry="3" fill="rgb(0 0 0 / 0.12)" />
+		${o.longHair ? `<path d="M41 39 Q39 66 36 76 L64 76 Q61 66 59 39 Z" fill="${o.hair}" />` : ''}
+		<path d="M37 112 L36 193 L47 193 L50 122 L53 193 L64 193 L63 112 Z" fill="${o.bottom}" />
+		<ellipse cx="41.5" cy="195" rx="6.5" ry="2.8" fill="${o.shoes}" />
+		<ellipse cx="58.5" cy="195" rx="6.5" ry="2.8" fill="${o.shoes}" />
+		<path d="M35 64 Q29 86 28 108 L33 109 Q35 88 40 72 Z" fill="${sleeve}" />
+		<path d="M65 64 Q71 86 72 108 L67 109 Q65 88 60 72 Z" fill="${sleeve}" />
+		<circle cx="30.5" cy="111" r="2.6" fill="${skin}" />
+		<circle cx="69.5" cy="111" r="2.6" fill="${skin}" />
+		<rect x="47" y="49" width="6" height="10" fill="${skin}" />
+		<path d="M35 62 Q50 57 65 62 L64 116 L36 116 Z" fill="${o.top}" />
+		${o.collar ? `<path d="M45 59 L50 66 L55 59 Z" fill="${o.collar}" />` : ''}
+		${
+			o.layer
+				? `<path d="M35 62 Q42 59 46 60 L49 116 L36 116 Z" fill="${o.layer}" /><path d="M65 62 Q58 59 54 60 L51 116 L64 116 Z" fill="${o.layer}" />`
+				: ''
+		}
+		<ellipse cx="50" cy="41" rx="8" ry="9.5" fill="${skin}" />
+		<path d="M42 41 Q40 30 50 30 Q60 30 58 41 Q56 34 50 34 Q44 34 42 41 Z" fill="${o.hair}" />
+		${o.bag ? `<path d="M38 62 L66 99" stroke="${o.bag}" stroke-width="1.2" fill="none" /><rect x="63" y="97" width="10" height="9" rx="1.5" fill="${o.bag}" />` : ''}
+	</svg>`;
+};
+
+/** A drawn stand-in for a shop's thumbnail. */
+const glyph = (kind: Glyph, colour: string) => {
+	const shapes: Record<Glyph, string> = {
+		top: '<path d="M8 6 L13 4 Q16 6 19 4 L24 6 L27 12 L23 13 L23 27 L9 27 L9 13 L5 12 Z" />',
+		layer: '<path d="M8 6 L13 4 L16 14 L19 4 L24 6 L27 12 L23 13 L23 27 L17 27 L16 16 L15 27 L9 27 L9 13 L5 12 Z" />',
+		bottom: '<path d="M10 4 H22 L24 28 H18 L16 11 L14 28 H8 Z" />',
+		shoes: '<path d="M4 20 Q4 15 9 15 L14 16 Q17 21 26 22 Q28 23 28 26 H4 Z" />',
+		bag: '<path d="M11 12 Q11 6 16 6 Q21 6 21 12" fill="none" stroke-width="1.6" /><rect x="7" y="12" width="18" height="14" rx="2" />',
+	};
+	return `<svg viewBox="0 0 32 32" fill="${colour}" stroke="${colour}" stroke-linejoin="round">${shapes[kind]}</svg>`;
+};
+
+const description = 'A shopper in everyday clothes, then the same photo wearing a look made in Lookeo, with each piece’s brand and price around it.';
+---
+
+<figure class="tryon" data-tryon>
+	<figcaption class="visually-hidden">{description}</figcaption>
+
+	<div class="stage" aria-hidden="true">
+		<div class="phone">
+			<div class="screen">
+				{
+					scenes.map((scene, s) => {
+						const before = photo(`${scene.name}-before`);
+						const after = photo(`${scene.name}-after`);
+						return (
+							<div class:list={['shot', { 'is-active is-revealed has-pieces': s === 0 }]} data-scene={s}>
+								<div class="photo">
+								<div class="picture before">
+									{before ? (
+										<Image src={before} alt="" widths={[320, 480, 720]} sizes="15rem" loading={s === 0 ? 'eager' : 'lazy'} />
+									) : (
+										<Fragment set:html={person(scene.before)} />
+									)}
+								</div>
+								<div class="picture after">
+									{after ? (
+										<Image src={after} alt="" widths={[320, 480, 720]} sizes="15rem" loading={s === 0 ? 'eager' : 'lazy'} />
+									) : (
+										<Fragment set:html={person(scene.after)} />
+									)}
+								</div>
+								<span class="wipe">
+									<svg viewBox="72 47 22 24">
+										<path d="M83 47Q85 56 94 59Q85 62 83 71Q81 62 72 59Q81 56 83 47Z" />
+									</svg>
+								</span>
+								{scene.pieces.map((piece, i) => (
+									<span class="dot" data-piece={i} style={`left: ${piece.at[0]}%; top: ${piece.at[1]}%; --i: ${i}`} />
+								))}
+								<span class="badge">
+									<span class="badge-before">Your photo</span>
+									<span class="badge-after">AI-generated</span>
+								</span>
+								<span class="buttons">
+									<span class="round">
+										<svg viewBox="0 0 24 24">
+											<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" />
+										</svg>
+									</span>
+									<span class="round">
+										<svg viewBox="0 0 24 24">
+											<path d="M12 15V3.5M8 7l4-3.5L16 7M7 10.5H5.5v10h13v-10H17" />
+										</svg>
+									</span>
+								</span>
+								</div>
+								<div class="sheet">
+									<p class="look-title">{scene.look.title}</p>
+									<p class="look-meta">
+										<strong>Look 1</strong> · {scene.look.meta}
+									</p>
+									<p class="look-total">{scene.look.total}</p>
+								</div>
+							</div>
+						);
+					})
+				}
+				<span class="island"></span>
+			</div>
+		</div>
+
+		<svg class="lines">
+			{
+				scenes.map((scene, s) => (
+					<g class:list={['line-set', { 'is-active has-pieces': s === 0 }]} data-scene={s}>
+						{scene.pieces.map((_, i) => (
+							<path data-piece={i} pathLength="1" style={`--i: ${i}`} />
+						))}
+					</g>
+				))
+			}
+		</svg>
+
+		{
+			scenes.map((scene, s) => (
+				<div class:list={['cards', { 'is-active has-pieces': s === 0 }]} data-scene={s}>
+					{scene.pieces.map((piece, i) => (
+						<div class={`card ${piece.side}`} data-piece={i} data-side={piece.side} style={`top: ${piece.top}%; --i: ${i}`}>
+							<span class="thumb">
+								{piece.image ? (
+									<Image src={piece.image} alt="" width={96} loading={s === 0 ? 'eager' : 'lazy'} />
+								) : (
+									<Fragment set:html={glyph(piece.glyph, piece.colour)} />
+								)}
+							</span>
+							<span class="text">
+								<span class="title">{piece.title}</span>
+								<span class="meta">
+									{piece.brand} · <strong>{piece.price}</strong>
+								</span>
+							</span>
+						</div>
+					))}
+				</div>
+			))
+		}
+	</div>
+</figure>
+
+<script>
+	// One person at a time: the plain photo, the wipe to the try-on, the pieces, a pause,
+	// then the next person. Runs only on screen and without reduced motion.
+	const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+	const timeline = { wipe: 1000, pieces: 2000, leave: 6800, next: 7200 };
+
+	for (const figure of document.querySelectorAll<HTMLElement>('[data-tryon]')) {
+		const stage = figure.querySelector<HTMLElement>('.stage')!;
+		const svg = figure.querySelector<SVGSVGElement>('.lines')!;
+		const shots = [...figure.querySelectorAll<HTMLElement>('.shot')];
+		const count = shots.length;
+		const part = (selector: string, scene: number) =>
+			figure.querySelector<HTMLElement>(`${selector}[data-scene="${scene}"]`)!;
+
+		let scene = 0;
+		let timers: number[] = [];
+		let running = false;
+		let onScreen = false;
+
+		// Each line runs from the inner edge of its card to just short of its dot.
+		const layout = () => {
+			const box = stage.getBoundingClientRect();
+			svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+			for (let s = 0; s < count; s++) {
+				const cards = part('.cards', s);
+				const lines = part('.line-set', s);
+				for (const card of cards.querySelectorAll<HTMLElement>('.card')) {
+					const i = card.dataset.piece;
+					const dot = shots[s].querySelector<HTMLElement>(`.dot[data-piece="${i}"]`)!;
+					const path = lines.querySelector<SVGPathElement>(`path[data-piece="${i}"]`)!;
+					const d = dot.getBoundingClientRect();
+					const left = card.dataset.side === 'left';
+					const x1 = card.offsetLeft + (left ? card.offsetWidth : 0);
+					const y1 = card.offsetTop + card.offsetHeight / 2;
+					const r = d.width / 2 + 2;
+					const x2 = d.left + d.width / 2 - box.left + (left ? -r : r);
+					const y2 = d.top + d.height / 2 - box.top;
+					const pull = (x2 - x1) * 0.55;
+					path.setAttribute('d', `M${x1} ${y1} C${x1 + pull} ${y1}, ${x2 - pull} ${y2}, ${x2} ${y2}`);
+				}
+			}
+		};
+
+		const set = (s: number, classes: Record<string, boolean>) => {
+			for (const el of [shots[s], part('.cards', s), part('.line-set', s)]) {
+				for (const [name, on] of Object.entries(classes)) el.classList.toggle(name, on);
+			}
+		};
+
+		const later = (ms: number, step: () => void) => timers.push(window.setTimeout(step, ms));
+
+		const play = (s: number) => {
+			scene = s;
+			set(s, { 'is-active': true, 'is-revealed': false, 'has-pieces': false });
+			later(timeline.wipe, () => shots[s].classList.add('is-revealed'));
+			later(timeline.pieces, () => set(s, { 'has-pieces': true }));
+			later(timeline.leave, () => set(s, { 'has-pieces': false }));
+			later(timeline.next, () => {
+				set(s, { 'is-active': false });
+				// Back to the plain photo once it has faded out.
+				later(700, () => shots[s].classList.remove('is-revealed'));
+				play((s + 1) % count);
+			});
+		};
+
+		const stop = () => {
+			timers.forEach(clearTimeout);
+			timers = [];
+			running = false;
+		};
+
+		// The still picture: the first try-on with its pieces.
+		const still = () => {
+			stop();
+			for (let s = 0; s < count; s++) {
+				set(s, { 'is-active': s === 0, 'is-revealed': s === 0, 'has-pieces': s === 0 });
+			}
+			figure.classList.add('is-still');
+		};
+
+		const start = () => {
+			if (running || reduceMotion.matches || !onScreen || document.hidden) return;
+			running = true;
+			figure.classList.remove('is-still');
+			for (let s = 0; s < count; s++) {
+				set(s, { 'is-active': false, 'is-revealed': false, 'has-pieces': false });
+			}
+			play(scene);
+		};
+
+		layout();
+		new ResizeObserver(layout).observe(stage);
+
+		if (reduceMotion.matches) still();
+
+		new IntersectionObserver(([entry]) => {
+			onScreen = entry.isIntersecting;
+			onScreen ? start() : stop();
+		}, { threshold: 0.3 }).observe(figure);
+
+		document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+		reduceMotion.addEventListener('change', () => (reduceMotion.matches ? still() : start()));
+	}
+</script>
+
+<style>
+	/* Centred, and free to spill a little past its column (see --tryon-width in Hero). */
+	.tryon {
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		margin: 0;
+	}
+
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	/* The phone in the middle, the cards free to float over its edges. */
+	.stage {
+		position: relative;
+		flex: none;
+		width: var(--tryon-width, min(100%, 27rem));
+		padding-block: 0.5rem;
+		container-type: inline-size;
+	}
+
+	/* Like PhoneFrame: sized from the width, the height an iPhone screen's (1320×2868). */
+	.phone {
+		width: 54%;
+		margin-inline: auto;
+		padding: 2.2cqi;
+		border-radius: 12cqi;
+		background: #111;
+		box-shadow:
+			0 0 0 1px #2a2a2a inset,
+			0 1.5rem 3rem -1.25rem rgb(33 33 33 / 0.35);
+	}
+
+	.screen {
+		position: relative;
+		display: grid;
+		aspect-ratio: 1320 / 2868;
+		overflow: hidden;
+		border-radius: 10cqi;
+		background: #d9d2c8;
+		/* Keeps the people's stacking inside the screen, under the lines and cards. */
+		isolation: isolate;
+	}
+
+	.island {
+		position: absolute;
+		z-index: 2;
+		top: 2.4%;
+		left: 50%;
+		width: 32%;
+		aspect-ratio: 3.4;
+		translate: -50% 0;
+		border-radius: 999px;
+		background: #111;
+	}
+
+	/* Each person's photos, stacked; one shows at a time. */
+	/* The next person fades in over the last one, which stays solid underneath until
+	   then, so the two never show through each other. */
+	.shot {
+		grid-area: 1 / 1;
+		position: relative;
+		opacity: 0;
+		transition: opacity 0s 0.6s;
+	}
+
+	.shot.is-active {
+		z-index: 1;
+		opacity: 1;
+		transition: opacity 0.6s;
+	}
+
+	/* The sheet's words and the badge swap one after the other rather than overlap. */
+	.sheet > *,
+	.badge,
+	.buttons {
+		opacity: 0;
+		transition: opacity 0.2s;
+	}
+
+	.is-active .sheet > *,
+	.is-active .badge,
+	.is-active .buttons {
+		opacity: 1;
+		transition: opacity 0.3s 0.35s;
+	}
+
+	/* The photo fills the top of the screen; the look's sheet overlaps its bottom edge. */
+	.photo {
+		position: absolute;
+		inset: 0 0 25% 0;
+	}
+
+	.picture {
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(120% 60% at 50% 30%, #e6dfd5, #cdc4b8);
+	}
+
+	.picture :global(svg),
+	.picture :global(img) {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	/* The try-on comes in from the left behind a bright edge. */
+	.after {
+		clip-path: inset(0 100% 0 0);
+		transition: clip-path 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+	}
+
+	.is-revealed .after {
+		clip-path: inset(0);
+	}
+
+	.wipe {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		width: 2px;
+		margin-left: -1px;
+		background: #fff;
+		box-shadow: 0 0 12px 2px rgb(255 255 255 / 0.7);
+		opacity: 0;
+		/* Hidden outright between wipes: the sparkle's glow otherwise lingers at the edge. */
+		visibility: hidden;
+	}
+
+	.wipe svg {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 9cqi;
+		translate: -50% -50%;
+		fill: var(--coral);
+		filter: drop-shadow(0 0 4px rgb(255 255 255 / 0.9));
+	}
+
+	.is-revealed .wipe {
+		animation: wipe 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+	}
+
+	@keyframes wipe {
+		0% {
+			left: 0;
+			opacity: 0;
+			visibility: visible;
+		}
+		12%,
+		88% {
+			opacity: 1;
+		}
+		100% {
+			left: 100%;
+			opacity: 0;
+			visibility: visible;
+		}
+	}
+
+	/* Where each piece is worn. */
+	.dot {
+		position: absolute;
+		width: 3.4cqi;
+		height: 3.4cqi;
+		translate: -50% -50%;
+		border-radius: 999px;
+		background: #fff;
+		box-shadow:
+			0 0 0 1.5px var(--coral),
+			0 1px 4px rgb(0 0 0 / 0.3);
+		scale: 0;
+		transition: scale 0.3s;
+	}
+
+	.has-pieces .dot {
+		scale: 1;
+		transition: scale 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i) * 0.22s);
+	}
+
+	/* The app's badge on a try-on, and the save and share buttons. */
+	.badge {
+		position: absolute;
+		left: 4%;
+		bottom: 7%;
+		padding: 0.3em 0.65em;
+		border-radius: 999px;
+		background: rgb(255 255 255 / 0.85);
+		color: #212121;
+		font-size: max(0.5rem, 2.1cqi);
+		font-weight: 600;
+	}
+
+	.badge {
+		display: grid;
+	}
+
+	.badge > span {
+		grid-area: 1 / 1;
+		transition: opacity 0.3s;
+	}
+
+	.badge-after,
+	.is-revealed .badge-before {
+		opacity: 0;
+	}
+
+	.is-revealed .badge-after {
+		opacity: 1;
+		transition-delay: 0.7s;
+	}
+
+	.buttons {
+		position: absolute;
+		right: 4%;
+		bottom: 6%;
+		display: flex;
+		gap: 2cqi;
+	}
+
+	.round {
+		display: grid;
+		place-items: center;
+		width: 7.5cqi;
+		height: 7.5cqi;
+		border-radius: 999px;
+		background: rgb(255 255 255 / 0.85);
+		color: #212121;
+	}
+
+	.round svg {
+		width: 55%;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.8;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	/* Drawn like the top of the app's look page, in its light colours. */
+	.sheet {
+		position: absolute;
+		inset: auto 0 0 0;
+		height: 28%;
+		padding: 5.5cqi 5cqi 0;
+		border-radius: 6cqi 6cqi 0 0;
+		background: #f4efe9;
+		color: #212121;
+	}
+
+	.look-title {
+		font-family: var(--font-display);
+		font-size: 4.4cqi;
+		line-height: 1.15;
+		letter-spacing: -0.01em;
+	}
+
+	.look-meta {
+		margin-top: 2.2cqi;
+		font-size: 2.6cqi;
+		color: #6b625a;
+		white-space: nowrap;
+	}
+
+	.look-meta strong {
+		color: #212121;
+		font-weight: 600;
+	}
+
+	.look-total {
+		margin-top: 1.4cqi;
+		font-size: 2.6cqi;
+		color: #6b625a;
+	}
+
+	/* The lines, over the phone and under the cards. */
+	.lines {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		overflow: visible;
+		pointer-events: none;
+	}
+
+	.line-set path {
+		fill: none;
+		stroke: var(--coral);
+		stroke-width: 1.5;
+		stroke-linecap: round;
+		stroke-dasharray: 1;
+		stroke-dashoffset: 1;
+		opacity: 0;
+		transition:
+			stroke-dashoffset 0s 0.4s,
+			opacity 0.4s;
+	}
+
+	.line-set.has-pieces path {
+		stroke-dashoffset: 0;
+		opacity: 1;
+		transition:
+			stroke-dashoffset 0.5s ease-out calc(var(--i) * 0.22s + 0.1s),
+			opacity 0.2s calc(var(--i) * 0.22s + 0.1s);
+	}
+
+	/* Each piece: its thumbnail, title, brand and price. */
+	.cards {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+	}
+
+	.card {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		width: 38%;
+		max-width: 12.5rem;
+		padding: 0.3125rem 0.5rem 0.3125rem 0.3125rem;
+		border: 1px solid var(--line);
+		border-radius: 0.875rem;
+		background: var(--surface);
+		box-shadow: 0 0.75rem 1.5rem -0.75rem rgb(0 0 0 / 0.35);
+		opacity: 0;
+		transition:
+			opacity 0.35s,
+			translate 0.35s;
+	}
+
+	.card.left {
+		left: 0;
+		translate: 0.75rem 0;
+	}
+
+	.card.right {
+		right: 0;
+		translate: -0.75rem 0;
+	}
+
+	.has-pieces .card {
+		opacity: 1;
+		translate: 0 0;
+		transition:
+			opacity 0.4s calc(var(--i) * 0.22s),
+			translate 0.5s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 0.22s);
+	}
+
+	.thumb {
+		display: grid;
+		place-items: center;
+		flex: none;
+		width: 2.5rem;
+		height: 2.5rem;
+		overflow: hidden;
+		border-radius: 0.5rem;
+		background: #f4f1ec;
+	}
+
+	.thumb :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.thumb :global(svg) {
+		width: 72%;
+		height: 72%;
+	}
+
+	.text {
+		display: grid;
+		min-width: 0;
+		line-height: 1.25;
+	}
+
+	.title {
+		overflow: hidden;
+		font-size: 0.8125rem;
+		font-weight: 600;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.meta {
+		font-size: 0.75rem;
+		color: var(--muted);
+		white-space: nowrap;
+	}
+
+	.meta strong {
+		color: var(--text);
+		font-weight: 600;
+	}
+
+	/* The bigger drawing on wide screens gets bigger cards. */
+	@container (inline-size >= 30rem) {
+		.thumb {
+			width: 2.875rem;
+			height: 2.875rem;
+		}
+
+		.title {
+			font-size: 0.875rem;
+		}
+
+		.meta {
+			font-size: 0.8125rem;
+		}
+	}
+
+	/* Narrow drawings: smaller cards. */
+	@container (inline-size < 22rem) {
+		.card {
+			width: 34%;
+			gap: 0.375rem;
+			padding: 0.25rem 0.4rem 0.25rem 0.25rem;
+			border-radius: 0.75rem;
+		}
+
+		.thumb {
+			width: 2rem;
+			height: 2rem;
+		}
+
+		.title {
+			font-size: 0.75rem;
+		}
+
+		.meta {
+			font-size: 0.6875rem;
+		}
+	}
+
+	/* The still picture shows everything at once. */
+	.is-still * {
+		transition: none !important;
+		animation: none !important;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.phone {
+			box-shadow:
+				0 0 0 1px #3b3733,
+				0 1.5rem 3rem -1.25rem rgb(0 0 0 / 0.6);
+		}
+	}
+</style>

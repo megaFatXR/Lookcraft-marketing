@@ -7,9 +7,10 @@ Astro resizes them for the web.
 
 | File name        | Where                        | Screen to show                                                                    |
 | :--------------- | :--------------------------- | :-------------------------------------------------------------------------------- |
-| `hero`           | Top of the page              | A finished try-on on the look page: the shopper wearing a whole look              |
 | `step-concept`   | How it works, step 2         | The top of a concept as first opened (no looks crafted yet, no developer details): its name, palette, description, "Craft your looks" and the first row. A card zooms in on it (see below) |
 | `step-try-on`    | How it works, step 3         | The look page with its try-on, top of the screen. A card shows its pieces to buy (see below) |
+
+The hero at the top of the page uses photos, not a screenshot: see `src/assets/hero/README.md`.
 
 Step 1 of How it works is drawn (`src/components/BriefSources.astro`), so it needs
 no screenshot.
