@@ -33,13 +33,13 @@ const styles: Record<string, string> = {
 type Placed = { name: string; at: [number, number, number]; phone?: [number, number, number]; speed?: number };
 
 // Depth: the bigger a photo, the closer it seems, so the faster it moves and the higher it sits.
-// `speed` overrides that for two photos that need to travel further than their size would give:
-// the small one that drifts up beneath the heading, and the lowest, which rises out from behind
-// the next section's top line (the section is cut off there, see .lookbook).
+// `speed` overrides that for a few photos: the small one that drifts up beneath the heading, the
+// lowest, which rises out from behind the next section's top line (the section is cut off there,
+// see .lookbook), and preppy above the heading, slower so it can sit close without touching it.
 const placed: Placed[] = [
 	{ name: 'oldMoney-women-4', at: [3, 3, 16], phone: [4, 0, 44] },
 	{ name: 'darkAndEdgy-men-2', at: [23, 18, 10], phone: [54, 16, 38] },
-	{ name: 'preppy-women-3', at: [39, -10, 11], phone: [8, 74, 36] },
+	{ name: 'preppy-women-3', at: [39, -8, 11], phone: [8, 74, 36], speed: 0.3 },
 	{ name: 'oldMoney-men-1', at: [66, 1, 14], phone: [52, 84, 44] },
 	{ name: 'boho-women-1', at: [85, 17, 11] },
 	{ name: 'western-women-2', at: [5, 37, 12], phone: [4, 138, 40] },
