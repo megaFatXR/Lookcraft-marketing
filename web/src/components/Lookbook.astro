@@ -30,22 +30,23 @@ const styles: Record<string, string> = {
 	workwear: 'Workwear',
 };
 
-type Placed = { name: string; at: [number, number, number]; phone?: [number, number, number]; under?: boolean };
+type Placed = { name: string; at: [number, number, number]; phone?: [number, number, number]; speed?: number };
 
 // Depth: the bigger a photo, the closer it seems, so the faster it moves and the higher it sits.
-// `under` marks the small one that drifts up beneath the heading as the page scrolls on: it's
-// given a faster speed than its size would, so it gets there.
+// `speed` overrides that for two photos that need to travel further than their size would give:
+// the small one that drifts up beneath the heading, and the lowest, which rises out from behind
+// the next section's top line (the section is cut off there, see .lookbook).
 const placed: Placed[] = [
 	{ name: 'oldMoney-women-4', at: [3, 3, 16], phone: [4, 0, 44] },
 	{ name: 'darkAndEdgy-men-2', at: [23, 18, 10], phone: [54, 16, 38] },
-	{ name: 'preppy-women-3', at: [39, -7, 11], phone: [8, 74, 36] },
+	{ name: 'preppy-women-3', at: [39, -10, 11], phone: [8, 74, 36] },
 	{ name: 'oldMoney-men-1', at: [66, 1, 14], phone: [52, 84, 44] },
 	{ name: 'boho-women-1', at: [85, 17, 11] },
 	{ name: 'western-women-2', at: [5, 37, 12], phone: [4, 138, 40] },
-	{ name: 'workwear-men-1', at: [34, 41, 9], under: true },
-	{ name: 'streetwear-men-1', at: [49, 54, 11] },
+	{ name: 'workwear-men-1', at: [34, 41, 9], speed: 0.7 },
+	{ name: 'streetwear-men-1', at: [49, 55, 11], speed: 0.45 },
 	{ name: 'romantic-women-2', at: [67, 40, 15], phone: [50, 158, 46] },
-	{ name: 'outdoor-men-2', at: [86, 44, 10] },
+	{ name: 'outdoor-men-2', at: [86, 49, 10] },
 ];
 
 /** How far a photo travels while the section crosses the screen, as a share of the screen height. */
@@ -83,7 +84,7 @@ const position = ({ at, phone }: Placed) =>
 			<figure
 				class:list={['photo', { 'no-phone': !item.phone, far: item.at[2] <= 10 }]}
 				style={position(item)}
-				data-speed={item.under ? 0.7 : speedOf(item.at[2])}
+				data-speed={item.speed ?? speedOf(item.at[2])}
 				data-phone-speed={item.phone ? phoneSpeedOf(item.phone[2]) : 0}
 			>
 				<Image src={item.image} alt={`A ${item.style.toLowerCase()} look`} widths={[320, 480, 640]} sizes="(min-width: 48rem) 15vw, 46vw" loading="lazy" />
@@ -151,8 +152,9 @@ const position = ({ at, phone }: Placed) =>
 		position: relative;
 		height: calc(222vw + 16rem);
 		padding-top: clamp(3rem, 8vw, 5rem);
-		/* Sideways only: the photos may drift past the section's top and bottom. */
-		overflow-x: clip;
+		/* Cut off at the sides and at the bottom, where the next section's line is, so a photo
+		   can rise out from behind it; free to drift up past the top. */
+		clip-path: inset(-100vh 0 0 0);
 	}
 
 	.intro {
@@ -207,9 +209,9 @@ const position = ({ at, phone }: Placed) =>
 	/* Wide: the full width of the screen, the heading in the middle of the photos. */
 	@media (width >= 48rem) {
 		.lookbook {
-			height: 70vw;
+			height: 64vw;
 			padding-top: 0;
-			margin-block: clamp(4rem, 8vw, 7rem);
+			margin-top: clamp(4rem, 8vw, 7rem);
 		}
 
 		.intro {
