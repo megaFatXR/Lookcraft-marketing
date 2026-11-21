@@ -1,18 +1,32 @@
 ---
+// Each point has a line icon, drawn like step 1's (24×24, rounded 1.6 strokes): a hanger for
+// whole looks, a shop front for real shops, a price tag for the budget, the logo's sparkle for
+// free styling.
+const icons = {
+	hanger: '<path d="M10.25 6.25a1.75 1.75 0 1 1 1.75 1.75v1.5" /><path d="M12 9.5l-8.4 6a1 1 0 0 0 .6 1.8h15.6a1 1 0 0 0 .6-1.8z" />',
+	shop: '<path d="M4 9l1.5-4.5h13L20 9" /><path d="M4 9a2 2 0 0 0 4 0 2 2 0 0 0 4 0 2 2 0 0 0 4 0 2 2 0 0 0 4 0" /><path d="M5.5 11.5v8h13v-8" /><path d="M10 19.5V15h4v4.5" />',
+	tag: '<path d="M3.5 12.6V4.5a1 1 0 0 1 1-1h8.1a1 1 0 0 1 .7.3l7.2 7.2a1 1 0 0 1 0 1.4l-8.1 8.1a1 1 0 0 1-1.4 0l-7.2-7.2a1 1 0 0 1-.3-.7z" /><circle cx="8" cy="8" r="1.5" />',
+	sparkle: '<path d="M11 4q1.3 6.2 7.5 8-6.2 1.8-7.5 8-1.3-6.2-7.5-8 6.2-1.8 7.5-8z" /><path d="M19 2.5v4M17 4.5h4" />',
+};
+
 const points = [
 	{
+		icon: icons.hanger,
 		title: 'Whole looks, not single items',
 		body: 'The stylist plans every piece together, from the top to the shoes, and you try the whole look on at once.',
 	},
 	{
+		icon: icons.shop,
 		title: 'Real shops in your country',
 		body: 'Every piece is a product you can buy now from a shop that sells where you live, in your currency. Second-hand listings are left out.',
 	},
 	{
+		icon: icons.tag,
 		title: 'Your budget',
 		body: 'Pick what a look may cost, and the stylist plans the pieces around it, <strong>from high-street brands to premium ones</strong> when you allow more.',
 	},
 	{
+		icon: icons.sparkle,
 		title: 'Free to style',
 		body: '<strong>Briefs, concepts and crafting looks are always free.</strong> You only pay for try-ons, and you start with 3 on us.',
 	},
@@ -24,8 +38,11 @@ const points = [
 		<h2 id="different-title">What makes it different</h2>
 		<ul>
 			{
-				points.map(({ title, body }) => (
+				points.map(({ icon, title, body }) => (
 					<li class="card">
+						<span class="icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24" set:html={icon} />
+						</span>
 						<h3>{title}</h3>
 						<p set:html={body} />
 					</li>
@@ -64,6 +81,28 @@ const points = [
 		background: var(--surface);
 		border: 1px solid var(--line);
 		border-radius: var(--radius-card);
+	}
+
+	/* In a round chip on the page colour, like step 1's sources. */
+	.icon {
+		display: grid;
+		place-items: center;
+		width: 3.25rem;
+		height: 3.25rem;
+		margin-bottom: 0.5rem;
+		border-radius: 999px;
+		background: var(--bg);
+		color: var(--text);
+	}
+
+	.icon svg {
+		width: 1.75rem;
+		height: 1.75rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.6;
+		stroke-linecap: round;
+		stroke-linejoin: round;
 	}
 
 	h3 {

@@ -1,0 +1,253 @@
+---
+// A lookbook after How it works: a few of the quick start's example looks (src/assets/lookbook/,
+// copied from the app's ExampleLooks), scattered across the full width around the heading. Each
+// photo drifts at its own speed as the page scrolls. Photos are shown whole, never cropped.
+//
+// The photos are the app's own example looks, faces cropped at the chin. Women's Vintage and
+// Rock & grunge are left out, as in the app until after launch. Keep the style names in step
+// with the app's (BriefVibe in StyleFit/Looks/BriefWizard.swift).
+//
+// Positions are in vw, so the layout scales with the screen: `at` is [left, top, width] on wide
+// screens, `phone` the same on phones (photos without one are left out there). Each photo's speed
+// follows its size, for depth: big ones move most and sit on top, small ones move least and are
+// a touch dimmer.
+// With reduced motion, or without the script, the photos stand still.
+import { Image } from 'astro:assets';
+
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/lookbook/*.jpg', { eager: true });
+
+const styles: Record<string, string> = {
+	boho: 'Boho',
+	darkAndEdgy: 'Dark & edgy',
+	oldMoney: 'Old money',
+	outdoor: 'Outdoor',
+	preppy: 'Preppy',
+	rockAndGrunge: 'Rock & grunge',
+	romantic: 'Romantic',
+	streetwear: 'Streetwear',
+	vintage: 'Vintage',
+	western: 'Western',
+	workwear: 'Workwear',
+};
+
+type Placed = { name: string; at: [number, number, number]; phone?: [number, number, number]; under?: boolean };
+
+// Depth: the bigger a photo, the closer it seems, so the faster it moves and the higher it sits.
+// `under` marks the small one that drifts up beneath the heading as the page scrolls on: it's
+// given a faster speed than its size would, so it gets there.
+const placed: Placed[] = [
+	{ name: 'oldMoney-women-4', at: [3, 3, 16], phone: [4, 0, 44] },
+	{ name: 'darkAndEdgy-men-2', at: [23, 18, 10], phone: [54, 16, 38] },
+	{ name: 'preppy-women-3', at: [39, -7, 11], phone: [8, 74, 36] },
+	{ name: 'oldMoney-men-1', at: [66, 1, 14], phone: [52, 84, 44] },
+	{ name: 'boho-women-1', at: [85, 17, 11] },
+	{ name: 'western-women-2', at: [5, 37, 12], phone: [4, 138, 40] },
+	{ name: 'workwear-men-1', at: [34, 41, 9], under: true },
+	{ name: 'streetwear-men-1', at: [49, 54, 11] },
+	{ name: 'romantic-women-2', at: [67, 40, 15], phone: [50, 158, 46] },
+	{ name: 'outdoor-men-2', at: [86, 44, 10] },
+];
+
+/** How far a photo travels while the section crosses the screen, as a share of the screen height. */
+const speedOf = (width: number) => Math.round((width - 6) * 0.085 * 100) / 100;
+/** On phones the photos sit closer together, so their speeds differ less. */
+const phoneSpeedOf = (width: number) => Math.round((0.3 + (width - 36) * 0.015) * 100) / 100;
+
+const looks = placed.map((item) => ({
+	...item,
+	image: photos[`../assets/lookbook/${item.name}.jpg`].default,
+	style: styles[item.name.split('-')[0]],
+}));
+
+const position = ({ at, phone }: Placed) =>
+	[
+		`--x: ${at[0]}vw`,
+		`--y: ${at[1]}vw`,
+		`--w: ${at[2]}vw`,
+		`--z: ${Math.round(at[2])}`,
+		...(phone ? [`--px: ${phone[0]}vw`, `--py: ${phone[1]}vw`, `--pw: ${phone[2]}vw`, `--pz: ${Math.round(phone[2])}`] : []),
+	].join('; ');
+---
+
+<section class="lookbook" aria-labelledby="lookbook-title" data-lookbook>
+	<div class="intro">
+		<h2 id="lookbook-title">Find your style, then make it&nbsp;yours.</h2>
+		<p>
+			Old money, boho, streetwear or western: pick what feels like you, and the stylist builds it
+			from pieces you can buy, within your budget.
+		</p>
+	</div>
+
+	{
+		looks.map((item) => (
+			<figure
+				class:list={['photo', { 'no-phone': !item.phone, far: item.at[2] <= 10 }]}
+				style={position(item)}
+				data-speed={item.under ? 0.7 : speedOf(item.at[2])}
+				data-phone-speed={item.phone ? phoneSpeedOf(item.phone[2]) : 0}
+			>
+				<Image src={item.image} alt={`A ${item.style.toLowerCase()} look`} widths={[320, 480, 640]} sizes="(min-width: 48rem) 15vw, 46vw" loading="lazy" />
+				<figcaption class="label">{item.style}</figcaption>
+			</figure>
+		))
+	}
+</section>
+
+<script>
+	// Moves each photo by its share of the screen height as the section crosses the screen:
+	// down when it enters at the bottom, up when it leaves at the top.
+	const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+	const wide = matchMedia('(width >= 48rem)');
+
+	for (const section of document.querySelectorAll<HTMLElement>('[data-lookbook]')) {
+		const items = [...section.querySelectorAll<HTMLElement>('.photo')];
+		let frame = 0;
+		let last = -1;
+
+		const place = () => {
+			frame = 0;
+			if (reduceMotion.matches) {
+				for (const item of items) item.style.transform = '';
+				return;
+			}
+			const box = section.getBoundingClientRect();
+			const progress = Math.min(1, Math.max(0, (innerHeight - box.top) / (innerHeight + box.height)));
+			// Off screen the progress is stuck at 0 or 1: nothing to move.
+			if (progress === last) return;
+			last = progress;
+			for (const item of items) {
+				const speed = Number(wide.matches ? item.dataset.speed : item.dataset.phoneSpeed);
+				const offset = (0.5 - progress) * speed * innerHeight;
+				item.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
+			}
+		};
+
+		// Every scroll, even far from the section, so a jump past it (a link to the FAQ) still
+		// leaves the photos where they belong. Off screen it stops after one cheap measurement.
+		const request = () => {
+			if (!frame) frame = requestAnimationFrame(place);
+		};
+
+		addEventListener('scroll', request, { passive: true });
+		addEventListener('resize', () => {
+			last = -1;
+			request();
+		});
+		reduceMotion.addEventListener('change', () => {
+			last = -1;
+			place();
+		});
+		wide.addEventListener('change', () => {
+			last = -1;
+			place();
+		});
+		place();
+	}
+</script>
+
+<style>
+	/* Phones: the heading first, then the photos scattered in two loose columns. */
+	.lookbook {
+		position: relative;
+		height: calc(222vw + 16rem);
+		padding-top: clamp(3rem, 8vw, 5rem);
+		/* Sideways only: the photos may drift past the section's top and bottom. */
+		overflow-x: clip;
+	}
+
+	.intro {
+		display: grid;
+		gap: 1rem;
+		padding-inline: var(--gutter);
+		margin-bottom: 2.5rem;
+	}
+
+	.intro p {
+		max-width: 38ch;
+		font-size: 1.125rem;
+		color: var(--muted);
+	}
+
+	.photo {
+		position: absolute;
+		z-index: var(--pz, 1);
+		left: var(--px);
+		top: calc(var(--py) + 16rem);
+		width: var(--pw);
+		margin: 0;
+		will-change: transform;
+	}
+
+	.no-phone {
+		display: none;
+	}
+
+	/* Whole photos: the card takes the photo's own shape. */
+	.photo :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: var(--radius-card);
+		box-shadow: 0 1.25rem 2.5rem -1.5rem rgb(0 0 0 / 0.45);
+	}
+
+	.label {
+		position: absolute;
+		left: 0.625rem;
+		bottom: 0.625rem;
+		padding: 0.25rem 0.625rem;
+		border-radius: 999px;
+		background: rgb(255 255 255 / 0.88);
+		color: #212121;
+		font-size: 0.75rem;
+		font-weight: 600;
+		backdrop-filter: blur(6px);
+	}
+
+	/* Wide: the full width of the screen, the heading in the middle of the photos. */
+	@media (width >= 48rem) {
+		.lookbook {
+			height: 70vw;
+			padding-top: 0;
+			margin-block: clamp(4rem, 8vw, 7rem);
+		}
+
+		.intro {
+			position: absolute;
+			left: 36vw;
+			top: 20vw;
+			width: 30vw;
+			padding: 0;
+			margin: 0;
+			/* Above every photo: the small one that drifts beneath it stays readable behind. */
+			z-index: 30;
+		}
+
+		.intro h2 {
+			font-size: clamp(2rem, 3.6vw, 4rem);
+		}
+
+		.intro p {
+			font-size: clamp(1rem, 1.2vw, 1.25rem);
+		}
+
+		.photo,
+		.no-phone {
+			display: block;
+			z-index: var(--z);
+			left: var(--x);
+			top: var(--y);
+			width: var(--w);
+		}
+
+		/* The small, far photos: a touch dimmer, with a softer shadow. */
+		.far :global(img) {
+			filter: brightness(0.88) saturate(0.9);
+			box-shadow: 0 0.75rem 1.5rem -1rem rgb(0 0 0 / 0.4);
+		}
+
+		.label {
+			font-size: clamp(0.75rem, 0.8vw, 0.875rem);
+		}
+	}
+</style>
