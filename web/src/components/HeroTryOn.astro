@@ -60,18 +60,20 @@ const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/hero/*.{p
 const photo = (name: string) =>
 	Object.entries(photos).find(([path]) => path.replace(/^.*\//, '').replace(/\.\w+$/, '') === name)?.[1].default;
 
-// The shop thumbnails of the first look, cropped square to the piece.
-const oldMoney = Object.fromEntries(
-	Object.entries(import.meta.glob<{ default: ImageMetadata }>('../assets/hero/scene-1/*.webp', { eager: true })).map(([path, m]) => [
-		path.replace(/^.*\//, '').replace(/\.\w+$/, ''),
-		m.default,
-	]),
-);
+// Each look's shop thumbnails, cropped square to the piece, in a folder named after its scene.
+const thumbs = import.meta.glob<{ default: ImageMetadata }>('../assets/hero/*/*.webp', { eager: true });
+const thumbsOf = (scene: string) =>
+	Object.fromEntries(
+		Object.entries(thumbs)
+			.filter(([path]) => path.includes(`/${scene}/`))
+			.map(([path, m]) => [path.replace(/^.*\//, '').replace(/\.\w+$/, ''), m.default]),
+	);
+const oldMoney = thumbsOf('scene-1');
+const boho = thumbsOf('scene-2');
 
-// The first look is real; the second is a drawn stand-in until its photos arrive.
+// Real looks from the app (Spain, 22 Nov 2026): the shop titles shortened into English, the
+// price as the shop listed it. The drawn stand-ins are only for a scene without photos.
 const scenes: Scene[] = [
-	// A real look from the app (Spain, 22 Nov 2026): the shop titles shortened into English,
-	// the price as the shop listed it.
 	{
 		name: 'scene-1',
 		look: { title: 'Old Money Tailored Look', meta: '5 pieces · from 5 stores', total: '€ 410' },
@@ -87,14 +89,16 @@ const scenes: Scene[] = [
 	},
 	{
 		name: 'scene-2',
-		look: { title: 'Camel City Chic Look', meta: '4 pieces · from 3 stores', total: '€ 312' },
-		before: { top: '#bdb6ad', bottom: '#4a4744', shoes: '#f2efe9', hair: '#4a3426', longHair: true },
-		after: { top: '#f3efe8', layer: '#c39a6b', bottom: '#262626', shoes: '#1d1d1d', bag: '#7a2e2e', hair: '#4a3426', longHair: true },
+		look: { title: 'Boho Chic Autumn Look', meta: '6 pieces · from 5 stores', total: '€ 394' },
+		before: { top: '#efe6d6', bottom: '#8aa1bd', shoes: '#d9b49a', hair: '#6b4a32', longHair: true },
+		after: { top: '#d9c4a3', layer: '#e3dacb', bottom: '#a58f78', shoes: '#8a5a36', bag: '#8a5a36', hair: '#6b4a32', longHair: true },
 		pieces: [
-			{ title: 'Linen blazer', brand: 'Brand', price: '00,00 €', glyph: 'layer', colour: '#c39a6b', at: [42.5, 40], side: 'left', top: 12 },
-			{ title: 'Mini bag', brand: 'Brand', price: '00,00 €', glyph: 'bag', colour: '#7a2e2e', at: [63.5, 47], side: 'right', top: 26 },
-			{ title: 'Wide trousers', brand: 'Brand', price: '00,00 €', glyph: 'bottom', colour: '#262626', at: [54.5, 69], side: 'right', top: 44 },
-			{ title: 'Loafers', brand: 'Brand', price: '00,00 €', glyph: 'shoes', colour: '#1d1d1d', at: [43.5, 90], side: 'left', top: 54 },
+			{ title: 'Linen blazer', brand: 'Zara', price: '59,95 €', image: boho.blazer, glyph: 'layer', colour: '#e3dacb', at: [69, 45], side: 'right', top: 14 },
+			{ title: 'Knit V-neck top', brand: 'Mango', price: '22,99 €', image: boho.top, glyph: 'top', colour: '#d9c4a3', at: [56, 34], side: 'left', top: 8 },
+			{ title: 'Buckle belt', brand: 'Pull&Bear', price: '15,99 €', image: boho.belt, glyph: 'bag', colour: '#8a5a36', at: [53, 41], side: 'left', top: 26 },
+			{ title: 'Paisley ruffle skirt', brand: 'Zara', price: '39,95 €', image: boho.skirt, glyph: 'bottom', colour: '#a58f78', at: [58, 60], side: 'right', top: 36 },
+			{ title: 'Fringe suede bag', brand: 'Bimba y Lola', price: '135,00 €', image: boho.bag, glyph: 'bag', colour: '#8a5a36', at: [38, 68], side: 'left', top: 46 },
+			{ title: 'Suede ankle boots', brand: 'Camper', price: '119,99 €', image: boho.boots, glyph: 'shoes', colour: '#8a5a36', at: [52, 86], side: 'right', top: 58 },
 		],
 	},
 ];
@@ -536,8 +540,8 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 	/* Where each piece is worn. */
 	.dot {
 		position: absolute;
-		width: 2.4cqi;
-		height: 2.4cqi;
+		width: 1.8cqi;
+		height: 1.8cqi;
 		translate: -50% -50%;
 		border-radius: 999px;
 		background: #fff;
