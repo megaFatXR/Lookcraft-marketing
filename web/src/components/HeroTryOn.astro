@@ -14,8 +14,9 @@
 // "Look 1 · pieces · stores" and the total. The badge reads "Your photo", then "Your try-on":
 // the marketing keeps to "the stylist" and "try-on" rather than AI.
 //
-// A small script runs the loop, only while the hero is on screen. Without the script, or
-// with reduced motion, the first try-on stays on screen with its pieces.
+// A small script runs the loop, only while the hero is on screen. The page starts on the first
+// shopper's plain photo, where the loop begins; with reduced motion the script shows their
+// try-on with its pieces instead.
 import { Image } from 'astro:assets';
 
 type Glyph = 'top' | 'layer' | 'bottom' | 'shoes' | 'bag';
@@ -59,22 +60,29 @@ const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/hero/*.{p
 const photo = (name: string) =>
 	Object.entries(photos).find(([path]) => path.replace(/^.*\//, '').replace(/\.\w+$/, '') === name)?.[1].default;
 
-const thumbs = import.meta.glob<{ default: ImageMetadata }>('../assets/look/*.webp', { eager: true });
-const thumb = (n: number) => thumbs[`../assets/look/piece-${n}.webp`]?.default;
+// The shop thumbnails of the first look, cropped square to the piece.
+const oldMoney = Object.fromEntries(
+	Object.entries(import.meta.glob<{ default: ImageMetadata }>('../assets/hero/scene-1/*.webp', { eager: true })).map(([path, m]) => [
+		path.replace(/^.*\//, '').replace(/\.\w+$/, ''),
+		m.default,
+	]),
+);
 
-// Stand-ins until the real photos and looks arrive. The first look borrows the pieces of
-// "Navy City Look" from step 3; the second is drawn.
+// The first look is real; the second is a drawn stand-in until its photos arrive.
 const scenes: Scene[] = [
+	// A real look from the app (Spain, 22 Nov 2026): the shop titles shortened into English,
+	// the price as the shop listed it.
 	{
 		name: 'scene-1',
-		look: { title: 'Smart Navy Weekend Look', meta: '4 pieces · from 4 stores', total: '€ 226' },
+		look: { title: 'Old Money Tailored Look', meta: '5 pieces · from 5 stores', total: '€ 410' },
 		before: { top: '#d4cdc4', bottom: '#7f8796', shoes: '#f2efe9', hair: '#3a2c22' },
-		after: { top: '#2d3b57', collar: '#a9c3dd', bottom: '#86a3c4', shoes: '#8b5a2f', bag: '#6f6a45', hair: '#3a2c22' },
+		after: { top: '#1f2a44', collar: '#f4f4f2', layer: '#c39a6b', bottom: '#d8c8a8', shoes: '#7a3f22', hair: '#3a2c22' },
 		pieces: [
-			{ title: 'Soufflé sweater', brand: 'Uniqlo', price: '39,90 €', image: thumb(1), glyph: 'top', colour: '#2d3b57', at: [50, 37], side: 'left', top: 12 },
-			{ title: 'Leather shoulder bag', brand: 'Zara', price: '59,95 €', image: thumb(5), glyph: 'bag', colour: '#6f6a45', at: [63.5, 47], side: 'right', top: 26 },
-			{ title: 'Relaxed jeans', brand: 'Mango', price: '39,99 €', image: thumb(3), glyph: 'bottom', colour: '#86a3c4', at: [54.5, 69], side: 'right', top: 44 },
-			{ title: 'Newton Ridge boots', brand: 'Columbia', price: '86,07 €', image: thumb(4), glyph: 'shoes', colour: '#8b5a2f', at: [43.5, 90], side: 'left', top: 54 },
+			{ title: 'Camel overcoat', brand: 'Printemps', price: '210,00 €', image: oldMoney.coat, glyph: 'layer', colour: '#c39a6b', at: [72, 39], side: 'right', top: 16 },
+			{ title: 'Slim-fit shirt', brand: 'Springfield', price: '55,96 €', image: oldMoney.shirt, glyph: 'top', colour: '#f4f4f2', at: [55, 27.5], side: 'left', top: 8 },
+			{ title: 'Navy sweater', brand: 'Zara', price: '29,99 €', image: oldMoney.sweater, glyph: 'top', colour: '#1f2a44', at: [52, 42], side: 'left', top: 28 },
+			{ title: 'Beige chinos', brand: 'Vestirlaboral', price: '31,49 €', image: oldMoney.chinos, glyph: 'bottom', colour: '#d8c8a8', at: [46, 68], side: 'left', top: 46 },
+			{ title: 'Leather brogues', brand: 'Clarks', price: '82,50 €', image: oldMoney.shoes, glyph: 'shoes', colour: '#7a3f22', at: [58, 92], side: 'right', top: 58 },
 		],
 	},
 	{
@@ -146,7 +154,7 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 						const before = photo(`${scene.name}-before`);
 						const after = photo(`${scene.name}-after`);
 						return (
-							<div class:list={['shot', { 'is-active is-revealed has-pieces': s === 0 }]} data-scene={s}>
+							<div class:list={['shot', { 'is-active': s === 0 }]} data-scene={s}>
 								<div class="photo">
 								<div class="picture before">
 									{before ? (
@@ -205,7 +213,7 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 		<svg class="lines">
 			{
 				scenes.map((scene, s) => (
-					<g class:list={['line-set', { 'is-active has-pieces': s === 0 }]} data-scene={s}>
+					<g class:list={['line-set', { 'is-active': s === 0 }]} data-scene={s}>
 						{scene.pieces.map((_, i) => (
 							<path data-piece={i} pathLength="1" style={`--i: ${i}`} />
 						))}
@@ -216,7 +224,7 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 
 		{
 			scenes.map((scene, s) => (
-				<div class:list={['cards', { 'is-active has-pieces': s === 0 }]} data-scene={s}>
+				<div class:list={['cards', { 'is-active': s === 0 }]} data-scene={s}>
 					{scene.pieces.map((piece, i) => (
 						<div class={`card ${piece.side}`} data-piece={i} data-side={piece.side} style={`top: ${piece.top}%; --i: ${i}`}>
 							<span class="thumb">
@@ -229,7 +237,7 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 							<span class="text">
 								<span class="title">{piece.title}</span>
 								<span class="meta">
-									{piece.brand} · <strong>{piece.price}</strong>
+									<span class="brand">{piece.brand}</span><span class="brand-gap">&nbsp;·&nbsp;</span><strong>{piece.price}</strong>
 								</span>
 							</span>
 						</div>
@@ -246,6 +254,8 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 	const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 	const timeline = { wipe: 1000, pieces: 2000, leave: 6800, next: 7200 };
+	/** How long the bright edge takes to cross, as in the CSS. */
+	const wipeTime = 900;
 
 	for (const figure of document.querySelectorAll<HTMLElement>('[data-tryon]')) {
 		const stage = figure.querySelector<HTMLElement>('.stage')!;
@@ -292,10 +302,17 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 
 		const later = (ms: number, step: () => void) => timers.push(window.setTimeout(step, ms));
 
+		// The try-on comes in behind the bright edge.
+		const wipe = (s: number) => {
+			const shot = shots[s];
+			shot.classList.add('is-revealed', 'wiping');
+			later(wipeTime, () => shot.classList.remove('wiping'));
+		};
+
 		const play = (s: number) => {
 			scene = s;
 			set(s, { 'is-active': true, 'is-revealed': false, 'has-pieces': false });
-			later(timeline.wipe, () => shots[s].classList.add('is-revealed'));
+			later(timeline.wipe, () => wipe(s));
 			later(timeline.pieces, () => set(s, { 'has-pieces': true }));
 			later(timeline.leave, () => set(s, { 'has-pieces': false }));
 			later(timeline.next, () => {
@@ -326,7 +343,8 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 			running = true;
 			figure.classList.remove('is-still');
 			for (let s = 0; s < count; s++) {
-				set(s, { 'is-active': false, 'is-revealed': false, 'has-pieces': false });
+				shots[s].classList.remove('wiping');
+				set(s, { 'is-active': s === scene, 'is-revealed': false, 'has-pieces': false });
 			}
 			play(scene);
 		};
@@ -493,7 +511,8 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 		filter: drop-shadow(0 0 4px rgb(255 255 255 / 0.9));
 	}
 
-	.is-revealed .wipe {
+	/* Only while the script wipes, not when the still picture shows the try-on. */
+	.wiping .wipe {
 		animation: wipe 0.9s cubic-bezier(0.65, 0, 0.35, 1);
 	}
 
@@ -517,8 +536,8 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 	/* Where each piece is worn. */
 	.dot {
 		position: absolute;
-		width: 3.4cqi;
-		height: 3.4cqi;
+		width: 2.4cqi;
+		height: 2.4cqi;
 		translate: -50% -50%;
 		border-radius: 999px;
 		background: #fff;
@@ -739,13 +758,22 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 		white-space: nowrap;
 	}
 
+	/* The price always shows; a long brand gives way first. */
 	.meta {
+		display: flex;
+		min-width: 0;
 		font-size: 0.75rem;
 		color: var(--muted);
 		white-space: nowrap;
 	}
 
+	.brand {
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
 	.meta strong {
+		flex: none;
 		color: var(--text);
 		font-weight: 600;
 	}
@@ -780,12 +808,24 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 			height: 2rem;
 		}
 
+		/* Up to two lines, as the cards are too narrow for most names on one. */
 		.title {
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
 			font-size: 0.75rem;
+			line-height: 1.15;
+			white-space: normal;
 		}
 
 		.meta {
 			font-size: 0.6875rem;
+		}
+
+		/* Only the price: a brand cut to a couple of letters says nothing. */
+		.brand,
+		.brand-gap {
+			display: none;
 		}
 	}
 

@@ -175,4 +175,19 @@ import HeroTryOn from './HeroTryOn.astro';
 			--tryon-width: min(32.5rem, 100% + 3rem);
 		}
 	}
+
+	/* Desktop: the try-on 15% bigger again, in a wider column that reaches into the side
+	   margin. It's kept short enough to fit the first screen of a laptop (the drawing is
+	   about 1.15 times as tall as it's wide). */
+	@media (width >= 72rem) {
+		.hero {
+			grid-template-columns: 1fr 1.2fr;
+		}
+
+		.art {
+			/* Up to 4rem into the margin, less where the window leaves less, so it never scrolls sideways. */
+			margin-right: calc(-1 * min(4rem, (100vw - 64rem) / 2 - 1rem));
+			--tryon-width: min(37.4rem, 100% + 5rem, (100svh - 11rem) / 1.15);
+		}
+	}
 </style>
