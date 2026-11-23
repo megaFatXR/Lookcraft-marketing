@@ -17,7 +17,7 @@
 // A small script runs the loop, only while the hero is on screen. The page starts on the first
 // shopper's plain photo, where the loop begins; with reduced motion the script shows their
 // try-on with its pieces instead.
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 
 type Glyph = 'top' | 'layer' | 'bottom' | 'shoes' | 'bag';
 
@@ -59,6 +59,16 @@ type Scene = {
 const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/hero/*.{png,jpg,jpeg,webp}', { eager: true });
 const photo = (name: string) =>
 	Object.entries(photos).find(([path]) => path.replace(/^.*\//, '').replace(/\.\w+$/, '') === name)?.[1].default;
+
+// Each photo in two versions. On desktop it fills a phone screen about 490 px wide (cropped to the
+// screen's shape), so it gets the full 896 px render at high quality; connections there can take
+// it. Phones get the 720 px one (the photo shows about 290 px wide there) at a lighter quality.
+async function sources(src: ImageMetadata | undefined) {
+	if (!src) return undefined;
+	const desktop = await getImage({ src, width: 896, quality: 90, format: 'webp' });
+	const phone = await getImage({ src, widths: [320, 480, 720], sizes: '18rem', quality: 85, format: 'webp' });
+	return { desktop: desktop.src, phone };
+}
 
 // Each look's shop thumbnails, cropped square to the piece, in a folder named after its scene.
 const thumbs = import.meta.glob<{ default: ImageMetadata }>('../assets/hero/*/*.webp', { eager: true });
@@ -144,6 +154,13 @@ const glyph = (kind: Glyph, colour: string) => {
 	return `<svg viewBox="0 0 32 32" fill="${colour}" stroke="${colour}" stroke-linejoin="round">${shapes[kind]}</svg>`;
 };
 
+const pictures = await Promise.all(
+	scenes.map(async (scene) => ({
+		before: await sources(photo(`${scene.name}-before`)),
+		after: await sources(photo(`${scene.name}-after`)),
+	})),
+);
+
 const description = 'A shopper in everyday clothes, then the same photo wearing a look made in Lookeo, with each piece’s brand and price around it.';
 ---
 
@@ -155,21 +172,26 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 			<div class="screen">
 				{
 					scenes.map((scene, s) => {
-						const before = photo(`${scene.name}-before`);
-						const after = photo(`${scene.name}-after`);
+						const { before, after } = pictures[s];
 						return (
 							<div class:list={['shot', { 'is-active': s === 0 }]} data-scene={s}>
 								<div class="photo">
 								<div class="picture before">
 									{before ? (
-										<Image src={before} alt="" widths={[320, 480, 720]} sizes="(width >= 72rem) 20rem, 15rem" loading="eager" fetchpriority={s === 0 ? 'high' : 'low'} />
+										<picture>
+											<source media="(width >= 72rem)" srcset={before.desktop} />
+											<img src={before.phone.src} srcset={before.phone.srcSet.attribute} sizes="18rem" width={before.phone.attributes.width} height={before.phone.attributes.height} alt="" loading="eager" decoding="async" fetchpriority={s === 0 ? 'high' : 'low'} />
+										</picture>
 									) : (
 										<Fragment set:html={person(scene.before)} />
 									)}
 								</div>
 								<div class="picture after">
 									{after ? (
-										<Image src={after} alt="" widths={[320, 480, 720]} sizes="(width >= 72rem) 20rem, 15rem" loading="eager" fetchpriority={s === 0 ? 'high' : 'low'} />
+										<picture>
+											<source media="(width >= 72rem)" srcset={after.desktop} />
+											<img src={after.phone.src} srcset={after.phone.srcSet.attribute} sizes="18rem" width={after.phone.attributes.width} height={after.phone.attributes.height} alt="" loading="eager" decoding="async" fetchpriority={s === 0 ? 'high' : 'low'} />
+										</picture>
 									) : (
 										<Fragment set:html={person(scene.after)} />
 									)}
@@ -495,6 +517,10 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 		position: absolute;
 		inset: 0;
 		background: radial-gradient(120% 60% at 50% 30%, #e6dfd5, #cdc4b8);
+	}
+
+	.picture picture {
+		display: contents;
 	}
 
 	.picture :global(svg),
