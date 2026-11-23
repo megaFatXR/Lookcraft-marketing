@@ -162,14 +162,14 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 								<div class="photo">
 								<div class="picture before">
 									{before ? (
-										<Image src={before} alt="" widths={[320, 480, 720]} sizes="15rem" loading={s === 0 ? 'eager' : 'lazy'} />
+										<Image src={before} alt="" widths={[320, 480, 720]} sizes="(width >= 72rem) 20rem, 15rem" loading="eager" fetchpriority={s === 0 ? 'high' : 'low'} />
 									) : (
 										<Fragment set:html={person(scene.before)} />
 									)}
 								</div>
 								<div class="picture after">
 									{after ? (
-										<Image src={after} alt="" widths={[320, 480, 720]} sizes="15rem" loading={s === 0 ? 'eager' : 'lazy'} />
+										<Image src={after} alt="" widths={[320, 480, 720]} sizes="(width >= 72rem) 20rem, 15rem" loading="eager" fetchpriority={s === 0 ? 'high' : 'low'} />
 									) : (
 										<Fragment set:html={person(scene.after)} />
 									)}
@@ -233,7 +233,7 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 						<div class={`card ${piece.side}`} data-piece={i} data-side={piece.side} style={`top: ${piece.top}%; --i: ${i}`}>
 							<span class="thumb">
 								{piece.image ? (
-									<Image src={piece.image} alt="" width={96} loading={s === 0 ? 'eager' : 'lazy'} />
+									<Image src={piece.image} alt="" width={96} loading="eager" />
 								) : (
 									<Fragment set:html={glyph(piece.glyph, piece.colour)} />
 								)}
@@ -273,6 +273,8 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 		let timers: number[] = [];
 		let running = false;
 		let onScreen = false;
+		/** Counts stops, so a wait that outlives its run is dropped. */
+		let runs = 0;
 
 		// Each line runs from the inner edge of its card to just short of its dot.
 		const layout = () => {
@@ -313,6 +315,23 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 			later(wipeTime, () => shot.classList.remove('wiping'));
 		};
 
+		// Resolves once a person's photos and thumbnails can be drawn, so a wipe never uncovers
+		// an empty screen on a slow connection. A photo that fails to load doesn't hold it up.
+		const ready = (s: number) =>
+			Promise.all(
+				[...shots[s].querySelectorAll('img'), ...part('.cards', s).querySelectorAll('img')].map((img) =>
+					img.decode().catch(() => {}),
+				),
+			);
+
+		// Runs `step` once `s` is ready, unless the loop stopped in the meantime.
+		const whenReady = (s: number, step: () => void) => {
+			const run = runs;
+			ready(s).then(() => {
+				if (run === runs) step();
+			});
+		};
+
 		const play = (s: number) => {
 			scene = s;
 			set(s, { 'is-active': true, 'is-revealed': false, 'has-pieces': false });
@@ -320,10 +339,14 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 			later(timeline.pieces, () => set(s, { 'has-pieces': true }));
 			later(timeline.leave, () => set(s, { 'has-pieces': false }));
 			later(timeline.next, () => {
-				set(s, { 'is-active': false });
-				// Back to the plain photo once it has faded out.
-				later(700, () => shots[s].classList.remove('is-revealed'));
-				play((s + 1) % count);
+				const next = (s + 1) % count;
+				// Stays on this person until the next one's photos are in.
+				whenReady(next, () => {
+					set(s, { 'is-active': false });
+					// Back to the plain photo once it has faded out.
+					later(700, () => shots[s].classList.remove('is-revealed'));
+					play(next);
+				});
 			});
 		};
 
@@ -331,6 +354,7 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 			timers.forEach(clearTimeout);
 			timers = [];
 			running = false;
+			runs++;
 		};
 
 		// The still picture: the first try-on with its pieces.
@@ -350,7 +374,7 @@ const description = 'A shopper in everyday clothes, then the same photo wearing 
 				shots[s].classList.remove('wiping');
 				set(s, { 'is-active': s === scene, 'is-revealed': false, 'has-pieces': false });
 			}
-			play(scene);
+			whenReady(scene, () => play(scene));
 		};
 
 		layout();
