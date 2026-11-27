@@ -56,5 +56,5 @@ sub-path.
 To check a sub-path build locally:
 
 ```sh
-BASE_PATH=/Lookcraft-marketing npm run build && npm run preview
+BASE_PATH=/lookeo-marketing npm run build && npm run preview
 ```

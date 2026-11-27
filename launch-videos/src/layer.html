@@ -72,7 +72,7 @@ html, body { overflow: hidden; background: transparent; color: var(--ink); font-
 const spec = JSON.parse(decodeURIComponent(location.hash.slice(1)));
 const root = document.getElementById('root');
 const photos = '/Users/userv/Workspace/styleFit/store-screenshots/photos/';
-const assets = '/Users/userv/Workspace/Lookcraft-marketing/web/src/assets/';
+const assets = '/Users/userv/Workspace/lookeo-marketing/web/src/assets/';
 if (spec.kind === 'band') {
 	root.innerHTML = `<div class="band">${spec.html}</div>`;
 } else if (spec.kind === 'photo') {
