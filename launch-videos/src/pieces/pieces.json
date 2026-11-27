@@ -1,0 +1,428 @@
+{
+ "him-navy-city": {
+  "look": "Navy City Look",
+  "pieces": [
+   {
+    "img": "pieces/him-navy-city/0.jpg",
+    "category": "top",
+    "item": "Navy wool crewneck sweater with a relaxed fit and ribbed trims.",
+    "merchant": "Uniqlo Spain",
+    "price": 39.9,
+    "priceText": "39,90 €",
+    "title": "Uniqlo Jersey Punto Suave Soufflé Cuello Redondo"
+   },
+   {
+    "img": "pieces/him-navy-city/1.jpg",
+    "category": "top",
+    "item": "Light blue Oxford shirt, worn untucked with the cuffs folded over the sweater sleeves.",
+    "merchant": "Uniqlo Spain",
+    "price": 39.9,
+    "priceText": "39,90 €",
+    "title": "Uniqlo Camisa Oxford"
+   },
+   {
+    "img": "pieces/him-navy-city/2.jpg",
+    "category": "bottom",
+    "item": "Mid-blue relaxed straight-leg jeans with a full-length hem and lightly washed finish.",
+    "merchant": "MANGO",
+    "price": 39.99,
+    "priceText": "39,99 €",
+    "title": "MANGO MAN - Jeans Moby relaxed fit lavado claro azul medio vintage - 38"
+   },
+   {
+    "img": "pieces/him-navy-city/3.jpg",
+    "category": "shoes",
+    "item": "Dark brown leather Chelsea boots with a rounded toe, worn beneath the jeans.",
+    "merchant": "zapatos.es",
+    "price": 86.07,
+    "priceText": "86,07 €",
+    "title": "Columbia Hombre Newton Ridge Plus II"
+   },
+   {
+    "img": "pieces/him-navy-city/4.jpg",
+    "category": "accessory",
+    "item": "Tan leather shopper bag with shoulder-length handles and minimal detailing.",
+    "merchant": "ZARA España",
+    "price": 59.95,
+    "priceText": "59,95 €",
+    "title": "Zara - Bolso Hombro Piel - Talla Única - Verde Caqui - Hombre"
+   },
+   {
+    "img": "pieces/him-navy-city/5.jpg",
+    "category": "accessory",
+    "item": "Dark tortoiseshell sunglasses with a compact, softly squared frame.",
+    "merchant": "MANGO",
+    "price": 29.99,
+    "priceText": "29,99 €",
+    "title": "MANGO MAN Gafas de sol montura redonda"
+   }
+  ],
+  "total": 295.8
+ },
+ "him-charcoal-coat": {
+  "look": "Urban Charcoal Coat Look",
+  "pieces": [
+   {
+    "img": "pieces/him-charcoal-coat/0.jpg",
+    "category": "top",
+    "item": "Charcoal heavyweight crewneck t-shirt",
+    "merchant": "Wordans.es",
+    "price": 17.79,
+    "priceText": "17,79 €",
+    "title": "hombre Stedman Camiseta Cuello Redondo Clive"
+   },
+   {
+    "img": "pieces/him-charcoal-coat/1.jpg",
+    "category": "bottom",
+    "item": "Medium-wash straight-leg faded blue jeans",
+    "merchant": "Levi's",
+    "price": 120,
+    "priceText": "120,00 €",
+    "title": "Vaqueros Levi's 501 Original Hombre"
+   },
+   {
+    "img": "pieces/him-charcoal-coat/2.jpg",
+    "category": "shoes",
+    "item": "Sand suede high-top sneakers",
+    "merchant": "nencinisport.es",
+    "price": 84,
+    "priceText": "84,00 €",
+    "title": "Diadora GAME HIGH Suede"
+   },
+   {
+    "img": "pieces/him-charcoal-coat/3.jpg",
+    "category": "accessory",
+    "item": "Dark grey fringed wool scarf",
+    "merchant": "Cortefiel",
+    "price": 34.9,
+    "priceText": "34,90 €",
+    "title": "Bufanda efecto lana con flecos"
+   },
+   {
+    "img": "pieces/him-charcoal-coat/4.jpg",
+    "category": "outerwear",
+    "item": "Long dark charcoal wool-blend overcoat",
+    "merchant": "Massimo Dutti",
+    "price": 249,
+    "priceText": "249,00 €",
+    "title": "Massimo Dutti Hombre Tejido Doble Mezcla Lana"
+   }
+  ],
+  "total": 505.69
+ },
+ "him-grunge": {
+  "look": "Urban Grunge Layering Look",
+  "pieces": [
+   {
+    "img": "pieces/him-grunge/0.jpg",
+    "category": "top",
+    "item": "White crew-neck cotton t-shirt",
+    "merchant": "Uniqlo Spain",
+    "price": 19.9,
+    "priceText": "19,90 €",
+    "title": "Uniqlo Camiseta 100% Algodón Supima"
+   },
+   {
+    "img": "pieces/him-grunge/1.jpg",
+    "category": "top",
+    "item": "Grey melange cotton hoodie",
+    "merchant": "Pull&Bear",
+    "price": 29.99,
+    "priceText": "29,99 €",
+    "title": "Stwd hombre Sudadera Boxy Capucha Logo Stwd"
+   },
+   {
+    "img": "pieces/him-grunge/2.jpg",
+    "category": "bottom",
+    "item": "Faded blue slim-fit jeans",
+    "merchant": "Springfield",
+    "price": 63.99,
+    "priceText": "63,99 €",
+    "title": "JEANS SLIM FIT \"GLENN\" ELÁSTICO"
+   },
+   {
+    "img": "pieces/him-grunge/3.jpg",
+    "category": "shoes",
+    "item": "Black leather lace-up combat boots",
+    "merchant": "Dr. Martens - ES",
+    "price": 200,
+    "priceText": "200,00 €",
+    "title": "DR MARTENS 1460"
+   },
+   {
+    "img": "pieces/him-grunge/4.jpg",
+    "category": "outerwear",
+    "item": "Black leather biker jacket",
+    "merchant": "Amazon.es",
+    "price": 192.12,
+    "priceText": "192,12 €",
+    "title": "URBAN 5884 Perfecto Chaqueta de Cuero para Hombre, Chaqueta de Cuero Genuino de Vaca, Piel Suave y Duradera Hombre (Pack de 1)"
+   }
+  ],
+  "total": 506.0
+ },
+ "him-old-money": {
+  "look": "Old Money Tailored Look",
+  "pieces": [
+   {
+    "img": "pieces/him-old-money/0.jpg",
+    "category": "top",
+    "item": "white dress shirt",
+    "merchant": "Springfield",
+    "price": 55.96,
+    "priceText": "55,96 €",
+    "title": "Camisa de manga larga y corte ajustado"
+   },
+   {
+    "img": "pieces/him-old-money/1.jpg",
+    "category": "top",
+    "item": "navy crew-neck sweater",
+    "merchant": "MANGO",
+    "price": 29.99,
+    "priceText": "29,99 €",
+    "title": "Mango Adult MAN Jersey de punto"
+   },
+   {
+    "img": "pieces/him-old-money/2.jpg",
+    "category": "bottom",
+    "item": "beige chinos",
+    "merchant": "vestirlaboral.com",
+    "price": 31.49,
+    "priceText": "31,49 €",
+    "title": "Pantalon hombre chino T400 700027 Beige"
+   },
+   {
+    "img": "pieces/him-old-money/3.jpg",
+    "category": "shoes",
+    "item": "dark brown leather brogues",
+    "merchant": "Sarenza.com España",
+    "price": 82.5,
+    "priceText": "82,50 €",
+    "title": "Clarks Aldwin Limit Zapatos Hombre"
+   },
+   {
+    "img": "pieces/him-old-money/4.jpg",
+    "category": "outerwear",
+    "item": "camel double-breasted wool overcoat",
+    "merchant": "Printemps.com ES",
+    "price": 210,
+    "priceText": "210,00 €",
+    "title": "Au Printemps Paris Abrigo de Cuello de Solapa de Lana Y Cachemira Mezclados para Hombre"
+   }
+  ],
+  "total": 409.94
+ },
+ "her-preppy-v2": {
+  "look": "Classic Preppy Park Look",
+  "pieces": [
+   {
+    "img": "pieces/her-preppy-v2/0.jpg",
+    "category": "top",
+    "item": "White collared cotton shirt",
+    "merchant": "ZARA España",
+    "price": 22.95,
+    "priceText": "22,95 €",
+    "title": "Mujer Zara Camisa Básica Popelín"
+   },
+   {
+    "img": "pieces/her-preppy-v2/1.jpg",
+    "category": "top",
+    "item": "Black V-neck knit sweater",
+    "merchant": "MANGO",
+    "price": 29.99,
+    "priceText": "29,99 €",
+    "title": "Mango Adult Jersey de punto Mujer"
+   },
+   {
+    "img": "pieces/her-preppy-v2/2.jpg",
+    "category": "bottom",
+    "item": "Cream pleated mini skirt",
+    "merchant": "Lisas Boutique",
+    "price": 34.99,
+    "priceText": "34,99 €",
+    "title": "Falda plisada mujer corta Beige | Lisa’s Boutique M/L"
+   },
+   {
+    "img": "pieces/her-preppy-v2/3.jpg",
+    "category": "shoes",
+    "item": "Brown leather knee boots",
+    "merchant": "zapatos.es",
+    "price": 176.99,
+    "priceText": "176,99 €",
+    "title": "Steve Madden Mujer Botas de equitación"
+   },
+   {
+    "img": "pieces/her-preppy-v2/4.jpg",
+    "category": "accessory",
+    "item": "Cognac leather shoulder bag",
+    "merchant": "Dradendak Fashion",
+    "price": 79,
+    "priceText": "79,00 €",
+    "title": "ABBACINO Bandolera cognac"
+   }
+  ],
+  "total": 343.92
+ },
+ "her-boho": {
+  "look": "Boho Chic Autumn Look",
+  "pieces": [
+   {
+    "img": "pieces/her-boho/0.jpg",
+    "category": "top",
+    "item": "Off-white crochet V-neck top",
+    "merchant": "MANGO",
+    "price": 22.99,
+    "priceText": "22,99 €",
+    "title": "MANGO Top punto tirantes"
+   },
+   {
+    "img": "pieces/her-boho/1.jpg",
+    "category": "bottom",
+    "item": "Ivory paisley print maxi skirt with a side slit",
+    "merchant": "ZARA España",
+    "price": 39.95,
+    "priceText": "39,95 €",
+    "title": "Mujer Zara Falda Midi Estampada Volantes Cinturón"
+   },
+   {
+    "img": "pieces/her-boho/2.jpg",
+    "category": "shoes",
+    "item": "Tan suede ankle boots",
+    "merchant": "Esdemarca",
+    "price": 119.99,
+    "priceText": "119,99 €",
+    "title": "Mujer Camper Botines Kora"
+   },
+   {
+    "img": "pieces/her-boho/3.jpg",
+    "category": "accessory",
+    "item": "Tan leather belt with a round buckle",
+    "merchant": "Pull&Bear",
+    "price": 15.99,
+    "priceText": "15,99 €",
+    "title": "Pull&Bear Cinturón Hebilla Asimétrica mujer"
+   },
+   {
+    "img": "pieces/her-boho/4.jpg",
+    "category": "accessory",
+    "item": "Brown suede fringe bucket bag",
+    "merchant": "bimbaylola.com",
+    "price": 135,
+    "priceText": "135,00 €",
+    "title": "Bimba Y LOLA Bolso de mano Mujer"
+   },
+   {
+    "img": "pieces/her-boho/5.jpg",
+    "category": "outerwear",
+    "item": "Cream linen blazer",
+    "merchant": "ZARA España",
+    "price": 59.95,
+    "priceText": "59,95 €",
+    "title": "Mujer Zara Blazer Pinzas Con Lino"
+   }
+  ],
+  "total": 393.87
+ },
+ "her-old-money": {
+  "look": "Effortless Old Money Look",
+  "pieces": [
+   {
+    "img": "pieces/her-old-money/0.jpg",
+    "category": "top",
+    "item": "white square-neck top",
+    "merchant": "ASOS",
+    "price": 18.99,
+    "priceText": "18,99 €",
+    "title": "Body cuello cuadrado de New Look"
+   },
+   {
+    "img": "pieces/her-old-money/1.jpg",
+    "category": "bottom",
+    "item": "cream pleated wide-leg trousers",
+    "merchant": "aboutyou.es",
+    "price": 22.43,
+    "priceText": "22,43 €",
+    "title": "LENI KLUM x ABOUT YOU Pantalón de pinzas 'Eva"
+   },
+   {
+    "img": "pieces/her-old-money/2.jpg",
+    "category": "shoes",
+    "item": "white leather sneakers",
+    "merchant": "Querol.net",
+    "price": 112,
+    "priceText": "112,00 €",
+    "title": "Zapatillas Veja Campo De Mujer Blancas De Piel Con Detalles Beige 010 041 Blanco"
+   },
+   {
+    "img": "pieces/her-old-money/3.jpg",
+    "category": "accessory",
+    "item": "brown leather belt",
+    "merchant": "MANGO",
+    "price": 12.99,
+    "priceText": "12,99 €",
+    "title": "MANGO Cinturón 'LAMINE' Mujeres"
+   },
+   {
+    "img": "pieces/her-old-money/4.jpg",
+    "category": "outerwear",
+    "item": "cream linen blazer",
+    "merchant": "Zalando.es",
+    "price": 98.47,
+    "priceText": "98,47 €",
+    "title": "Inwear Idoneyiw Premium Blazer, Mujer, Talla: 36, Haze melange"
+   }
+  ],
+  "total": 264.88
+ },
+ "her-western": {
+  "look": "Western Fringe Look",
+  "pieces": [
+   {
+    "img": "pieces/her-western/0.jpg",
+    "category": "top",
+    "item": "White ribbed tank top",
+    "merchant": "ZARA España",
+    "price": 7.95,
+    "priceText": "7,95 €",
+    "title": "Mujer Zara Top Tirantes Rib Algodón"
+   },
+   {
+    "img": "pieces/her-western/1.jpg",
+    "category": "bottom",
+    "item": "Black skinny jeans",
+    "merchant": "Levi's",
+    "price": 50.56,
+    "priceText": "50,56 €",
+    "title": "Levi's 710 Super Skinny Mujer Vaquero"
+   },
+   {
+    "img": "pieces/her-western/2.jpg",
+    "category": "shoes",
+    "item": "Brown embroidered cowboy boots",
+    "merchant": "Salvador Artesano",
+    "price": 65.95,
+    "priceText": "65,95 €",
+    "title": "BOTA CAMPERA BORDADOS CUERO 55973 41"
+   },
+   {
+    "img": "pieces/her-western/3.jpg",
+    "category": "accessory",
+    "item": "Brown leather belt with silver ring buckle",
+    "merchant": "zapatos.es",
+    "price": 26.99,
+    "priceText": "26,99 €",
+    "title": "Cinturón Mujer de Tommy hilfiger"
+   },
+   {
+    "img": "pieces/her-western/4.jpg",
+    "category": "outerwear",
+    "item": "Cognac leather fringe jacket",
+    "merchant": "ovsfashion.com",
+    "price": 189,
+    "priceText": "189,00 €",
+    "title": "PIOMBO Chaqueta Marrón de Piel Auténtica Con Flecos – Corte Regular Mujer"
+   }
+  ],
+  "total": 340.45
+ }
+}
