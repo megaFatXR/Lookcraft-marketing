@@ -7,8 +7,9 @@ import { BRAND_NAME, CITY, CONTACT_EMAIL } from '../consts';
 import Base from '../layouts/Base.astro';
 import { withBase } from '../lib/url';
 
-const team = [
-	{ role: 'Founder · Engineer', about: 'Builds the app, the stylist and everything behind them.' },
+// Empty for now, so the page shows no team cards. Uncomment an entry to show it.
+const team: { role: string; about: string }[] = [
+	// { role: 'Founder · Engineer', about: 'Builds the app, the stylist and everything behind them.' },
 	// { role: 'Style · Co-founder', about: 'Architect and fashion creator. Shapes how the stylist dresses people.' },
 ];
 ---
@@ -58,6 +59,7 @@ const team = [
 			Mobile World Congress and 080 Barcelona Fashion, and it’s home to brands like Mango and
 			Desigual. A good place to build a stylist.
 		</p>
+		{team.length > 0 && (
 		<ul class="team">
 			{
 				team.map((person) => (
@@ -68,6 +70,7 @@ const team = [
 				))
 			}
 		</ul>
+		)}
 
 		<h2>Say hello</h2>
 		<p>
