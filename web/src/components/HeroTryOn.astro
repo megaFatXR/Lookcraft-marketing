@@ -83,20 +83,8 @@ const boho = thumbsOf('scene-2');
 
 // Real looks from the app (Spain, 22 Nov 2026): the shop titles shortened into English, the
 // price as the shop listed it. The drawn stand-ins are only for a scene without photos.
+// The hero plays the scenes in this order: the boho look first, then old money.
 const scenes: Scene[] = [
-	{
-		name: 'scene-1',
-		look: { title: 'Old Money Tailored Look', meta: '5 pieces · from 5 stores', total: '€ 410' },
-		before: { top: '#d4cdc4', bottom: '#7f8796', shoes: '#f2efe9', hair: '#3a2c22' },
-		after: { top: '#1f2a44', collar: '#f4f4f2', layer: '#c39a6b', bottom: '#d8c8a8', shoes: '#7a3f22', hair: '#3a2c22' },
-		pieces: [
-			{ title: 'Camel overcoat', brand: 'Printemps', price: '210,00 €', image: oldMoney.coat, glyph: 'layer', colour: '#c39a6b', at: [72, 39], side: 'right', top: 16 },
-			{ title: 'Slim-fit shirt', brand: 'Springfield', price: '55,96 €', image: oldMoney.shirt, glyph: 'top', colour: '#f4f4f2', at: [55, 27.5], side: 'left', top: 8 },
-			{ title: 'Navy sweater', brand: 'Zara', price: '29,99 €', image: oldMoney.sweater, glyph: 'top', colour: '#1f2a44', at: [52, 42], side: 'left', top: 28 },
-			{ title: 'Beige chinos', brand: 'Vestirlaboral', price: '31,49 €', image: oldMoney.chinos, glyph: 'bottom', colour: '#d8c8a8', at: [46, 68], side: 'left', top: 46 },
-			{ title: 'Leather brogues', brand: 'Clarks', price: '82,50 €', image: oldMoney.shoes, glyph: 'shoes', colour: '#7a3f22', at: [58, 92], side: 'right', top: 58 },
-		],
-	},
 	{
 		name: 'scene-2',
 		look: { title: 'Boho Chic Autumn Look', meta: '6 pieces · from 5 stores', total: '€ 394' },
@@ -109,6 +97,19 @@ const scenes: Scene[] = [
 			{ title: 'Paisley ruffle skirt', brand: 'Zara', price: '39,95 €', image: boho.skirt, glyph: 'bottom', colour: '#a58f78', at: [58, 60], side: 'right', top: 36 },
 			{ title: 'Fringe suede bag', brand: 'Bimba y Lola', price: '135,00 €', image: boho.bag, glyph: 'bag', colour: '#8a5a36', at: [38, 68], side: 'left', top: 46 },
 			{ title: 'Suede ankle boots', brand: 'Camper', price: '119,99 €', image: boho.boots, glyph: 'shoes', colour: '#8a5a36', at: [52, 86], side: 'right', top: 58 },
+		],
+	},
+	{
+		name: 'scene-1',
+		look: { title: 'Old Money Tailored Look', meta: '5 pieces · from 5 stores', total: '€ 410' },
+		before: { top: '#d4cdc4', bottom: '#7f8796', shoes: '#f2efe9', hair: '#3a2c22' },
+		after: { top: '#1f2a44', collar: '#f4f4f2', layer: '#c39a6b', bottom: '#d8c8a8', shoes: '#7a3f22', hair: '#3a2c22' },
+		pieces: [
+			{ title: 'Camel overcoat', brand: 'Printemps', price: '210,00 €', image: oldMoney.coat, glyph: 'layer', colour: '#c39a6b', at: [72, 39], side: 'right', top: 16 },
+			{ title: 'Slim-fit shirt', brand: 'Springfield', price: '55,96 €', image: oldMoney.shirt, glyph: 'top', colour: '#f4f4f2', at: [55, 27.5], side: 'left', top: 8 },
+			{ title: 'Navy sweater', brand: 'Zara', price: '29,99 €', image: oldMoney.sweater, glyph: 'top', colour: '#1f2a44', at: [52, 42], side: 'left', top: 28 },
+			{ title: 'Beige chinos', brand: 'Vestirlaboral', price: '31,49 €', image: oldMoney.chinos, glyph: 'bottom', colour: '#d8c8a8', at: [46, 68], side: 'left', top: 46 },
+			{ title: 'Leather brogues', brand: 'Clarks', price: '82,50 €', image: oldMoney.shoes, glyph: 'shoes', colour: '#7a3f22', at: [58, 92], side: 'right', top: 58 },
 		],
 	},
 ];
