@@ -22,7 +22,7 @@ export const TIKTOK_URL = 'https://www.tiktok.com/@lookeo.app';
 export const CONTACT_EMAIL = 'hello@lookeo.app';
 // No company yet: the person who runs Lookeo, by their full legal name.
 export const COMPANY_NAME = '';
-export const COMPANY_ADDRESS = 'Carrer de Venus 15, Barcelona, Spain';
+export const COMPANY_ADDRESS = 'Barcelona, Spain';
 // The country whose law governs the terms of use, as in "Spain".
 export const GOVERNING_COUNTRY = 'Spain';
 
