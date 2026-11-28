@@ -14,6 +14,10 @@ export const APP_STORE_ID = '6833256271';
 export const APP_STORE_URL = `https://apps.apple.com/app/id${APP_STORE_ID}`;
 export const APP_RELEASED = false;
 
+// The social profiles, linked from the footer.
+export const INSTAGRAM_URL = 'https://www.instagram.com/lookeo.app/';
+export const TIKTOK_URL = 'https://www.tiktok.com/@lookeo.app';
+
 // The privacy policy shows a placeholder while any of these are empty.
 export const CONTACT_EMAIL = 'hello@lookeo.app';
 export const COMPANY_NAME = '';
