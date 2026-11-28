@@ -45,9 +45,9 @@ const effective = 'November 7, 2026';
 
 		<h2>Who we are and this agreement</h2>
 		<p>
-			{BRAND_NAME} is an AI stylist and fitting room for iPhone, run by {
-				COMPANY_NAME ? COMPANY_NAME : <mark>[company or full legal name]</mark>
-			}, {COMPANY_ADDRESS ? COMPANY_ADDRESS : <mark>[postal address]</mark>} (“we” or “us”).
+			{BRAND_NAME} is an AI stylist and fitting room for iPhone, {
+				COMPANY_NAME ? `run by ${COMPANY_NAME} and ` : ''
+			}based at {COMPANY_ADDRESS} (“we” or “us”).
 			These terms are an agreement between you and us for using the app. By using {BRAND_NAME},
 			you agree to them. How we handle your data is explained in our <a
 				href={withBase('privacy/')}>Privacy Policy</a

@@ -99,11 +99,10 @@ const retention = [
 
 		<h2>Who we are</h2>
 		<p>
-			{BRAND_NAME} is an AI stylist and fitting room for iPhone. It’s run by {
-				COMPANY_NAME ? COMPANY_NAME : <mark>[company or full legal name]</mark>
-			}, {COMPANY_ADDRESS ? COMPANY_ADDRESS : <mark>[postal address]</mark>}, who is
-			responsible for your data under this policy (the “data controller” in EU and UK
-			law). This policy covers the app and this website.
+			{BRAND_NAME} is an AI stylist and fitting room for iPhone{
+				COMPANY_NAME ? `, run by ${COMPANY_NAME}` : ''
+			}. We’re based at {COMPANY_ADDRESS}, and we’re responsible for your data under this policy
+			(the “data controller” in EU and UK law). This policy covers the app and this website.
 		</p>
 
 		<h2>What stays on your iPhone</h2>
