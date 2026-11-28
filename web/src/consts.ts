@@ -26,6 +26,5 @@ export const COMPANY_ADDRESS = 'Carrer de Venus 15, Barcelona, Spain';
 // The country whose law governs the terms of use, as in "Spain".
 export const GOVERNING_COUNTRY = 'Spain';
 
-// The About page: who makes Lookeo. FOUNDER_NAME shows a placeholder while empty.
-export const FOUNDER_NAME = '';
+// Where Lookeo is made, as the About and Press pages say it.
 export const CITY = 'Barcelona';
