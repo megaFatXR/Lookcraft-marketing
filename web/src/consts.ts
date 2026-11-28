@@ -20,7 +20,12 @@ export const TIKTOK_URL = 'https://www.tiktok.com/@lookeo.app';
 
 // The privacy policy shows a placeholder while any of these are empty.
 export const CONTACT_EMAIL = 'hello@lookeo.app';
+// No company yet: the person who runs Lookeo, by their full legal name.
 export const COMPANY_NAME = '';
-export const COMPANY_ADDRESS = '';
+export const COMPANY_ADDRESS = 'Carrer de Venus 15, Barcelona, Spain';
 // The country whose law governs the terms of use, as in "Spain".
-export const GOVERNING_COUNTRY = '';
+export const GOVERNING_COUNTRY = 'Spain';
+
+// The About page: who makes Lookeo. FOUNDER_NAME shows a placeholder while empty.
+export const FOUNDER_NAME = '';
+export const CITY = 'Barcelona';
