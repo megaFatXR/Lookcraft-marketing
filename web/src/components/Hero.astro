@@ -59,16 +59,15 @@ import HeroTryOn from './HeroTryOn.astro';
 		font-size: 0.9375rem;
 	}
 
+	/* Like the footer's links: muted, with the coral underline, brighter on hover. */
 	nav a {
 		color: var(--muted);
-		text-decoration: none;
+		text-underline-offset: 0.2em;
 	}
 
 	nav a:hover,
 	nav a:focus-visible {
 		color: var(--text);
-		text-decoration: underline;
-		text-underline-offset: 0.25em;
 	}
 
 	/* Phones keep the logo alone at the top, so it doesn't crowd. */
